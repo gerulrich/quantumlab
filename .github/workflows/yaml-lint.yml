@@ -31,12 +31,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install yamllint
 
-      - name: Run yamllint and post comments on errors
+      - name: Run yamllint with reviewdog
         if: steps.changed-files.outputs.any_changed == 'true'
-        uses: reviewdog/action-lint@v1
+        uses: reviewdog/action-yamllint@v1
         with:
-          tool_name: yamllint
           reporter: github-pr-review
-          filter_mode: nofilter
           fail_on_error: true
-          yamllint_flags: "${{ steps.changed-files.outputs.all_changed_files }}"
+          filter_mode: nofilter

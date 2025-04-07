@@ -7,7 +7,7 @@ spec:
   externalIPs: true
   serviceSelector:
     matchLabels:
-      color : blue
+      color: blue
   nodeSelector:
     matchExpressions:
       - key: node-role.kubernetes.io/control-plane

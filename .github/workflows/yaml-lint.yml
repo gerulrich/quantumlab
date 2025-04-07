@@ -29,16 +29,14 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           python -m pip install --upgrade pip
-          pip install yamllint reviewdog
+          pip install yamllint
 
       - name: Run yamllint and post comments on errors
         if: steps.changed-files.outputs.any_changed == 'true'
-        env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
-        run: |
-          echo "Files to lint:"
-          echo "${{ steps.changed-files.outputs.all_changed_files }}"
-          yamllint -f parsable ${{ steps.changed-files.outputs.all_changed_files }} | reviewdog -f=yamllint -reporter=github-pr-review -filter-mode=nofilter
-          
-          # Also run with normal format and fail if errors exist
-          yamllint ${{ steps.changed-files.outputs.all_changed_files }}
+        uses: reviewdog/action-lint@v1
+        with:
+          tool_name: yamllint
+          reporter: github-pr-review
+          filter_mode: nofilter
+          fail_on_error: true
+          yamllint_flags: "${{ steps.changed-files.outputs.all_changed_files }}"

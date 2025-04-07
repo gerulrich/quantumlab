@@ -1,0 +1,17 @@
+---
+extends: default
+
+rules:
+  line-length:
+    max: 120
+    level: warning
+  indentation:
+    spaces: 2
+    indent-sequences: consistent
+    level: error  # Establecer como error para ser estricto con la indentación
+  document-start:
+    present: false
+  truthy:
+    check-keys: false
+  comments:
+    min-spaces-from-content: 1  # Asegurar buen formato en comentarios

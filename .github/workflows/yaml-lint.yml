@@ -1,0 +1,44 @@
+name: Check YAML syntax
+
+on:
+  pull_request:
+    paths:
+      - '**/*.yaml'
+      - '**/*.yml'
+
+jobs:
+  lint:
+    name: Lint YAML files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Needed for tj-actions/changed-files
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v39
+        with:
+          files: |
+            **/*.yaml
+            **/*.yml
+
+      - name: Set up Python and install yamllint
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install yamllint reviewdog
+
+      - name: Run yamllint and post comments on errors
+        if: steps.changed-files.outputs.any_changed == 'true'
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
+        run: |
+          echo "Files to lint:"
+          echo "${{ steps.changed-files.outputs.all_changed_files }}"
+          yamllint -f parsable ${{ steps.changed-files.outputs.all_changed_files }} | reviewdog -f=yamllint -reporter=github-pr-review -filter-mode=nofilter
+          
+          # Also run with normal format and fail if errors exist
+          yamllint ${{ steps.changed-files.outputs.all_changed_files }}

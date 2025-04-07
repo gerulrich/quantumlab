@@ -1,0 +1,5 @@
+# talos config
+talos/worker.yaml
+talos/controlplane.yaml
+**/talosconfig
+**/kubeconfig

@@ -1,12 +1,32 @@
 # ⚛️ QuantumLab
 
-**QuantumLab** es un proyecto de infraestructura personal para un homelab basado en Kubernetes.  
-Está diseñado como entorno de pruebas, aprendizaje y portfolio técnico, con foco en buenas prácticas de automatización y GitOps.
+![Estado](https://img.shields.io/badge/Estado-En%20Desarrollo-yellow)
+![Licencia](https://img.shields.io/badge/Licencia-MIT-blue)
 
-Utiliza **Talos Linux** como sistema operativo inmutable, **FluxCD** para gestión declarativa del clúster, y busca mantener toda la infraestructura como código.  
-Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrarán progresivamente a Kubernetes.
+**QuantumLab** es un proyecto de infraestructura personal para un homelab basado en Kubernetes.
+Diseñado como entorno de pruebas, aprendizaje y portfolio técnico, implementa buenas prácticas de automatización y GitOps.
+
+> Un laboratorio personal donde la infraestructura se gestiona con estándares profesionales y se mantiene 100% como código.
 
 ---
+
+## 🎯 Objetivos del Proyecto
+
+- Mantener una infraestructura 100% declarativa y versionada
+- Migrar servicios de Podman a Kubernetes siguiendo principios GitOps
+- Implementar buenas prácticas de DevOps en un entorno personal
+- Servir como entorno de aprendizaje y portfolio técnico
+
+## 🏗️ Arquitectura
+
+QuantumLab utiliza:
+- **Talos Linux** como sistema operativo inmutable y seguro
+- **Kubernetes** como plataforma de orquestación
+- **FluxCD** para gestión declarativa y GitOps
+- **Cilium** como CNI para networking avanzado
+- **SOPS + Age** para gestión segura de secretos
+
+Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrarán progresivamente a Kubernetes.
 
 ## 🧰 Servicios del Homelab
 
@@ -28,50 +48,39 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 |                   | 🍃 MongoDB           | ✅ En uso       | Podman               | Base de datos NoSQL                      |
 |                   | 🧪 Mongo-UI          | ✅ En uso       | Podman               | Interfaz web para MongoDB                |
 |                   | 🔍 MQTT Explorer     | ✅ En uso       | Podman               | Interfaz visual para MQTT                |
-| Plataforma        | 🐧 Talos Linux       | ⚙️ En despliegue | N/A                  | OS minimalista para Kubernetes           |
-| Orquestador       | ☸️ Kubernetes        | ⚙️ En despliegue | Talos                | Cluster principal                        |
+| Plataforma        | 🐧 Talos Linux       | ⚙️ Configurando | N/A                  | OS minimalista para Kubernetes           |
+| Orquestador       | ☸️ Kubernetes        | ⚙️ Configurando | Talos                | Cluster principal                        |
 | GitOps            | 🔄 FluxCD            | ⚙️ Configurando | Kubernetes           | Infraestructura como código              |
 | Seguridad         | 🧾 SOPS              | ⚙️ Configurando | Kubernetes           | Gestión segura de secretos               |
 | Red               | 🌐 Cilium            | ⚙️ Configurando | Kubernetes           | CNI avanzado con observabilidad          |
 | VPN / Mesh        | 🧠 Tailscale         | ⚙️ Configurando | Kubernetes           | Red privada entre dispositivos           |
-| Paquetes          | 🎯 Helm              | ✅ En uso       | Kubernetes           | Gestión de charts                        |
+| Paquetes          | 🎯 Helm              | ⚙️ Configurando | Kubernetes           | Gestión de charts                        |
 | A implementar     | 🗣️ Piper             | 🕐 Pendiente    | Por definir          | TTS de código abierto                    |
-|                   | 🧠 Faster-Whisper     | 🕐 Pendiente    | Por definir          | STT optimizado                           |
+|                   | 🧠 Faster-Whisper    | 🕐 Pendiente    | Por definir          | STT optimizado                           |
 |                   | 🤖 Ollama            | 🕐 Pendiente    | Por definir          | LLMs locales (como llama.cpp)            |
 
----
+## 🚀 Instalación
 
-## 📦 Objetivos
+1. [Instalación del clúster Talos](docs/talos-bootstrap.md)
+2. Configuración de Cilium y API Gateway *(próximamente)*
+3. Implementación de gestión segura de secretos *(próximamente)*
 
-- Mantener una infraestructura 100% declarativa y versionada
-- Migrar servicios legacy desde Podman a Kubernetes
-- Aplicar buenas prácticas de DevOps y GitOps
-- Servir como entorno de pruebas, aprendizaje y portfolio técnico
+## 📂 Estructura del Repositorio
 
----
-
-## 📁 Estructura del repositorio (en progreso)
-
-- `talos/`: Configuración de Talos para el control plane y los workers
-- `flux/`: Configuración de FluxCD y despliegue declarativo de aplicaciones
-- `ansible/`: Playbooks de provisión inicial (por ejemplo, preparar nodos físicos)
-- `podman/`: Stack de servicios actualmente ejecutándose fuera de Kubernetes
-- `docs/`: Documentación técnica y decisiones de diseño
-- `scripts/`: Utilidades para automatizar tareas comunes
-
-
----
-
-## 🧠 Filosofía del proyecto
-
-QuantumLab aplica un enfoque profesional a un entorno personal:  
-infraestructura modular, segura, reproducible y gestionada con prácticas modernas de SRE y GitOps.
-
----
+```
+quantumlab/
+├── talos/           # Configuración de Talos Linux
+├── clusters/quantum # Manifiestos de Kubernetes y FluxCD
+├── ansible/         # Automatización de infraestructura
+├── podman/          # Stacks de servicios en Podman
+├── docs/            # Documentación técnica
+└── scripts/         # Scripts de utilidad
+```
 
 ## 📄 Licencia
 
-MIT — Libre para estudiar, adaptar y reutilizar.  
-Si este proyecto te resulta útil o inspirador, ¡una estrella es siempre bienvenida! ⭐
+MIT — Libre para estudiar, adaptar y reutilizar.
 
 ---
+
+*Si este proyecto te resulta útil o inspirador, ¡una estrella es siempre bienvenida! ⭐*

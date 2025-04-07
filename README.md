@@ -62,7 +62,7 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 ## 🚀 Instalación
 
 1. [Instalación del clúster Talos](docs/talos-bootstrap.md)
-2. Configuración de Cilium y API Gateway *(próximamente)*
+2. [Configuración de Cilium y API Gateway](docs/cilium-apigateway.md)
 3. Implementación de gestión segura de secretos *(próximamente)*
 
 ## 📂 Estructura del Repositorio

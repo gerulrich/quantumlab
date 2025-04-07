@@ -1,0 +1,13 @@
+---
+cluster:
+  controllerManager:
+    extraArgs:
+      bind-address: 0.0.0.0
+  network:
+    cni:
+      name: none
+  proxy:
+    disabled: true
+  scheduler:
+    extraArgs:
+      bind-address: 0.0.0.0

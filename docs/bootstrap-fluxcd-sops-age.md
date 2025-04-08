@@ -1,4 +1,4 @@
-# Flux CD con SOPS y Age en QuantumLab
+# Flux CD con SOPS y Age
 
 Esta guía explica cómo inicializar y trabajar con Flux CD y SOPS.
 

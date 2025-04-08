@@ -8,18 +8,18 @@ rules:
   indentation:
     spaces: 2
     indent-sequences: consistent
-    level: error  # Establecer como error para ser estricto con la indentación
+    level: error
   document-start:
     present: true
     level: error
   truthy:
     check-keys: false
   comments:
-    min-spaces-from-content: 1  # Asegurar buen formato en comentarios
+    require-starting-space: true
+    min-spaces-from-content: 1
   empty-lines:
     max: 1
     level: warning
   key-duplicates: enable
   new-line-at-end-of-file:
-    present: true
     level: warning

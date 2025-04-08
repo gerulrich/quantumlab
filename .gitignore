@@ -3,3 +3,6 @@ talos/worker.yaml
 talos/controlplane.yaml
 **/talosconfig
 **/kubeconfig
+
+# age key for sops
+age.key

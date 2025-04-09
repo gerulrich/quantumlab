@@ -63,7 +63,7 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 
 1. [Instalación del clúster Talos](docs/talos-bootstrap.md)
 2. [Configuración de Cilium y API Gateway](docs/cilium-apigateway.md)
-3. Implementación de gestión segura de secretos *(próximamente)*
+3. [Flux CD con SOPS y Age](docs/bootstrap-fluxcd-sops-age.md)
 
 ## 📂 Estructura del Repositorio
 

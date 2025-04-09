@@ -22,3 +22,8 @@ rules:
   key-duplicates: enable
   new-line-at-end-of-file:
     level: warning
+
+# Ignore encrypted secret files - SOPS encryption doesn't preserve YAML formatting
+# (indentation and document start markers "---"), so we exclude these files from linting
+ignore: |
+  infrastructure/*/secrets/*.yaml

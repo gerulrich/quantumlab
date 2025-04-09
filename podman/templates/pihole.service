@@ -1,0 +1,35 @@
+[Unit]
+Description=pihole in a container
+Documentation=man:podman-generate-systemd(1)
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=%t/containers
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n TZ=America/Argentina/Buenos_Aires
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=10
+ExecStart=/usr/local/bin/podman run --name=pihole \
+  --cidfile=%t/%n.ctr-id \
+  --cgroups=no-conmon \
+  --sdnotify=conmon \
+  --replace \
+  --detach \
+  --network=host \
+  --label="io.containers.autoupdate=registry" \
+  --publish=53:53/tcp \
+  --publish=53:53/udp \
+  --publish=80:80 \
+  --publish=443:443 \
+  --env=DNSMASQ_LISTENING=all \
+  --volume=/home/{{ user }}/hassio/pihole/config/:/etc/pihole:Z \
+  --volume=/home/{{ user }}/hassio/pihole/dnsmasq/:/etc/dnsmasq.d:Z \
+  docker.io/pihole/pihole:latest
+ExecStop=/usr/local/bin/podman stop --ignore -t 10 --cidfile=%t/%n.ctr-id
+ExecStopPost=/usr/local/bin/podman rm -f --ignore -t 10 --cidfile=%t/%n.ctr-id
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=default.target

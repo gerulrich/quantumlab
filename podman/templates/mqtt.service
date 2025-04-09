@@ -1,0 +1,34 @@
+[Unit]
+Description=Mosquitto MQTT in a container
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=%t/containers
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n TZ=America/Argentina/Buenos_Aires
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=10
+ExecStartPre=/bin/rm -f %t/%n.ctr-id
+ExecStart=/usr/local/bin/podman run --name=mqtt \
+  --cidfile=%t/%n.ctr-id \
+  --userns keep-id \
+  --group-add keep-groups \
+  --cgroups=no-conmon \
+  --sdnotify=conmon \
+  --replace \
+  --detach \
+  --network=slirp4netns:allow_host_loopback=true \
+  --publish=1883:1883 \
+  --label="io.containers.autoupdate=registry" \
+  --volume=/home/{{ user }}/hassio/mqtt/config:/mosquitto/config:Z \
+  --volume=/home/{{ user }}/hassio/mqtt/data:/mosquitto/data:Z \
+  --volume=/home/{{ user }}/hassio/mqtt/log:/mosquitto/log:Z \
+  docker.io/eclipse-mosquitto
+ExecStop=/usr/local/bin/podman stop --ignore --cidfile=%t/%n.ctr-id
+ExecStopPost=/usr/local/bin/podman rm -f --ignore --cidfile=%t/%n.ctr-id
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=default.target

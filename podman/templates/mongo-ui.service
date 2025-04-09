@@ -1,0 +1,34 @@
+[Unit]
+Description=mongo-express in a container
+Documentation=man:podman-generate-systemd(1)
+Wants=network-online.target
+After=network-online.target
+Requires=mongo.service
+After=mongo.service
+RequiresMountsFor=%t/containers
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n TZ=America/Argentina/Buenos_Aires
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=10
+ExecStart=/usr/local/bin/podman run --name=mongo-ui \
+  --cidfile=%t/%n.ctr-id \
+  --cgroups=no-conmon \
+  --sdnotify=conmon \
+  --replace \
+  --detach \
+  --network=slirp4netns:allow_host_loopback=true \
+  --publish=8081:8081 \
+  --label="io.containers.autoupdate=registry" \
+  --env=ME_CONFIG_SITE_BASEURL=/mongo \
+  --env=ME_CONFIG_OPTIONS_EDITORTHEME=ambiance \
+  --env=ME_CONFIG_MONGODB_URL={{ mongourl }} \
+  docker.io/mongo-express:latest
+ExecStop=/usr/local/bin/podman stop --ignore -t 10 --cidfile=%t/%n.ctr-id
+ExecStopPost=/usr/local/bin/podman rm -f --ignore -t 10 --cidfile=%t/%n.ctr-id
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,35 @@
+[Unit]
+Description=zigbee2mqtt in a container
+Documentation=man:podman-generate-systemd(1)
+Wants=network-online.target
+After=network-online.target
+Requires=mqtt.service
+After=mqtt.service
+RequiresMountsFor=%t/containers
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n TZ=America/Argentina/Buenos_Aires
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=10
+ExecStart=/usr/local/bin/podman run --name=zigbee \
+  --cidfile=%t/%n.ctr-id \
+  --group-add=keep-groups \
+  --cgroups=no-conmon \
+  --sdnotify=conmon \
+  --replace \
+  --detach \
+  --network=slirp4netns:allow_host_loopback=true \
+  --publish=8077:8080 \
+  --label="io.containers.autoupdate=registry" \
+  --device=/dev/ttyUSB0:/dev/ttyACM0:Z \
+  --volume=/home/{{ user }}/hassio/zigbee2mqtt/:/app/data:Z \
+  --volume=/run/udev:/run/udev:ro \
+  docker.io/koenkk/zigbee2mqtt:1.42.0
+ExecStop=/usr/local/bin/podman stop --ignore -t 10 --cidfile=%t/%n.ctr-id
+ExecStopPost=/usr/local/bin/podman rm -f --ignore -t 10 --cidfile=%t/%n.ctr-id
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=default.target

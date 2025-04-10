@@ -1,0 +1,32 @@
+[Unit]
+Description=CertBot to renew Let's Encrypt certificates
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=%t/containers
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n TZ=America/Argentina/Buenos_Aires
+Restart=on-abnormal
+RestartSec=3600
+TimeoutStopSec=60
+TimeoutStartSec=10800
+ExecStartPre=/home/{{ user }}/bin/certbot.sh '/telegram/send' 'CertBot to renew Lets Encrypt certificates (start)'
+ExecStartPre=/bin/rm -f %t/%n.ctr-id
+ExecStart=/usr/local/bin/podman run --name=certbot \
+  --cidfile=%t/%n.ctr-id \
+  --cgroups=no-conmon \
+  --sdnotify=conmon \
+  --replace \
+  --detach \
+  --label="io.containers.autoupdate=registry" \
+  --volume=/home/{{ user }}/hassio/certbot/conf:/etc/letsencrypt:rw \
+  --volume=/home/{{ user }}/hassio/certbot/www:/var/www/certbot:rw \
+  --volume=/home/{{ user }}/hassio/certbot/logs:/var/log/letsencrypt:rw \
+  docker.io/certbot/dns-cloudflare renew
+ExecStopPost=/usr/local/bin/podman rm -f --ignore --cidfile=%t/%n.ctr-id
+ExecStopPost=/home/{{ user }}/bin/certbot.sh '/telegram/send' 'CertBot to renew Lets Encrypt certificates (end)'
+Type=oneshot
+NotifyAccess=all
+
+[Install]
+WantedBy=default.target

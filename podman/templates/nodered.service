@@ -1,0 +1,34 @@
+[Unit]
+Description=nodered in a container
+Wants=network-online.target
+After=network-online.target
+Requires=mqtt.service
+After=mqtt.service
+RequiresMountsFor=%t/containers
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n TZ=America/Argentina/Buenos_Aires
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=10
+ExecStartPre=/bin/rm -f %t/%n.ctr-id
+ExecStart=/usr/local/bin/podman run --name=nodered \
+  --cidfile=%t/%n.ctr-id \
+  --userns keep-id \
+  --group-add keep-groups \
+  --cgroups=no-conmon \
+  --sdnotify=conmon \
+  --replace \
+  --detach \
+  --network=slirp4netns:allow_host_loopback=true \
+  --publish=1880:1880 \
+  --label="io.containers.autoupdate=registry" \
+  --volume=/home/{{ user }}/hassio/nodered:/data:Z \
+  docker.io/nodered/node-red:latest-minimal
+ExecStop=/usr/local/bin/podman stop --ignore --cidfile=%t/%n.ctr-id
+ExecStopPost=/usr/local/bin/podman rm -f --ignore --cidfile=%t/%n.ctr-id
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=default.target

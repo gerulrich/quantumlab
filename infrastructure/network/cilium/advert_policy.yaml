@@ -13,6 +13,6 @@ spec:
       - key: node-role.kubernetes.io/control-plane
         operator: DoesNotExist
   interfaces:
-  - eth0
-  - net0
+    - eth0
+    - net0
   loadBalancerIPs: true

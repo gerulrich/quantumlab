@@ -27,3 +27,4 @@ rules:
 # (indentation and document start markers "---"), so we exclude these files from linting
 ignore: |
   infrastructure/*/secrets/*.yaml
+  clusters/*/flux-system/*.yaml

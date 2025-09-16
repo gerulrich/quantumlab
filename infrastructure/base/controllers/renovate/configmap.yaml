@@ -9,3 +9,4 @@ data:
   RENOVATE_GIT_AUTHOR: "Renovate[bot] <bot@renovateapp.com>"
   RENOVATE_PLATFORM: "github"
   RENOVATE_BASE_BRANCHES: "master"
+  RENOVATE_GIT_COMMIT_SIGNING: "true"

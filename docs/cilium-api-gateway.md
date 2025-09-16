@@ -6,7 +6,7 @@ Esta guía detalla los pasos necesarios para instalar Cilium como CNI y habilita
 
 ---
 
-## 1. 📋 Requisitos previos
+## 1. 🗂 Requisitos previos
 
 Asegúrate de tener las siguientes herramientas y componentes instalados antes de comenzar:
 
@@ -34,7 +34,7 @@ talosctl dashboard --nodes $CONTROL_PLANE_IP
 
 ---
 
-## 3. 🚪 Instalar Gateway API
+## 3. 🧾 Instalar Gateway API
 
 La Gateway API proporciona recursos para configurar enrutamiento, balanceo de carga y más. Esta es una dependencia de Cilium API Gateway:
 
@@ -50,7 +50,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v
 
 ---
 
-## 4. 🔌 Instalar Cilium con API Gateway
+## 4. 🧩 Instalar Cilium con API Gateway
 
 Instalamos Cilium utilizando Helm para generar el manifiesto y luego lo aplicamos:
 
@@ -158,7 +158,7 @@ kubectl apply -f infrastructure/network/cilium/advert_policy.yaml
 
 ---
 
-## 7. 🔍 Verificación y resolución de problemas
+## 7. 🔎 Verificación y resolución de problemas
 
 Para verificar el estado de Cilium y solucionar posibles problemas:
 
@@ -173,7 +173,7 @@ kubectl -n kube-system logs <nombre-del-pod-cilium>
 
 ---
 
-## 8. 🛠️ Mantenimiento y operaciones comunes
+## 8. 🛠 Mantenimiento y operaciones comunes
 
 Estos comandos te serán útiles para el mantenimiento diario:
 

@@ -3,8 +3,8 @@
 ![Estado](https://img.shields.io/badge/Estado-En%20Desarrollo-yellow)
 ![Licencia](https://img.shields.io/badge/Licencia-MIT-blue)
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.32.2-326CE5?logo=kubernetes&logoColor=white)
-![Talos](https://img.shields.io/badge/Talos-v1.9.5-lightgrey?logo=linux&logoColor=white)
-![FluxCD](https://img.shields.io/badge/FluxCD-v2.5.1-4353ff?logo=flux&logoColor=white)
+![Talos](https://img.shields.io/badge/Talos-v1.11.0-lightgrey?logo=linux&logoColor=white)
+![FluxCD](https://img.shields.io/badge/FluxCD-v2.6.4-4353ff?logo=flux&logoColor=white)
 
 **QuantumLab** es un proyecto de infraestructura personal para un homelab basado en Kubernetes.
 Diseñado como entorno de pruebas, aprendizaje y portfolio técnico, implementa buenas prácticas de automatización y GitOps.
@@ -65,8 +65,9 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 ## 🚀 Instalación
 
 1. [Instalación del clúster Talos](docs/talos-bootstrap.md)
-2. [Configuración de Cilium y API Gateway](docs/cilium-apigateway.md)
+2. [Configuración de Cilium y API Gateway](docs/cilium-api-gateway.md)
 3. [Flux CD con SOPS y Age](docs/bootstrap-fluxcd-sops-age.md)
+4. [Cert-Manager y Gateway con TLS](docs/cert-manager-routes.md)
 
 ## 📂 Estructura del Repositorio
 

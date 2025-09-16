@@ -13,3 +13,5 @@ spec:
     name: flux-system
   path: ./apps/quantum
   prune: true
+  dependsOn:
+    - name: infra

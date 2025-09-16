@@ -15,7 +15,7 @@ spec:
   - name: https-listener
     protocol: HTTPS
     port: 443
-    hostname: "*.replace.com"
+    hostname: "${DOMAIN}"
     tls:
       certificateRefs:
       - kind: Secret

@@ -20,9 +20,7 @@ spec:
                 - gerulrich/quantumlab
               envFrom:
                 - secretRef:
-                    name: renovate-container-env
-                - secretRef:
-                    name: github-token
+                    name: renovate-secrets
                 - configMapRef:
                     name: renovate-configmap
           restartPolicy: Never

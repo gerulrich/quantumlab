@@ -1,0 +1,20 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: http-gateway
+  namespace: gateway
+  labels:
+    color: blue
+spec:
+  gatewayClassName: cilium
+  infrastructure:
+    labels:
+      color: blue
+  listeners:
+  - name: http-listener
+    protocol: HTTP
+    port: 80
+    allowedRoutes:
+      namespaces:
+        from: All

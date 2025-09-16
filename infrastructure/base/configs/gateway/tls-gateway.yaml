@@ -1,0 +1,26 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: tls-gateway
+  namespace: gateway
+  labels:
+    color: blue
+spec:
+  gatewayClassName: cilium
+  infrastructure:
+    labels:
+      color: blue
+  listeners:
+  - name: https-listener
+    protocol: HTTPS
+    port: 443
+    hostname: "${DOMAIN}"
+    tls:
+      certificateRefs:
+      - kind: Secret
+        name: secret-quantum-cert
+        namespace: gateway
+    allowedRoutes:
+      namespaces:
+        from: All

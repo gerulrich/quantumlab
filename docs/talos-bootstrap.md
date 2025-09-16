@@ -40,7 +40,7 @@ Define las variables que utilizaremos durante todo el proceso:
 export CONTROL_PLANE_IP=192.168.0.125
 export WORKER_IP=192.168.0.230
 export SCHEMATIC_ID=00514c155d2b32b2fa9b316b130735ef2a9f8f0f7a24e328b12d8a990b550a49
-export TALOS_IMAGE=factory.talos.dev/installer/${SCHEMATIC_ID}:v1.9.5
+export TALOS_IMAGE=factory.talos.dev/installer/${SCHEMATIC_ID}:v1.11.0
 export DISK=/dev/vda
 ```
 

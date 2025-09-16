@@ -21,6 +21,8 @@ spec:
               envFrom:
                 - secretRef:
                     name: renovate-container-env
+                - secretRef:
+                    name: github-token
                 - configMapRef:
                     name: renovate-configmap
           restartPolicy: Never

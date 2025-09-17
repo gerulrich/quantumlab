@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mosquitto
+  namespace: mqtt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mosquitto
+  template:
+    metadata:
+      labels:
+        app: mosquitto
+    spec:
+      containers:
+      - name: mosquitto
+        image: eclipse-mosquitto:2.0.15
+        ports:
+        - containerPort: 1883
+        volumeMounts:
+        - name: config-volume
+          mountPath: /mosquitto/config/mosquitto.conf
+          subPath: mosquitto.conf
+        - name: acl-volume
+          mountPath: /mosquitto/config/aclfile
+          subPath: aclfile
+        - name: credentials-volume
+          mountPath: /mosquitto/config/passwordfile
+          subPath: passwordfile
+        - name: data-volume
+          mountPath: /mosquitto/data
+      volumes:
+      - name: config-volume
+        configMap:
+          name: mosquitto-config
+      - name: acl-volume
+        configMap:
+          name: mosquitto-config
+      - name: credentials-volume
+        secret:
+          secretName: mosquitto-credentials
+      - name: data-volume
+        emptyDir: {}

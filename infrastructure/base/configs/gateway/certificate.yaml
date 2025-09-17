@@ -10,4 +10,6 @@ spec:
     name: letsencrypt
     kind: ClusterIssuer
   dnsNames:
+    - "*.internal.${DOMAIN}"
     - "*.${DOMAIN}"
+

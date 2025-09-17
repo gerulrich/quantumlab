@@ -13,3 +13,7 @@ spec:
     name: flux-system
   path: ./apps/k8s-quantum
   prune: true
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age

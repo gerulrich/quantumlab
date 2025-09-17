@@ -2,6 +2,8 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
+  annotations:
+    "lbipam.cilium.io/sharing-key": "internal-traffic"
   name: tls-gateway
   namespace: gateway
   labels:
@@ -15,7 +17,7 @@ spec:
   - name: https-listener
     protocol: HTTPS
     port: 443
-    hostname: "${DOMAIN}"
+    hostname: "*.internal.${DOMAIN}"
     tls:
       certificateRefs:
       - kind: Secret

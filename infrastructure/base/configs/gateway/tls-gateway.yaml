@@ -4,6 +4,7 @@ kind: Gateway
 metadata:
   annotations:
     "lbipam.cilium.io/sharing-key": "internal-traffic"
+    "io.cilium/lb-ipam-sharing-key": "internal-traffic"
   name: tls-gateway
   namespace: gateway
   labels:

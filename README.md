@@ -37,7 +37,7 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 |------------------|---------------------|----------------|----------------------|------------------------------------------|
 | Domótica          | 🏠 Home Assistant    | ✅ En uso       | Podman               | Gestión de dispositivos IoT              |
 |                   | 🔄 Node-RED          | ✅ En uso       | Podman               | Automatización basada en flujos          |
-|                   | 📡 MQTT              | ✅ En uso       | Podman               | Broker de mensajería IoT                 |
+|                   | 📡 MQTT              | 🔧 En progreso  | Podman  | Broker de mensajería IoT — [docs/mqtt.md](docs/mqtt.md) |
 |                   | 🔌 ESPHome           | ✅ En uso       | Podman               | Firmware para dispositivos IoT           |
 |                   | 🧿 Zigbee2MQTT       | ✅ En uso       | Podman               | Puente Zigbee a MQTT                     |
 | Media             | 🎬 Plex              | ✅ En uso       | Podman               | Servidor de medios                       |

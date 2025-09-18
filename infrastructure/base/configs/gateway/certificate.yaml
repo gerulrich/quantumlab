@@ -12,4 +12,3 @@ spec:
   dnsNames:
     - "*.internal.${DOMAIN}"
     - "*.${DOMAIN}"
-

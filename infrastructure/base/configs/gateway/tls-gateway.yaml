@@ -9,8 +9,8 @@ metadata:
 spec:
   gatewayClassName: cilium
   infrastructure:
-    annotations:
-      "lbipam.cilium.io/sharing-key": "lan-traffic"
+    #annotations:
+    #  "lbipam.cilium.io/sharing-key": "lan-traffic"
     labels:
       color: blue
   listeners:

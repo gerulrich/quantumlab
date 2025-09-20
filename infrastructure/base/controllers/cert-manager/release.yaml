@@ -1,11 +1,10 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: cert-manager
   namespace: cert-manager
 spec:
-  interval: 1h
+  interval: 30m
   chart:
     spec:
       chart: cert-manager
@@ -14,6 +13,6 @@ spec:
         kind: HelmRepository
         name: cert-manager
         namespace: cert-manager
-      interval: 24h
+      interval: 12h
   values:
     installCRDs: true

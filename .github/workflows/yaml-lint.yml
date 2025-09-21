@@ -3,9 +3,7 @@ name: Check YAML syntax
 
 on:
   pull_request:
-    paths:
-      - '**/*.yaml'
-      - '**/*.yml'
+    branches: [ master ]
 
 jobs:
   lint:

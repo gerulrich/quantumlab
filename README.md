@@ -2,8 +2,8 @@
 
 ![Estado](https://img.shields.io/badge/Estado-En%20Desarrollo-yellow)
 ![Licencia](https://img.shields.io/badge/Licencia-MIT-blue)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.32.2-326CE5?logo=kubernetes&logoColor=white)
-![Talos](https://img.shields.io/badge/Talos-v1.11.0-lightgrey?logo=linux&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.34.0-326CE5?logo=kubernetes&logoColor=white)
+![Talos](https://img.shields.io/badge/Talos-v1.11.1-lightgrey?logo=linux&logoColor=white)
 ![FluxCD](https://img.shields.io/badge/FluxCD-v2.6.4-4353ff?logo=flux&logoColor=white)
 
 **QuantumLab** es un proyecto de infraestructura personal para un homelab basado en Kubernetes.

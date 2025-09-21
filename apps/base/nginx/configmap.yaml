@@ -5,10 +5,10 @@ metadata:
   name: nginx-config
   namespace: nginx
 data:
-  pihole.internal.conf: |
+  pihole.lan.conf: |
     server {
       listen 80;
-      server_name pihole.internal.${DOMAIN};
+      server_name pihole.lan.${DOMAIN};
       location / {
         proxy_set_header Host $host;
         proxy_http_version 1.1;

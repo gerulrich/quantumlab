@@ -9,8 +9,8 @@ spec:
   - name: http-gateway
     namespace: gateway
   hostnames:
-  - "nginx.internal.${DOMAIN}"
-  - "pihole.internal.${DOMAIN}"
+  - "nginx.lan.${DOMAIN}"
+  - "pihole.lan.${DOMAIN}"
   rules:
   - matches:
     - path:
@@ -30,8 +30,8 @@ spec:
   - name: tls-gateway
     namespace: gateway
   hostnames:
-  - "nginx.internal.${DOMAIN}"
-  - "pihole.internal.${DOMAIN}"
+  - "nginx.lan.${DOMAIN}"
+  - "pihole.lan.${DOMAIN}"
   rules:
   - matches:
     - path:

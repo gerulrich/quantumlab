@@ -10,7 +10,7 @@ Esta guía detalla los pasos necesarios para instalar un clúster de Kubernetes 
 
 Asegúrate de tener las siguientes herramientas instaladas en tu máquina local antes de comenzar:
 
-- [`talosctl`](https://www.talos.dev/latest/introduction/getting-started/installation/) - CLI para administrar nodos Talos
+- [`talosctl`](https://github.com/siderolabs/talos/releases) - CLI para administrar nodos Talos
 - [`kubectl`](https://kubernetes.io/docs/tasks/tools/) - CLI para interactuar con Kubernetes
 
 ---
@@ -40,7 +40,7 @@ Define las variables que utilizaremos durante todo el proceso:
 export CONTROL_PLANE_IP=192.168.0.125
 export WORKER_IP=192.168.0.230
 export SCHEMATIC_ID=00514c155d2b32b2fa9b316b130735ef2a9f8f0f7a24e328b12d8a990b550a49
-export TALOS_IMAGE=factory.talos.dev/installer/${SCHEMATIC_ID}:v1.11.0
+export TALOS_IMAGE=factory.talos.dev/installer/${SCHEMATIC_ID}:v1.11.1
 export DISK=/dev/vda
 ```
 

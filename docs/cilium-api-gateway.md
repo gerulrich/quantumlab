@@ -10,8 +10,8 @@ Esta guía detalla los pasos necesarios para instalar Cilium como CNI y habilita
 
 Asegúrate de tener las siguientes herramientas y componentes instalados antes de comenzar:
 
-- [`helm`](https://helm.sh/docs/intro/install/) - Gestor de paquetes para Kubernetes
-- [`cilium`](https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/) - CLI de Cilium (opcional, para diagnósticos)
+- [`helm`](https://github.com/helm/helm/releases) - Gestor de paquetes para Kubernetes
+- [`cilium`](https://github.com/cilium/cilium/releases) - CLI de Cilium (opcional, para diagnósticos)
 
 ---
 
@@ -40,10 +40,10 @@ La Gateway API proporciona recursos para configurar enrutamiento, balanceo de ca
 
 ```bash
 # Instalar los CRDs de la Gateway API
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.1/standard-install.yaml
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
 
 # Instalar recursos experimentales (TLS Routes)
-kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.2.1/config/crd/experimental/gateway.networking.k8s.io_tlsroutes.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.3.0/config/crd/experimental/gateway.networking.k8s.io_tlsroutes.yaml
 ```
 
 > 📝 Estos comandos instalan las definiciones de recursos personalizados (CRDs) necesarias para la API Gateway.
@@ -63,7 +63,7 @@ helm repo update
 helm template \
     cilium \
     cilium/cilium \
-    --version 1.17.2 \
+    --version 1.18.2 \
     --namespace kube-system \
     --set ipam.mode=kubernetes \
     --set l2announcements.enabled=true \

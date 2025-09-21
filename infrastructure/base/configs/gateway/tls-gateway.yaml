@@ -17,7 +17,7 @@ spec:
   - name: https-listener
     protocol: HTTPS
     port: 443
-    hostname: "*.internal.${DOMAIN}"
+    hostname: "*.lan.${DOMAIN}"
     tls:
       certificateRefs:
       - kind: Secret

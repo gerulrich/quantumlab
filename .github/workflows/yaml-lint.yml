@@ -3,7 +3,7 @@ name: Check YAML syntax
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   lint:

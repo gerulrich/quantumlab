@@ -156,6 +156,60 @@ kubectl apply -f infrastructure/network/cilium/ip_pool.yaml
 kubectl apply -f infrastructure/network/cilium/advert_policy.yaml
 ```
 
+### Configurar compartición de IP en Load Balancers
+
+Cilium permite que múltiples servicios compartan la misma dirección IP utilizando la anotación `io.cilium/lb-ipam-sharing-key`. Esto es especialmente útil para Gateways que manejan tráfico HTTP y HTTPS en la misma dirección IP pero diferentes puertos.
+
+#### Anotación `io.cilium/lb-ipam-sharing-key`
+
+Esta anotación permite que servicios de tipo LoadBalancer compartan la misma dirección IP cuando tienen el mismo valor de clave de compartición:
+
+```yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: tls-gateway
+  namespace: gateway
+spec:
+  gatewayClassName: cilium
+  infrastructure:
+    annotations:
+      "io.cilium/lb-ipam-sharing-key": "internal-traffic"
+    labels:
+      color: blue
+  listeners:
+  - name: https-listener
+    protocol: HTTPS
+    port: 443
+    # ... resto de la configuración
+```
+
+**Características principales**:
+
+- **Compartición de IP**: Servicios con el mismo valor en `lb-ipam-sharing-key` compartirán la misma dirección IP externa
+- **Separación por puerto**: Cada servicio debe usar puertos diferentes (ej: 80 para HTTP, 443 para HTTPS)
+- **Optimización de recursos**: Reduce el número de IPs públicas necesarias
+- **Agrupación lógica**: Permite agrupar servicios relacionados bajo la misma IP
+
+**Casos de uso comunes**:
+
+1. **HTTP/HTTPS Gateways**: Compartir IP entre gateway HTTP (puerto 80) y HTTPS (puerto 443)
+2. **Servicios relacionados**: Múltiples servicios de la misma aplicación que necesitan la misma IP externa
+3. **Optimización de red**: Reducir el consumo de direcciones IP en redes con IPs limitadas
+
+**Ejemplo práctico en QuantumLab**:
+
+En este proyecto, tanto `http-gateway` como `tls-gateway` usan la clave `"internal-traffic"`, lo que significa que ambos gateways compartirán la misma dirección IP externa:
+
+- `http-gateway`: puerto 80 (HTTP)
+- `tls-gateway`: puerto 443 (HTTPS)
+
+Esto permite que el tráfico web llegue a la misma IP y Cilium enrute automáticamente:
+- Tráfico puerto 80 → Gateway HTTP
+- Tráfico puerto 443 → Gateway HTTPS
+
+> 📝 **Nota importante**: Los servicios que comparten IP deben usar puertos diferentes. Si intentas usar el mismo puerto con la misma clave de compartición, la configuración fallará.
+
 ---
 
 ## 7. 🔎 Verificación y resolución de problemas
@@ -168,6 +222,18 @@ kubectl -n kube-system get pods -l k8s-app=cilium
 
 # Revisar logs de un pod específico de Cilium
 kubectl -n kube-system logs <nombre-del-pod-cilium>
+
+# Verificar servicios LoadBalancer y sus IPs asignadas
+kubectl get svc -A --field-selector spec.type=LoadBalancer
+
+# Ver Gateways y sus direcciones IP compartidas
+kubectl get gateway -n gateway -o wide
+
+# Verificar que los Gateways comparten la misma IP
+kubectl get gateway -n gateway -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.addresses[0].value}{"\n"}{end}'
+
+# Verificar anotaciones de Load Balancer en los servicios de Cilium
+kubectl get svc -n kube-system -l io.cilium/gateway-owning-gateway -o yaml | grep -A5 -B5 "lb-ipam-sharing-key"
 
 ```
 

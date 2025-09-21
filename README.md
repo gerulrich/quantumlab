@@ -69,6 +69,12 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 3. [Flux CD con SOPS y Age](docs/bootstrap-fluxcd-sops-age.md)
 4. [Cert-Manager y Gateway con TLS](docs/cert-manager-routes.md)
 
+### 📖 Documentación adicional
+
+- [Compartición de IP en Load Balancers de Cilium](docs/cilium-lb-ipam-sharing.md)
+- [MQTT con Mosquitto](docs/mqtt.md)
+- [Renovate para actualizaciones automáticas](docs/renovate.md)
+
 ## 📂 Estructura del Repositorio
 
 ```

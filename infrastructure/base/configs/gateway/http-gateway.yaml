@@ -2,9 +2,6 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  annotations:
-    "lbipam.cilium.io/sharing-key": "internal-traffic"
-    "io.cilium/lb-ipam-sharing-key": "internal-traffic"
   name: http-gateway
   namespace: gateway
   labels:
@@ -13,7 +10,6 @@ spec:
   gatewayClassName: cilium
   infrastructure:
     annotations:
-      "lbipam.cilium.io/sharing-key": "internal-traffic"
       "io.cilium/lb-ipam-sharing-key": "internal-traffic"
     labels:
       color: blue

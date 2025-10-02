@@ -2,3 +2,8 @@
 machine:
   network:
     hostname: quark
+    kubespan:
+      enabled: true
+cluster:
+  discovery:
+    enabled: true

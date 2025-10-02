@@ -13,6 +13,8 @@ spec:
     spec:
       template:
         spec:
+          nodeSelector:
+            location: oci
           containers:
             - name: renovate
               image: renovate/renovate:latest

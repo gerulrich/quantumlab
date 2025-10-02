@@ -1,7 +1,7 @@
 ---
 machine:
   network:
-    hostname: nova
+    hostname: photon
     kubespan:
       enabled: true
 cluster:

@@ -1,9 +1,0 @@
----
-machine:
-  network:
-    hostname: photon
-    kubespan:
-      enabled: true
-cluster:
-  discovery:
-    enabled: true

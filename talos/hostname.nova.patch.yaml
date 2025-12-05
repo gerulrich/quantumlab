@@ -1,9 +1,0 @@
----
-machine:
-  network:
-    hostname: nova
-    kubespan:
-      enabled: true
-cluster:
-  discovery:
-    enabled: true

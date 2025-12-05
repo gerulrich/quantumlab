@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: helm
+  name: apps
   namespace: flux-system
 spec:
   interval: 1h
@@ -11,9 +11,14 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./infrastructure/helm
+  path: ./apps/quantum-talos
   prune: true
-  wait: true
+  dependsOn:
+    - name: infra
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
   postBuild:
     substituteFrom:
       - kind: ConfigMap

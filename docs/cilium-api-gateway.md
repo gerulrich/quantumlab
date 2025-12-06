@@ -23,7 +23,7 @@ Primero, necesitamos configurar Talos para desactivar kube-proxy y configurar el
 
 ```bash
 # Aplicar el patch a la configuración de Talos
-talosctl patch machineconfig -n $CONTROL_PLANE_IP --patch @talos/cni.patch.yaml --endpoints $CONTROL_PLANE_IP --mode=reboot
+talosctl patch machineconfig -n $CONTROL_PLANE_IP --patch @config/quantum-talos/cni.patch.yaml --endpoints $CONTROL_PLANE_IP --mode=reboot
 
 # Importante: Espera a que todos los nodos reinicien y estén en estado "Ready"
 # Puedes verificar el estado desde el dashboard de Talos
@@ -40,10 +40,10 @@ La Gateway API proporciona recursos para configurar enrutamiento, balanceo de ca
 
 ```bash
 # Instalar los CRDs de la Gateway API
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.1/standard-install.yaml
 
 # Instalar recursos experimentales (TLS Routes)
-kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.3.0/config/crd/experimental/gateway.networking.k8s.io_tlsroutes.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.4.1/config/crd/experimental/gateway.networking.k8s.io_tlsroutes.yaml
 ```
 
 > 📝 Estos comandos instalan las definiciones de recursos personalizados (CRDs) necesarias para la API Gateway.
@@ -63,7 +63,7 @@ helm repo update
 helm template \
     cilium \
     cilium/cilium \
-    --version 1.18.2 \
+    --version 1.18.4 \
     --namespace kube-system \
     --set ipam.mode=kubernetes \
     --set l2announcements.enabled=true \
@@ -84,11 +84,11 @@ helm template \
     --set gatewayAPI.enableAppProtocol=true \
     --set bgpControlPlane.enabled=true \
     --set externalIPs.enabled=true  \
-    --set devices="{eth0,net0}" \
-    --api-versions='gateway.networking.k8s.io/v1/GatewayClass' > cilium.yaml
+    --set devices="{enp1s0}" \
+    --api-versions='gateway.networking.k8s.io/v1/GatewayClass' > config/cillium/cilium.yaml
 
 # Aplicar el manifiesto generado
-kubectl apply -f cilium.yaml
+kubectl apply -f config/cillium/cilium.yaml
 ```
 
 ### Monitores el progreso de la instalación
@@ -107,7 +107,7 @@ watch -w -t -n 2 kubectl get all -A
 kubectl get daemonset kube-proxy -n kube-system 
 
 # Si existe, eliminarlo
-kubectl delete daemonset kube-proxy -n kube-system 
+kubectl delete daemonset kube-proxy -n kube-system
 ```
 
 ---
@@ -144,16 +144,16 @@ Debes crear un pool de IPs para que Cilium pueda asignarlas a los servicios:
 
 ```bash
 # Aplicar configuración del pool de IPs
-kubectl apply -f infrastructure/network/cilium/ip_pool.yaml
+kubectl apply -f config/cillium/ip_pool.yaml
 ```
 
-> ⚠️ Asegúrate de editar `infrastructure/network/cilium/ip_pool.yaml` para que las IPs correspondan a tu red y que no se solapen con las IPs usadas para DHCP.
+> ⚠️ Asegúrate de editar `config/cillium/ip_pool.yaml` para que las IPs correspondan a tu red y que no se solapen con las IPs usadas para DHCP.
 
 ### Configurar política de anuncio
 
 ```bash
 # Aplicar la política de anuncio de IPs
-kubectl apply -f infrastructure/network/cilium/advert_policy.yaml
+kubectl apply -f config/cillium/advert_policy.yaml
 ```
 
 ### Configurar compartición de IP en Load Balancers

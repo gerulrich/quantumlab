@@ -2,9 +2,9 @@
 
 ![Estado](https://img.shields.io/badge/Estado-En%20Desarrollo-yellow)
 ![Licencia](https://img.shields.io/badge/Licencia-MIT-blue)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.34.0-326CE5?logo=kubernetes&logoColor=white)
-![Talos](https://img.shields.io/badge/Talos-v1.11.1-lightgrey?logo=linux&logoColor=white)
-![FluxCD](https://img.shields.io/badge/FluxCD-v2.6.4-4353ff?logo=flux&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.32.3-326CE5?logo=kubernetes&logoColor=white)
+![Talos](https://img.shields.io/badge/Talos-v1.11.3-lightgrey?logo=linux&logoColor=white)
+![FluxCD](https://img.shields.io/badge/FluxCD-v2.7.3-4353ff?logo=flux&logoColor=white)
 
 **QuantumLab** es un proyecto de infraestructura personal para un homelab basado en Kubernetes.
 Diseñado como entorno de pruebas, aprendizaje y portfolio técnico, implementa buenas prácticas de automatización y GitOps.
@@ -79,12 +79,13 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 
 ```
 quantumlab/
-├── talos/           # Configuración de Talos Linux
-├── clusters/quantum # Manifiestos de Kubernetes y FluxCD
-├── ansible/         # Automatización de infraestructura
-├── podman/          # Stacks de servicios en Podman
-├── docs/            # Documentación técnica
-└── scripts/         # Scripts de utilidad
+├── apps/                  # Aplicaciones desplegadas en Kubernetes
+├── clusters/              # Configuración de clusters (FluxCD)
+├── config/                # Configuraciones (Talos, Cilium, Podman)
+├── docs/                  # Documentación técnica
+├── helm/                  # Charts de Helm
+├── infrastructure/        # Recursos de infraestructura K8s
+└── scripts/               # Scripts de utilidad
 ```
 
 ## 📄 Licencia

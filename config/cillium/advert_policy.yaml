@@ -15,4 +15,5 @@ spec:
   interfaces:
     - eth0
     - net0
+    - enp1s0
   loadBalancerIPs: true

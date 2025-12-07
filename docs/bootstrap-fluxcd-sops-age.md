@@ -8,7 +8,7 @@ Esta guía explica cómo inicializar y trabajar con Flux CD y SOPS.
 
 Antes de comenzar, asegúrate de tener instalado:
 
-- [`flux`](https://fluxcd.io/docs/installation/) - CLI para interactuar con Flux CD
+- [`flux`](https://github.com/fluxcd/flux2/releases) - CLI para interactuar con Flux CD
 - [`kubectl`](https://kubernetes.io/docs/tasks/tools/) - Cliente de Kubernetes
 - [`age`](https://github.com/FiloSottile/age) - Herramienta de cifrado
 - [`sops`](https://github.com/mozilla/sops) - Editor de secretos cifrados
@@ -22,22 +22,24 @@ El repositorio está organizado de la siguiente manera:
 
 ```
 quantumlab/
-├── apps/                   # Aplicaciones a desplegar
-│   ├── base/               # Configuraciones base de aplicaciones
-│   └── quantum/            # Configuraciones específicas para el entorno quantum
-├── clusters/               # Configuraciones específicas por clúster
-│   └── quantum/            # Configuración para el clúster "quantum"
-├── infrastructure/         # Recursos de infraestructura
-│   ├── base/               # Recursos base compartidos
-│   │   └── secrets/        # Secretos cifrados base
-│   └── quantum/            # Recursos específicos del entorno
-│       └── secrets/        # Secretos cifrados específicos
-├── .sops.yaml              # Configuración de cifrado SOPS
-└── scripts/
-    └── quantum-env.sh      # Script para configurar el entorno local
+├── apps/                       # Aplicaciones a desplegar
+│   ├── base/                   # Configuraciones base (mosquitto, nginx)
+│   └── quantum-talos/          # Overlays específicos del clúster
+├── clusters/                   # Configuraciones específicas por clúster
+│   ├── quantum-oci/            # Clúster en Oracle Cloud Infrastructure
+│   └── quantum-talos/          # Clúster Talos Linux (flux-system, apps.yaml, helm.yaml, infra.yaml)
+├── config/                     # Configuraciones de sistema (cilium, podman, talos)
+├── docs/                       # Documentación
+├── helm/                       # Releases de Helm (cert-manager)
+├── infrastructure/             # Recursos de infraestructura
+│   ├── base/                   # Recursos base (configs, controllers, secrets)
+│   └── quantum-talos/          # Overlays específicos del clúster
+├── scripts/                    # Scripts de utilidad (quantum-env.sh, vm-create-qemu.sh)
+├── .sops.yaml                  # Configuración de cifrado SOPS
+└── renovate.json               # Configuración de Renovate Bot
 ```
 
-En los archivos [`clusters/quantum/apps.yaml`](../clusters/quantum/apps.yaml) y [`clusters/quantum/infra.yaml`](../clusters/quantum/infra.yaml) se definen las kustomizaciones que apuntan a los directorios [`apps/quantum`](../apps/quantum) e [`infrastructure/quantum`](../infrastructure/quantum), respectivamente. Estos archivos especifican la configuración de los recursos que Flux desplegará en el clúster de Kubernetes.
+En los archivos [`clusters/quantum-talos/apps.yaml`](../clusters/quantum-talos/apps.yaml), [`clusters/quantum-talos/helm.yaml`](../clusters/quantum-talos/helm.yaml) y [`clusters/quantum-talos/infra.yaml`](../clusters/quantum-talos/infra.yaml) se definen las kustomizaciones que apuntan a los directorios [`apps/quantum-talos`](../apps/quantum-talos), [`helm`](../helm) e [`infrastructure/quantum-talos`](../infrastructure/quantum-talos), respectivamente. Estos archivos especifican la configuración de los recursos que Flux desplegará en el clúster de Kubernetes.
 
 ---
 
@@ -63,7 +65,7 @@ flux bootstrap github \
   --owner=gerulrich \
   --repository=quantumlab \
   --branch=master \
-  --path=clusters/quantum \
+  --path=clusters/quantum-talos \
   --personal
 ```
 
@@ -82,6 +84,15 @@ kubectl create secret generic sops-age \
 
 > **Seguridad**: La clave privada Age no está incluida en el repositorio por razones de seguridad.
 
+# Agregar configuracion
+TODO crear cluster-config.yaml
+
+# Reconciliar cluster
+```bash
+flux reconcile kustomization infra
+```
+
+
 ## 1.4 Validar la instalación de Flux
 
 Verifica que Flux se ha instalado correctamente:
@@ -96,6 +107,8 @@ flux get kustomizations
 # Comprobar que los controladores de Flux están en ejecución
 kubectl -n flux-system get pods
 ```
+
+
 
 ## 1.5 Verificar el descifrado de secretos
 
@@ -170,7 +183,7 @@ creation_rules:
 La configuración de Flux para utilizar SOPS se encuentra en los archivos de Kustomization:
 
 ```yaml
-# Fragmento relevante de clusters/quantum/infra.yaml
+# Fragmento relevante de clusters/quantum-talos/infra.yaml
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:

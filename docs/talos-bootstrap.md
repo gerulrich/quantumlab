@@ -44,10 +44,10 @@ Al completar la descarga, asegúrate de guardar los siguientes datos importantes
 Define las variables que utilizaremos durante todo el proceso:
 
 ```bash
-export CONTROL_PLANE_IP=192.168.0.125
-export WORKER_IP=192.168.0.230
+export CONTROL_PLANE_IP=10.10.10.194
+export WORKER_IP=10.10.10.173
 export SCHEMATIC_ID=00514c155d2b32b2fa9b316b130735ef2a9f8f0f7a24e328b12d8a990b550a49
-export TALOS_IMAGE=factory.talos.dev/installer/${SCHEMATIC_ID}:v1.11.1
+export TALOS_IMAGE=factory.talos.dev/installer/${SCHEMATIC_ID}:v1.11.3
 export DISK=/dev/vda
 ```
 
@@ -56,7 +56,7 @@ export DISK=/dev/vda
 Si no registraste el Schematic ID, puedes obtenerlo con:
 
 ```bash
-curl -X POST --data-binary @talos/customizations.yaml https://factory.talos.dev/schematics
+curl -X POST --data-binary @config/quantum-talos/customizations.yaml https://factory.talos.dev/schematics
 ```
 
 ### Identificar la unidad de disco para la instalación
@@ -76,12 +76,12 @@ Genera los archivos YAML necesarios para configurar todos los nodos del clúster
 
 ```bash
 talosctl gen config quantum https://$CONTROL_PLANE_IP:6443 \
-    --output-dir talos \
+    --output-dir config/quantum-talos \
     --install-image $TALOS_IMAGE \
     --install-disk $DISK
 ```
 
-> 📝 Este comando crea varios archivos en el directorio `talos/`, incluyendo controlplane.yaml, worker.yaml y talosconfig.
+> 📝 Este comando crea varios archivos en el directorio `config/quantum-talos/`, incluyendo controlplane.yaml, worker.yaml y talosconfig.
 
 ---
 
@@ -92,18 +92,18 @@ talosctl gen config quantum https://$CONTROL_PLANE_IP:6443 \
 #### Configurar nodo Control Plane (Local)
 
 ```bash
-talosctl apply-config --insecure --file talos/controlplane.yaml \
+talosctl apply-config --insecure --file config/quantum-talos/controlplane.yaml \
     --nodes $CONTROL_PLANE_IP \
-    --config-patch @talos/hostname.nova.patch.yaml
+    --config-patch @config/quantum-talos/hostname.nova.patch.yaml
 ```
 
 #### Configurar Workers Locales
 
 ```bash
 # Worker local: quark
-talosctl apply-config --insecure --file talos/worker.yaml \
+talosctl apply-config --insecure --file config/quantum-talos/worker.yaml \
     --nodes $WORKER_IP \
-    --config-patch @talos/hostname.quark.patch.yaml
+    --config-patch @config/quantum-talos/hostname.quark.patch.yaml
 ```
 
 ---
@@ -113,7 +113,7 @@ talosctl apply-config --insecure --file talos/worker.yaml \
 ### Configurar cliente talosctl
 
 ```bash
-export TALOSCONFIG="talos/talosconfig"
+export TALOSCONFIG="$PWD/config/quantum-talos/talosconfig"
 talosctl config endpoint $CONTROL_PLANE_IP
 talosctl config node $CONTROL_PLANE_IP
 ```

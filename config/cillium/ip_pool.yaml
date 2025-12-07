@@ -5,8 +5,8 @@ metadata:
   name: "blue-pool"
 spec:
   blocks:
-  - start: "192.168.0.20"
-    stop: "192.168.0.99"
+  - start: "10.10.10.50"
+    stop: "10.10.10.99"
   serviceSelector:
     matchLabels:
       color: blue

@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps
+  name: infra
   namespace: flux-system
 spec:
   interval: 1h
@@ -11,8 +11,11 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./apps/k8s-quantum
+  path: ./infrastructure/quantum-talos
   prune: true
+  dependsOn:
+    - name: helm
+  wait: true
   decryption:
     provider: sops
     secretRef:

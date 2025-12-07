@@ -1,9 +1,0 @@
----
-machine:
-  network:
-    hostname: vortex
-    kubespan:
-      enabled: true
-cluster:
-  discovery:
-    enabled: true

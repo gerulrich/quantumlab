@@ -14,6 +14,6 @@ data:
         proxy_http_version 1.1;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_buffering off;
-        proxy_pass http://192.168.0.10/;
+        proxy_pass http://10.10.10.10/;
       }
     }

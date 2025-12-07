@@ -121,17 +121,21 @@ Es importante comprobar que Cilium está funcionando correctamente antes de cont
 cilium connectivity test
 ```
 
-> ⚠️ Si la prueba se queda en estado "Waiting", ejecuta el siguiente comando desde otra terminal:
+> ⚠️ Si la prueba se queda en estado "Waiting", ejecuta los siguientes comando desde otra terminal:
 
 ```bash
 kubectl label namespace cilium-test-1 pod-security.kubernetes.io/enforce=privileged
+kubectl label namespace cilium-test-ccnp1 pod-security.kubernetes.io/enforce=privileged
+kubectl label namespace cilium-test-ccnp2 pod-security.kubernetes.io/enforce=privileged
 ```
 
 Una vez completada la prueba, limpia los recursos creados:
 
 ```bash
-# Eliminar namespace de prueba
+# Eliminar namespaces de prueba
 kubectl delete namespace cilium-test-1
+kubectl delete namespace cilium-test-ccnp1
+kubectl delete namespace cilium-test-ccnp2
 ```
 
 ---

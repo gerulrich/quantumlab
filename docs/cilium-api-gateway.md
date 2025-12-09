@@ -85,7 +85,7 @@ helm template \
     --set bgpControlPlane.enabled=true \
     --set externalIPs.enabled=true  \
     --set devices="{enp1s0}" \
-    --api-versions='gateway.networking.k8s.io/v1/GatewayClass' > config/cillium/cilium.yaml
+    --api-versions='gateway.networking.k8s.io/v1/GatewayClass' > config/cilium/cilium.yaml
 
 # Aplicar el manifiesto generado
 kubectl apply -f config/cillium/cilium.yaml
@@ -148,7 +148,7 @@ Debes crear un pool de IPs para que Cilium pueda asignarlas a los servicios:
 
 ```bash
 # Aplicar configuración del pool de IPs
-kubectl apply -f config/cillium/ip_pool.yaml
+kubectl apply -f config/cilium/ip_pool.yaml
 ```
 
 > ⚠️ Asegúrate de editar `config/cillium/ip_pool.yaml` para que las IPs correspondan a tu red y que no se solapen con las IPs usadas para DHCP.
@@ -157,7 +157,7 @@ kubectl apply -f config/cillium/ip_pool.yaml
 
 ```bash
 # Aplicar la política de anuncio de IPs
-kubectl apply -f config/cillium/advert_policy.yaml
+kubectl apply -f config/cilium/advert_policy.yaml
 ```
 
 ### Configurar compartición de IP en Load Balancers

@@ -4,7 +4,7 @@ config/quantum-talos/controlplane.yaml
 config/quantum-talos/cluster-config.yaml
 config/quantum-talos/cluster-secrets.yaml
 
-config/cillium/cillium.yaml
+config/cilium/cillium.yaml
 **/talosconfig
 **/kubeconfig
 

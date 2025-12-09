@@ -85,7 +85,9 @@ kubectl create secret generic sops-age \
 > **Seguridad**: La clave privada Age no está incluida en el repositorio por razones de seguridad.
 
 # Agregar configuracion
-TODO crear cluster-config.yaml
+````bash
+kubectl apply -f config/quantum-talos/cluster-config.yaml
+````
 
 # Reconciliar cluster
 ```bash

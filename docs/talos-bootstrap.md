@@ -44,8 +44,6 @@ Al completar la descarga, asegúrate de guardar los siguientes datos importantes
 Define las variables que utilizaremos durante todo el proceso:
 
 ```bash
-export CONTROL_PLANE_IP=10.10.10.194
-export WORKER_IP=10.10.10.173
 export SCHEMATIC_ID=00514c155d2b32b2fa9b316b130735ef2a9f8f0f7a24e328b12d8a990b550a49
 export TALOS_IMAGE=factory.talos.dev/installer/${SCHEMATIC_ID}:v1.11.3
 export DISK=/dev/vda

@@ -4,7 +4,11 @@ creation_rules:
     encrypted_regex: "^(data|stringData)$"
     age: >-
       age1fjw3xzg4xdtqhww82knn78zwwrye3larq42qrdvnrvztcnpf94hsv899fc
-  - path_regex: apps/.*/secrets.*.yaml$
+  - path_regex: apps/.*/secrets.*\.yaml$
+    encrypted_regex: "^(data|stringData)$"
+    age: >-
+      age1fjw3xzg4xdtqhww82knn78zwwrye3larq42qrdvnrvztcnpf94hsv899fc
+  - path_regex: helm/.*/secret.*\.yaml$
     encrypted_regex: "^(data|stringData)$"
     age: >-
       age1fjw3xzg4xdtqhww82knn78zwwrye3larq42qrdvnrvztcnpf94hsv899fc

@@ -29,3 +29,4 @@ ignore: |
   infrastructure/*/secrets/*.yaml
   clusters/*/flux-system/*.yaml
   apps/.*/secrets.*.yaml
+  helm/*/secret*.yaml

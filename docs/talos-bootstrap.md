@@ -171,9 +171,10 @@ Para futuras operaciones de mantenimiento, estos comandos serán útiles:
 ```bash
 # Actualizar la configuración de Talos
 talosctl upgrade --nodes $CONTROL_PLANE_IP --image $TALOS_IMAGE
+talosctl reboot --mode powercycle -n $CONTROL_PLANE_IP
 
-# Reiniciar un nodo si es necesario
-talosctl reboot --nodes $NODE_IP
+talosctl upgrade --nodes $WORKER_IP --image $TALOS_IMAGE
+talosctl reboot --mode powercycle -n $WORKER_IP
 
 # Verificar la versión actual de Talos y Kubernetes
 talosctl version

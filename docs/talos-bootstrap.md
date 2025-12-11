@@ -44,8 +44,8 @@ Al completar la descarga, asegúrate de guardar los siguientes datos importantes
 Define las variables que utilizaremos durante todo el proceso:
 
 ```bash
-export SCHEMATIC_ID=00514c155d2b32b2fa9b316b130735ef2a9f8f0f7a24e328b12d8a990b550a49
-export TALOS_IMAGE=factory.talos.dev/installer/${SCHEMATIC_ID}:v1.11.3
+export SCHEMATIC_ID=ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515
+export TALOS_IMAGE=factory.talos.dev/installer/${SCHEMATIC_ID}:v1.11.5
 export DISK=/dev/vda
 ```
 
@@ -170,10 +170,11 @@ Para futuras operaciones de mantenimiento, estos comandos serán útiles:
 
 ```bash
 # Actualizar la configuración de Talos
-talosctl upgrade --nodes $NODE_IP --image $NEW_TALOS_VERSION
+talosctl upgrade --nodes $CONTROL_PLANE_IP --image $TALOS_IMAGE
+talosctl reboot --mode powercycle -n $CONTROL_PLANE_IP
 
-# Reiniciar un nodo si es necesario
-talosctl reboot --nodes $NODE_IP
+talosctl upgrade --nodes $WORKER_IP --image $TALOS_IMAGE
+talosctl reboot --mode powercycle -n $WORKER_IP
 
 # Verificar la versión actual de Talos y Kubernetes
 talosctl version

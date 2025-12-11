@@ -2,8 +2,4 @@
 customization:
   systemExtensions:
     officialExtensions:
-      - siderolabs/cloudflared
-      - siderolabs/crun
-      - siderolabs/iscsi-tools
       - siderolabs/qemu-guest-agent
-      - siderolabs/tailscale

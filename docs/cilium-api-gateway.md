@@ -88,7 +88,7 @@ helm template \
     --api-versions='gateway.networking.k8s.io/v1/GatewayClass' > config/cilium/cilium.yaml
 
 # Aplicar el manifiesto generado
-kubectl apply -f config/cillium/cilium.yaml
+kubectl apply -f config/cilium/cilium.yaml
 ```
 
 ### Monitores el progreso de la instalación
@@ -151,7 +151,7 @@ Debes crear un pool de IPs para que Cilium pueda asignarlas a los servicios:
 kubectl apply -f config/cilium/ip_pool.yaml
 ```
 
-> ⚠️ Asegúrate de editar `config/cillium/ip_pool.yaml` para que las IPs correspondan a tu red y que no se solapen con las IPs usadas para DHCP.
+> ⚠️ Asegúrate de editar `config/cilium/ip_pool.yaml` para que las IPs correspondan a tu red y que no se solapen con las IPs usadas para DHCP.
 
 ### Configurar política de anuncio
 

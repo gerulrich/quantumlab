@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: n8n
+  name: n8n
+  labels:
+    app: n8n
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: n8n
+  template:
+    metadata:
+      labels:
+        app: n8n
+    spec:
+      containers:
+      - name: n8n
+        image: n8nio/n8n:2.0.1
+        ports:
+        - containerPort: 5678
+          name: http
+        env:
+        - name: TZ
+          value: America/Argentina/Buenos_Aires
+        - name: N8N_PORT
+          value: "5678"
+        - name: N8N_PROTOCOL
+          value: http
+        - name: WEBHOOK_URL
+          value: https://ia.lan.${DOMAIN}
+        - name: GENERIC_TIMEZONE
+          value: America/Argentina/Buenos_Aires
+        volumeMounts:
+        - name: n8n-data
+          mountPath: /home/node/.n8n
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      volumes:
+      - name: n8n-data
+        persistentVolumeClaim:
+          claimName: n8n-data

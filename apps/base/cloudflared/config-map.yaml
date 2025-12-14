@@ -13,4 +13,6 @@ data:
     ingress:
     - hostname: ng.${DOMAIN}
       service: http://nginx.nginx.svc.cluster.local:80
+    - hostname: photos.${DOMAIN}
+      service: http://photoprism.photoprism.svc.cluster.local:2342
     - service: http_status:404

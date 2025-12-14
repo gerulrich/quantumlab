@@ -1,0 +1,95 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: photoprism
+  name: photoprism
+  labels:
+    app: photoprism
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: photoprism
+  template:
+    metadata:
+      labels:
+        app: photoprism
+    spec:
+      containers:
+      - name: photoprism
+        image: photoprism/photoprism:latest
+        ports:
+        - containerPort: 2342
+          name: http
+        env:
+        - name: PHOTOPRISM_ADMIN_USER
+          value: admin
+        - name: PHOTOPRISM_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: photoprism-credentials
+              key: admin-password
+        - name: PHOTOPRISM_ORIGINALS_LIMIT
+          value: "5000"
+        - name: PHOTOPRISM_HTTP_PORT
+          value: "2342"
+        - name: PHOTOPRISM_HTTP_COMPRESSION
+          value: "gzip"
+        - name: PHOTOPRISM_DATABASE_DRIVER
+          value: sqlite
+        - name: PHOTOPRISM_SITE_URL
+          value: https://photos.lan.${DOMAIN}/
+        - name: PHOTOPRISM_DISABLE_TLS
+          value: "true"
+        - name: PHOTOPRISM_DEFAULT_TLS
+          value: "false"
+        - name: PHOTOPRISM_DISABLE_CHOWN
+          value: "false"
+        - name: PHOTOPRISM_DISABLE_BACKUPS
+          value: "false"
+        - name: PHOTOPRISM_DISABLE_WEBDAV
+          value: "false"
+        - name: PHOTOPRISM_DISABLE_SETTINGS
+          value: "false"
+        - name: PHOTOPRISM_DISABLE_TENSORFLOW
+          value: "false"
+        - name: PHOTOPRISM_DISABLE_FACES
+          value: "false"
+        - name: PHOTOPRISM_DISABLE_CLASSIFICATION
+          value: "false"
+        - name: PHOTOPRISM_DARKTABLE_PRESETS
+          value: "false"
+        - name: PHOTOPRISM_DETECT_NSFW
+          value: "false"
+        - name: PHOTOPRISM_UPLOAD_NSFW
+          value: "true"
+        - name: PHOTOPRISM_DEBUG
+          value: "false"
+        - name: PHOTOPRISM_READONLY
+          value: "false"
+        - name: PHOTOPRISM_EXPERIMENTAL
+          value: "false"
+        - name: TZ
+          value: America/Argentina/Buenos_Aires
+        volumeMounts:
+        - name: photoprism-storage
+          mountPath: /photoprism/storage
+        - name: photoprism-originals
+          mountPath: /photoprism/originals
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "500m"
+          limits:
+            memory: "200Gi"
+            cpu: "1000m"
+        securityContext:
+          privileged: false
+      volumes:
+      - name: photoprism-storage
+        persistentVolumeClaim:
+          claimName: photoprism-storage
+      - name: photoprism-originals
+        persistentVolumeClaim:
+          claimName: photoprism-originals

@@ -15,7 +15,7 @@ spec:
         spec:
           containers:
             - name: renovate
-              image: renovate/renovate:42.52.3
+              image: renovate/renovate:42.52.6
               args:
                 - gerulrich/quantumlab
               envFrom:

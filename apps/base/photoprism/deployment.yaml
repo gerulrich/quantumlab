@@ -82,8 +82,8 @@ spec:
             memory: "100Mi"
             cpu: "500m"
           limits:
-            memory: "200Gi"
-            cpu: "1000m"
+            memory: "200Mi"
+            cpu: "500m"
         securityContext:
           privileged: false
       volumes:

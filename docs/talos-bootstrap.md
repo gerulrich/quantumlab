@@ -44,8 +44,8 @@ Al completar la descarga, asegúrate de guardar los siguientes datos importantes
 Define las variables que utilizaremos durante todo el proceso:
 
 ```bash
-export SCHEMATIC_ID=ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515
-export TALOS_IMAGE=factory.talos.dev/installer/${SCHEMATIC_ID}:v1.11.5
+export SCHEMATIC_ID=a2e824fa8b6d72b70f9076cebd483a76cd56a07a0a81372611a8ed6fe3b6b95e
+export TALOS_IMAGE=factory.talos.dev/installer/${SCHEMATIC_ID}:v1.11.6
 export DISK=/dev/vda
 ```
 
@@ -179,6 +179,18 @@ talosctl reboot --mode powercycle -n $WORKER_IP
 # Verificar la versión actual de Talos y Kubernetes
 talosctl version
 kubectl version
+```
+
+### Actualizar la versión de Kubernetes
+
+Para actualizar Kubernetes a una nueva versión, primero ejecuta una simulación para validar el proceso:
+
+```bash
+# Validar la actualización sin aplicar cambios (dry-run)
+talosctl --nodes $CONTROL_PLANE_IP -e $CONTROL_PLANE_IP upgrade-k8s --to 1.34.2 --dry-run
+
+# Aplicar la actualización de Kubernetes
+talosctl --nodes $CONTROL_PLANE_IP -e $CONTROL_PLANE_IP upgrade-k8s --to 1.34.2
 ```
 
 Para más información, consulta la [documentación oficial de Talos Linux](https://www.talos.dev/).

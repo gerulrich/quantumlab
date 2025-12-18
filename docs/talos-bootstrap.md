@@ -45,7 +45,7 @@ Define las variables que utilizaremos durante todo el proceso:
 
 ```bash
 export SCHEMATIC_ID=a2e824fa8b6d72b70f9076cebd483a76cd56a07a0a81372611a8ed6fe3b6b95e
-export TALOS_IMAGE=factory.talos.dev/installer/${SCHEMATIC_ID}:v1.11.6
+export TALOS_IMAGE=factory.talos.dev/installer/${SCHEMATIC_ID}:v${TALOS_VERSION}
 export DISK=/dev/vda
 ```
 

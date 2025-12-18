@@ -15,24 +15,9 @@ Antes de comenzar, asegúrate de tener instaladas las siguientes herramientas de
 
 ---
 
-## 0️⃣ Descarga de la imagen ISO
+## 0️⃣ Configuración del entorno
 
-### Descargar la imagen de Talos
-
-Antes de crear las VMs, descarga la imagen ISO de Talos Linux desde Factory:
-
-```bash
-# Descargar imagen Talos v1.11.6 para arquitectura ARM64
-wget -O talosv1.11.6.iso 'https://factory.talos.dev/image/a2e824fa8b6d72b70f9076cebd483a76cd56a07a0a81372611a8ed6fe3b6b95e/v1.11.6/nocloud-arm64.iso'
-```
-
-> **Nota**: Guarda la imagen en el directorio `$HOME/qemu/images/` o ajusta la ruta en los comandos de creación de VMs.
-
----
-
-## 1️⃣ Configuración del entorno
-
-### 1.1 Configurar variables de entorno
+### Configurar variables de entorno
 
 El script `quantum-env.sh` contiene las configuraciones necesarias para el entorno local:
 
@@ -41,6 +26,22 @@ source scripts/quantum-env.sh
 ```
 
 > **Nota**: Edita este archivo para configurar IPs, direcciones MAC y otros parámetros específicos de tu entorno.
+
+---
+
+## 1️⃣ Descarga de la imagen ISO
+
+### Descargar la imagen de Talos
+
+Descarga la imagen ISO de Talos Linux desde Factory:
+
+```bash
+# Descargar imagen Talos desde Factory
+wget -O $HOME/qemu/images/talos-v${TALOS_VERSION}.iso \
+  "https://factory.talos.dev/image/${SCHEMATIC_ID}/v${TALOS_VERSION}/nocloud-arm64.iso"
+```
+
+> **Nota**: El Schematic ID y la versión de Talos están definidos en el archivo `quantum-env.sh`. La imagen se guarda como `talos-v${TALOS_VERSION}-nocloud-arm64.iso` en `$HOME/qemu/images/`.
 
 ---
 
@@ -53,31 +54,31 @@ El script `vm-create-qemu.sh` facilita la creación de VMs. Los parámetros obli
 - **`-i|--image`**: Ruta a la imagen base
 - **`-t|--target-dir`**: Directorio donde se almacenará la VM
 
-### 2.2 Crear nodo master de Talos
+### 2.2 Crear nodo Control Plane (nova)
 
 ```bash
 sh scripts/vm-create-qemu.sh \
-  -n talos-test-m \
+  -n nova \
   -c 2 \
   -m 2048 \
   --net bridge \
   --bridge br0 \
   --mac "$CONTROL_PLANE_MAC" \
-  -i $HOME/qemu/images/talosv1.11.6.iso \
+  -i $HOME/qemu/images/talos-v${TALOS_VERSION}.iso \
   -t $HOME/qemu/vm
 ```
 
-### 2.3 Crear nodo worker de Talos
+### 2.3 Crear nodo Worker (quark)
 
 ```bash
 sh scripts/vm-create-qemu.sh \
-  -n talos-test-w \
+  -n quark \
   -c 2 \
   -m 2048 \
   --net bridge \
   --bridge br0 \
   --mac "$WORKER_MAC" \
-  -i $HOME/qemu/images/talosv1.11.6.iso \
+  -i $HOME/qemu/images/talos-v${TALOS_VERSION}.iso \
   -t $HOME/qemu/vm
 ```
 
@@ -106,29 +107,20 @@ data:
 
 ## 4️⃣ Instalación de herramientas CLI
 
-### 4.1 Descargar Cilium CLI
+### Descargar todas las herramientas necesarias
+
+Ejecuta el script de descarga para instalar todas las herramientas CLI necesarias:
 
 ```bash
-sh scripts/download-cilium.sh
+# Descargar e instalar Cilium, Flux, Helm y kubectl
+sh scripts/download-tools.sh
 ```
 
-### 4.2 Instalar kubectl
+Este script descarga e instala automáticamente:
+- **Cilium CLI** - Administración del CNI Cilium
+- **Flux CLI** - GitOps con FluxCD
+- **Helm** - Gestor de paquetes de Kubernetes
+- **kubectl** - CLI de Kubernetes
 
-```bash
-sh scripts/download-kubectl.sh
-```
-
-### 4.3 Instalar Flux CLI
-
-```bash
-sh scripts/download-flux.sh
-```
-
-### 4.4 Instalar Helm
-
-```bash
-sh scripts/download-helm.sh
-```
-
-> **Nota**: Todas las herramientas se instalan en `$PWD/bin` que está incluido en el `PATH` al hacer `source scripts/quantum-env.sh`.
+> **Nota**: Todas las herramientas se instalan en `$PWD/bin`, que está incluido en el `PATH` al hacer `source scripts/quantum-env.sh`.
 

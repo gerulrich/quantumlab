@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: photoprism
-        image: photoprism/photoprism:latest
+        image: photoprism/photoprism:251130
         ports:
         - containerPort: 2342
           name: http

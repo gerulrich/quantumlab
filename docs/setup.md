@@ -6,13 +6,27 @@ Esta guía describe los pasos para configurar el entorno de laboratorio Kubernet
 
 ## 📦 Requisitos previos
 
-Antes de comenzar, asegúrate de tener instalado:
+Antes de comenzar, asegúrate de tener instaladas las siguientes herramientas de virtualización:
 
 - [`qemu-kvm`](https://www.qemu.org/) - Virtualización con QEMU/KVM
 - [`virt-install`](https://linux.die.net/man/1/virt-install) - Herramienta para crear VMs
 - [`libvirt`](https://libvirt.org/) - API de virtualización
 - [`genisoimage`](https://linux.die.net/man/1/genisoimage) - Creación de imágenes ISO
-- Imagen base para las VMs (ej: Talos Linux, Ubuntu Cloud)
+
+---
+
+## 0️⃣ Descarga de la imagen ISO
+
+### Descargar la imagen de Talos
+
+Antes de crear las VMs, descarga la imagen ISO de Talos Linux desde Factory:
+
+```bash
+# Descargar imagen Talos v1.11.6 para arquitectura ARM64
+wget -O talosv1.11.6.iso 'https://factory.talos.dev/image/a2e824fa8b6d72b70f9076cebd483a76cd56a07a0a81372611a8ed6fe3b6b95e/v1.11.6/nocloud-arm64.iso'
+```
+
+> **Nota**: Guarda la imagen en el directorio `$HOME/qemu/images/` o ajusta la ruta en los comandos de creación de VMs.
 
 ---
 
@@ -49,7 +63,7 @@ sh scripts/vm-create-qemu.sh \
   --net bridge \
   --bridge br0 \
   --mac "$CONTROL_PLANE_MAC" \
-  -i $HOME/qemu/images/nocloud-arm64.iso \
+  -i $HOME/qemu/images/talosv1.11.6.iso \
   -t $HOME/qemu/vm
 ```
 
@@ -63,7 +77,7 @@ sh scripts/vm-create-qemu.sh \
   --net bridge \
   --bridge br0 \
   --mac "$WORKER_MAC" \
-  -i $HOME/qemu/images/nocloud-arm64.iso \
+  -i $HOME/qemu/images/talosv1.11.6.iso \
   -t $HOME/qemu/vm
 ```
 

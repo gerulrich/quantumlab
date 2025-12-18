@@ -2,4 +2,6 @@
 customization:
   systemExtensions:
     officialExtensions:
-      - siderolabs/qemu-guest-agent
+       - siderolabs/crun
+       - siderolabs/iscsi-tools
+       - siderolabs/qemu-guest-agent

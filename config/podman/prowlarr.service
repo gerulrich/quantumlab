@@ -1,5 +1,5 @@
 [Unit]
-Description=transmission in a container
+Description=prowlarr in a container
 Documentation=man:podman-generate-systemd(1)
 Wants=network-online.target
 After=network-online.target
@@ -8,24 +8,21 @@ RequiresMountsFor=%t/containers
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n TZ=America/Argentina/Buenos_Aires
 Restart=on-failure
-TimeoutStopSec=70
-ExecStart=/usr/local/bin/podman run --name=transmission \
+RestartSec=30
+TimeoutStopSec=10
+ExecStart=/usr/local/bin/podman run --name=prowlarr \
   --cidfile=%t/%n.ctr-id \
   --cgroups=no-conmon \
   --sdnotify=conmon \
   --replace \
   --detach \
   --network slirp4netns \
-  --publish=9091:9091 \
-  --publish=51413:51413 \
-  --publish=51413:51413/udp \
+  --publish=9696:9696 \
   --label="io.containers.autoupdate=registry" \
-  --volume=/home/{{ user }}/hassio/transmission:/config \
+  --volume=/home/{{ user }}/hassio/prowlarr/config:/config \
   --volume=/home/{{ user }}/media:/data \
-  --volume=/home/{{ user }}/bin/torrent-download-finished.sh:/bin/torrent-download-finished.sh \
-  --volume=/home/{{ user }}/hassio/transmission/10-cleanup:/custom-cont-init.d/10-cleanup:ro \
   -e PUID=0 -e PGID=0 \
-  lscr.io/linuxserver/transmission:4.0.5
+  lscr.io/linuxserver/prowlarr:latest
 ExecStop=/usr/local/bin/podman stop --ignore -t 10 --cidfile=%t/%n.ctr-id
 ExecStopPost=/usr/local/bin/podman rm -f --ignore -t 10 --cidfile=%t/%n.ctr-id
 Type=notify

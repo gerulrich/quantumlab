@@ -1,0 +1,47 @@
+[Unit]
+Description=fpp in a container
+Documentation=man:podman-generate-systemd(1)
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=%t/containers
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n TZ=America/Argentina/Buenos_Aires
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=10
+ExecStart=/usr/local/bin/podman run --name falcon-fpp \
+  --cidfile=%t/%n.ctr-id \
+  --cgroups=no-conmon \
+  --sdnotify=conmon \
+  --replace \
+  --detach \
+  --group-add keep-groups \
+  --cap-add SYS_PTRACE \
+  --cap-add SYS_NICE \
+  --tmpfs /run \
+  --tmpfs /run/php \
+  --network slirp4netns \
+  --publish=9980:80/tcp \
+  --publish=4048:4048/udp \
+  --publish=5568:5568/udp \
+  --publish=32320:32320/udp \
+  --label="io.containers.autoupdate=registry" \
+  --volume=/home/{{ user }}/hassio/fpp:/home/fpp/media:Z \
+  --device /dev/snd/controlC0 \
+  --device /dev/snd/pcmC0D0p \
+  --device /dev/snd/seq \
+  --device /dev/snd/timer \
+  --device /dev/i2c-0:/dev/i2c-0 \
+  --device /dev/i2c-1:/dev/i2c-1 \
+  --device /dev/i2c-2:/dev/i2c-2 \
+  -e FPP_DOCKER_IP=10.10.10.10 \
+  -e PUID=0 -e PGID=0 \
+  docker.io/falconchristmas/fpp:latest
+ExecStop=/usr/local/bin/podman stop --ignore -t 10 --cidfile=%t/%n.ctr-id
+ExecStopPost=/usr/local/bin/podman rm -f --ignore -t 10 --cidfile=%t/%n.ctr-id
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=default.target

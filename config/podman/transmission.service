@@ -8,25 +8,23 @@ RequiresMountsFor=%t/containers
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n TZ=America/Argentina/Buenos_Aires
 Restart=on-failure
-RestartSec=30
-TimeoutStopSec=10
+TimeoutStopSec=70
 ExecStart=/usr/local/bin/podman run --name=transmission \
   --cidfile=%t/%n.ctr-id \
   --cgroups=no-conmon \
   --sdnotify=conmon \
   --replace \
   --detach \
-  --network=slirp4netns:allow_host_loopback=true \
+  --network slirp4netns \
   --publish=9091:9091 \
   --publish=51413:51413 \
   --publish=51413:51413/udp \
   --label="io.containers.autoupdate=registry" \
-  --env=PUID=0 \
-  --env=PGID=0 \
-  --volume=/home/{{ user }}/hassio/transmission:/config:Z \
-  --volume=/home/{{ user }}/media:/downloads:Z \
-  --volume=/home/{{ user }}/bin/torrent-download-finished.sh:/bin/torrent-download-finished.sh:ro \
+  --volume=/home/{{ user }}/hassio/transmission:/config \
+  --volume=/home/{{ user }}/media:/data \
+  --volume=/home/{{ user }}/bin/torrent-download-finished.sh:/bin/torrent-download-finished.sh \
   --volume=/home/{{ user }}/hassio/transmission/10-cleanup:/custom-cont-init.d/10-cleanup:ro \
+  -e PUID=0 -e PGID=0 \
   lscr.io/linuxserver/transmission:4.0.5
 ExecStop=/usr/local/bin/podman stop --ignore -t 10 --cidfile=%t/%n.ctr-id
 ExecStopPost=/usr/local/bin/podman rm -f --ignore -t 10 --cidfile=%t/%n.ctr-id

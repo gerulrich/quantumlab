@@ -1,10 +1,11 @@
 # set up environment variables talosctl and kubectl
 
 # Versions
-export TALOS_VERSION="1.11.6"
-export KUBERNETES_VERSION="1.34.2"
-export FLUX_VERSION="0.38.3"
-export CILIUM_VERSION="1.14.1"
+export TALOS_VERSION="1.12.4"
+export KUBERNETES_VERSION="1.35.2"
+export FLUX_VERSION="2.8.1"
+export CILIUM_VERSION="v1.19.1"
+export SCHEMATIC_ID=a2e824fa8b6d72b70f9076cebd483a76cd56a07a0a81372611a8ed6fe3b6b95e
 
 # Cluster configuration
 export CONTROL_PLANE_IP=10.10.10.194

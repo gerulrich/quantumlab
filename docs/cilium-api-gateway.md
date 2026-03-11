@@ -6,16 +6,7 @@ Esta guía detalla los pasos necesarios para instalar Cilium como CNI y habilita
 
 ---
 
-## 1. 🗂 Requisitos previos
-
-Asegúrate de tener las siguientes herramientas y componentes instalados antes de comenzar:
-
-- [`helm`](https://helm.sh/docs/intro/install/) - Gestor de paquetes para Kubernetes
-- [`cilium`](https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/) - CLI de Cilium (opcional, para diagnósticos)
-
----
-
-## 2. 🔄 Preparar el clúster para Cilium
+## 1. 🔄 Preparar el clúster para Cilium
 
 ### Aplicar patch CNI en Talos
 
@@ -34,7 +25,7 @@ talosctl dashboard --nodes $CONTROL_PLANE_IP
 
 ---
 
-## 3. 🧾 Instalar Gateway API
+## 2. 🧾 Instalar Gateway API
 
 La Gateway API proporciona recursos para configurar enrutamiento, balanceo de carga y más. Esta es una dependencia de Cilium API Gateway:
 
@@ -50,7 +41,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v
 
 ---
 
-## 4. 🧩 Instalar Cilium con API Gateway
+## 3. 🧩 Instalar Cilium con API Gateway
 
 Instalamos Cilium utilizando Helm para generar el manifiesto y luego lo aplicamos:
 
@@ -63,7 +54,7 @@ helm repo update
 helm template \
     cilium \
     cilium/cilium \
-    --version 1.18.4 \
+    --version $CILIUM_VERSION \
     --namespace kube-system \
     --set ipam.mode=kubernetes \
     --set l2announcements.enabled=true \
@@ -112,7 +103,7 @@ kubectl delete daemonset kube-proxy -n kube-system
 
 ---
 
-## 5. ✅ Verificar la instalación de Cilium
+## 4. ✅ Verificar la instalación de Cilium
 
 Es importante comprobar que Cilium está funcionando correctamente antes de continuar:
 
@@ -140,7 +131,7 @@ kubectl delete namespace cilium-test-ccnp2
 
 ---
 
-## 6. 🌐 Configurar recursos de red
+## 5. 🌐 Configurar recursos de red
 
 ### Configurar Pool de IPs
 
@@ -216,7 +207,7 @@ Esto permite que el tráfico web llegue a la misma IP y Cilium enrute automátic
 
 ---
 
-## 7. 🔎 Verificación y resolución de problemas
+## 6. 🔎 Verificación y resolución de problemas
 
 Para verificar el estado de Cilium y solucionar posibles problemas:
 
@@ -243,7 +234,7 @@ kubectl get svc -n kube-system -l io.cilium/gateway-owning-gateway -o yaml | gre
 
 ---
 
-## 8. 🛠 Mantenimiento y operaciones comunes
+## 7. 🛠 Mantenimiento y operaciones comunes
 
 Estos comandos te serán útiles para el mantenimiento diario:
 

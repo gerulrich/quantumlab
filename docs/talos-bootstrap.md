@@ -13,15 +13,6 @@ Este diseño híbrido permite aprovechar tanto los recursos locales como la capa
 
 ---
 
-### Requisitos previos
-
-Asegúrate de tener las siguientes herramientas instaladas en tu máquina local antes de comenzar:
-
-- [`talosctl`](https://www.talos.dev/latest/introduction/getting-started/installation/) - CLI para administrar nodos Talos
-- [`kubectl`](https://kubernetes.io/docs/tasks/tools/) - CLI para interactuar con Kubernetes
-
----
-
 ## 1. 🧰 Preparación inicial
 
 ### Descargar la imagen de Talos
@@ -44,7 +35,6 @@ Al completar la descarga, asegúrate de guardar los siguientes datos importantes
 Define las variables que utilizaremos durante todo el proceso:
 
 ```bash
-export SCHEMATIC_ID=a2e824fa8b6d72b70f9076cebd483a76cd56a07a0a81372611a8ed6fe3b6b95e
 export TALOS_IMAGE=factory.talos.dev/installer/${SCHEMATIC_ID}:v${TALOS_VERSION}
 export DISK=/dev/vda
 ```
@@ -66,6 +56,11 @@ talosctl get disks --insecure --nodes $CONTROL_PLANE_IP
 # Confirma que DISK=/dev/vda sea correcto para tu entorno
 ```
 
+### Identificar los dispositivos de red:
+
+```bash
+talosctl get links  --insecure --nodes $CONTROL_PLANE_IP
+```
 ---
 
 ## 3. 📦 Generar archivos de configuración

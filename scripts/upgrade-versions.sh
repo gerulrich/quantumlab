@@ -3,6 +3,7 @@
 # Update versions in quantum-env.sh
 ENV_FILE="scripts/quantum-env.sh"
 README_FILE="README.md"
+API_GATEWAY_DOC="docs/cilium-api-gateway.md"
 
 # Get latest Talos version
 TALOS_VERSION=$(curl -s https://api.github.com/repos/siderolabs/talos/releases/latest | jq -r .tag_name | sed 's/^v//')
@@ -23,13 +24,22 @@ sed -i.bak "s/export FLUX_VERSION=\".*\"/export FLUX_VERSION=\"$FLUX_VERSION\"/"
 rm -f "$ENV_FILE.bak"
 
 # Get latest Cilium version
-CILIUM_VERSION=$(curl -s https://api.github.com/repos/cilium/cilium/releases/latest | jq -r .tag_name)
+CILIUM_VERSION=$(curl -s https://api.github.com/repos/cilium/cilium/releases/latest | jq -r .tag_name | sed 's/^v//')
 echo "Cilium version: $CILIUM_VERSION"
 sed -i.bak "s/export CILIUM_VERSION=\".*\"/export CILIUM_VERSION=\"$CILIUM_VERSION\"/" "$ENV_FILE"
 rm -f "$ENV_FILE.bak"
+
+# Get latest Gateway API version
+API_GATEWAY_VERSION=$(curl -s https://api.github.com/repos/kubernetes-sigs/gateway-api/releases/latest | jq -r .tag_name | sed 's/^v//')
+echo "Gateway API version: $API_GATEWAY_VERSION"
+
+# Update Gateway API version in documentation
+sed -E -i.bak "s#(gateway-api/releases/download/v)[0-9]+\.[0-9]+\.[0-9]+#\1${API_GATEWAY_VERSION}#" "$API_GATEWAY_DOC"
+rm -f "$API_GATEWAY_DOC.bak"
 
 # Update README version badges
 sed -E -i.bak "s#(badge/Kubernetes-v)[0-9]+\.[0-9]+\.[0-9]+#\1${KUBERNETES_VERSION}#" "$README_FILE"
 sed -E -i.bak "s#(badge/Talos-v)[0-9]+\.[0-9]+\.[0-9]+#\1${TALOS_VERSION}#" "$README_FILE"
 sed -E -i.bak "s#(badge/FluxCD-v)[0-9]+\.[0-9]+\.[0-9]+#\1${FLUX_VERSION}#" "$README_FILE"
+sed -E -i.bak "s#(badge/Cilium-v)[0-9]+\.[0-9]+\.[0-9]+#\1${CILIUM_VERSION}#" "$README_FILE"
 rm -f "$README_FILE.bak"

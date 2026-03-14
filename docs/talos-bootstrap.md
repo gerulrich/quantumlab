@@ -74,6 +74,22 @@ talosctl gen config quantum https://$CONTROL_PLANE_IP:6443 \
     --install-disk $DISK
 ```
 
+Elimina la configuración de hostname para aplicar el parche por instancia:
+```bash
+sed -i '/^---$/,/^$/ {
+  s/^apiVersion:/# apiVersion:/
+  s/^kind: HostnameConfig/# kind: HostnameConfig/
+  s/^auto:/# auto:/
+}'  config/quantum-talos/worker.yaml
+
+sed -i '/^---$/,/^$/ {
+  s/^apiVersion:/# apiVersion:/
+  s/^kind: HostnameConfig/# kind: HostnameConfig/
+  s/^auto:/# auto:/
+}'  config/quantum-talos/controlplane.yaml
+```
+
+
 > 📝 Este comando crea varios archivos en el directorio `config/quantum-talos/`, incluyendo controlplane.yaml, worker.yaml y talosconfig.
 
 ---

@@ -5,5 +5,5 @@ resources:
   - cloudflared
   - nginx
   - mosquitto
-  - n8n
-  - photoprism
+  #- n8n
+  #- photoprism

@@ -4,6 +4,7 @@
 ENV_FILE="scripts/quantum-env.sh"
 README_FILE="README.md"
 API_GATEWAY_DOC="docs/cilium-api-gateway.md"
+TAILSCALE_RELEASE_FILE="helm/tailscale-operator/release.yaml"
 
 # Get latest Talos version
 TALOS_VERSION=$(curl -s https://api.github.com/repos/siderolabs/talos/releases/latest | jq -r .tag_name | sed 's/^v//')
@@ -36,6 +37,14 @@ echo "Gateway API version: $API_GATEWAY_VERSION"
 # Update Gateway API version in documentation
 sed -E -i.bak "s#(gateway-api/releases/download/v)[0-9]+\.[0-9]+\.[0-9]+#\1${API_GATEWAY_VERSION}#" "$API_GATEWAY_DOC"
 rm -f "$API_GATEWAY_DOC.bak"
+
+# Get latest Tailscale Operator version
+TAILSCALE_VERSION=$(curl -s https://api.github.com/repos/tailscale/tailscale/releases/latest | jq -r .tag_name | sed 's/^v//')
+echo "Tailscale Operator version: $TAILSCALE_VERSION"
+
+# Update Tailscale Operator chart version in HelmRelease
+sed -E -i.bak "s#(^[[:space:]]*version:[[:space:]]*\")[0-9]+\.[0-9]+\.[0-9]+(\"$)#\1${TAILSCALE_VERSION}\2#" "$TAILSCALE_RELEASE_FILE"
+rm -f "$TAILSCALE_RELEASE_FILE.bak"
 
 # Update README version badges
 sed -E -i.bak "s#(badge/Kubernetes-v)[0-9]+\.[0-9]+\.[0-9]+#\1${KUBERNETES_VERSION}#" "$README_FILE"

@@ -3,7 +3,7 @@
 # Versions
 export TALOS_VERSION="1.12.5"
 export KUBERNETES_VERSION="1.35.2"
-export FLUX_VERSION="2.8.2"
+export FLUX_VERSION="2.8.3"
 export CILIUM_VERSION="1.19.1"
 export SCHEMATIC_ID=a2e824fa8b6d72b70f9076cebd483a76cd56a07a0a81372611a8ed6fe3b6b95e
 

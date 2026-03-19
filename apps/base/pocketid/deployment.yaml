@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pocketid
+  namespace: pocketid
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pocketid
+  template:
+    metadata:
+      labels:
+        app: pocketid
+    spec:
+      containers:
+        - name: pocketid
+          image: ghcr.io/pocket-id/pocket-id:latest
+          env:
+            - name: ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: pocketid-secret
+                  key: ENCRYPTION_KEY
+            - name: APP_URL
+              value: https://pocketid.lan.${DOMAIN}
+            - name: RELYING_PARTY_ID
+              value: pocketid.lan.${DOMAIN}
+          ports:
+            - containerPort: 1411
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: pocketid-data

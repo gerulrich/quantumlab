@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oauth2-proxy
+  namespace: oauth2-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oauth2-proxy
+  template:
+    metadata:
+      labels:
+        app: oauth2-proxy
+    spec:
+      containers:
+        - name: oauth2-proxy
+          image: quay.io/oauth2-proxy/oauth2-proxy:v7.8.2
+          env:
+            - name: OAUTH2_PROXY_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: oauth2-proxy-secret
+                  key: CLIENT_ID
+            - name: OAUTH2_PROXY_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: oauth2-proxy-secret
+                  key: CLIENT_SECRET
+            - name: OAUTH2_PROXY_COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: oauth2-proxy-secret
+                  key: COOKIE_SECRET
+            # OIDC provider: PocketID
+            - name: OAUTH2_PROXY_PROVIDER
+              value: oidc
+            - name: OAUTH2_PROXY_OIDC_ISSUER_URL
+              value: https://pocketid.lan.${DOMAIN}
+            # Protected upstream service
+            - name: OAUTH2_PROXY_UPSTREAMS
+              value: http://whoami.whoami.svc.cluster.local:80
+            # Redirect URL must match the OIDC client configured in PocketID
+            - name: OAUTH2_PROXY_REDIRECT_URL
+              value: https://whoami-auth.lan.${DOMAIN}/oauth2/callback
+            # Allow all authenticated users regardless of email domain
+            - name: OAUTH2_PROXY_EMAIL_DOMAINS
+              value: "*"
+            - name: OAUTH2_PROXY_HTTP_ADDRESS
+              value: "0.0.0.0:4180"
+            # Shared cookie for all *.lan.${DOMAIN} subdomains (single sign-on)
+            - name: OAUTH2_PROXY_COOKIE_DOMAINS
+              value: ".lan.${DOMAIN}"
+            - name: OAUTH2_PROXY_WHITELIST_DOMAINS
+              value: ".lan.${DOMAIN}"
+            # Skip intermediate "Sign in with..." button — redirect directly to PocketID
+            - name: OAUTH2_PROXY_SKIP_PROVIDER_BUTTON
+              value: "true"
+            - name: OAUTH2_PROXY_COOKIE_SECURE
+              value: "true"
+            # Forward auth headers to the upstream service
+            - name: OAUTH2_PROXY_SET_XAUTHREQUEST
+              value: "true"
+            - name: OAUTH2_PROXY_PASS_ACCESS_TOKEN
+              value: "false"
+          ports:
+            - containerPort: 4180
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: 4180
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 4180
+            initialDelaySeconds: 5
+            timeoutSeconds: 3

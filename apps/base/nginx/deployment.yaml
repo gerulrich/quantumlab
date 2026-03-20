@@ -23,9 +23,14 @@ spec:
         - containerPort: 80
         volumeMounts:
         - name: nginx-config
-          mountPath: /etc/nginx/conf.d/pihole.conf
-          subPath: pihole.lan.conf
+          mountPath: /etc/nginx/conf.d
+          readOnly: true
       volumes:
       - name: nginx-config
         configMap:
           name: nginx-config
+          items:
+          - key: pihole.lan.conf
+            path: pihole.conf
+          - key: whoami.lan.conf
+            path: whoami.conf

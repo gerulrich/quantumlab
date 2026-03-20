@@ -24,9 +24,9 @@ spec:
                   name: pocketid-secret
                   key: ENCRYPTION_KEY
             - name: APP_URL
-              value: https://pocketid.lan.${DOMAIN}
+              value: https://id.lan.${DOMAIN}
             - name: RELYING_PARTY_ID
-              value: pocketid.lan.${DOMAIN}
+              value: id.lan.${DOMAIN}
           ports:
             - containerPort: 1411
           volumeMounts:

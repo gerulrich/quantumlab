@@ -37,13 +37,13 @@ spec:
             - name: OAUTH2_PROXY_PROVIDER
               value: oidc
             - name: OAUTH2_PROXY_OIDC_ISSUER_URL
-              value: https://pocketid.lan.${DOMAIN}
-            # Protected upstream service
+              value: https://id.lan.${DOMAIN}
+            # Middleware mode: auth_request endpoint only (no app upstream proxying)
             - name: OAUTH2_PROXY_UPSTREAMS
-              value: http://whoami.whoami.svc.cluster.local:80
-            # Redirect URL must match the OIDC client configured in PocketID
+              value: static://200
+            # Redirect URL points to oauth2-proxy itself in middleware mode
             - name: OAUTH2_PROXY_REDIRECT_URL
-              value: https://whoami-auth.lan.${DOMAIN}/oauth2/callback
+              value: https://auth.lan.${DOMAIN}/oauth2/callback
             # Allow all authenticated users regardless of email domain
             - name: OAUTH2_PROXY_EMAIL_DOMAINS
               value: "*"
@@ -58,6 +58,8 @@ spec:
             - name: OAUTH2_PROXY_SKIP_PROVIDER_BUTTON
               value: "true"
             - name: OAUTH2_PROXY_COOKIE_SECURE
+              value: "true"
+            - name: OAUTH2_PROXY_REVERSE_PROXY
               value: "true"
             # Forward auth headers to the upstream service
             - name: OAUTH2_PROXY_SET_XAUTHREQUEST

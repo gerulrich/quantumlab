@@ -9,7 +9,7 @@ spec:
   - name: http-gateway
     namespace: gateway
   hostnames:
-  - "whoami-auth.lan.${DOMAIN}"
+  - "auth.lan.${DOMAIN}"
   rules:
   - matches:
     - path:
@@ -29,7 +29,7 @@ spec:
   - name: tls-gateway
     namespace: gateway
   hostnames:
-  - "whoami-auth.lan.${DOMAIN}"
+  - "auth.lan.${DOMAIN}"
   rules:
   - matches:
     - path:

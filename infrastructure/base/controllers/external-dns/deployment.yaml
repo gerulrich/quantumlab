@@ -1,0 +1,55 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-dns
+  namespace: external-dns
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: external-dns
+  template:
+    metadata:
+      labels:
+        app: external-dns
+    spec:
+      serviceAccountName: external-dns
+      containers:
+      - name: external-dns
+        image: registry.k8s.io/external-dns/external-dns:v0.20.0
+        ports:
+        - containerPort: 7979
+          name: http
+        envFrom:
+        - secretRef:
+            name: pihole-password
+        args:
+        - --source=service
+        - --source=ingress
+        - --source=gateway-httproute
+        - --source=gateway-tlsroute
+        - --registry=noop
+        - --policy=upsert-only
+        - --provider=pihole
+        - --pihole-api-version=6
+        - --pihole-server=http://10.10.10.10
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 7979
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 7979
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+      securityContext:
+        fsGroup: 65534 # For ExternalDNS to be able to read Kubernetes token files

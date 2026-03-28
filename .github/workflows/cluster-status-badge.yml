@@ -28,5 +28,39 @@ jobs:
 
           # -f hace que curl falle si el endpoint responde 4xx/5xx.
           RESPONSE=$(curl -fsS -X GET "$URL" -H "Content-Type: application/json")
-          echo "Cluster status endpoint reachable"
-          echo "$RESPONSE"
+          STATUS=$(echo "$RESPONSE" | sed -nE 's/.*"status"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p' | head -n1)
+
+          case "$STATUS" in
+            healthy)
+              DISPLAY_STATUS="ONLINE"
+              DISPLAY_COLOR="green"
+              EXIT_CODE=0
+              ;;
+            degraded)
+              DISPLAY_STATUS="RUNNING"
+              DISPLAY_COLOR="yellow"
+              EXIT_CODE=0
+              ;;
+            down)
+              DISPLAY_STATUS="OFFLINE"
+              DISPLAY_COLOR="red"
+              EXIT_CODE=1
+              ;;
+            *)
+              DISPLAY_STATUS="UNKNOWN"
+              DISPLAY_COLOR="gray"
+              EXIT_CODE=1
+              ;;
+          esac
+
+          echo "Cluster status raw: $STATUS"
+          echo "Cluster status mapped: $DISPLAY_STATUS"
+
+          {
+            echo "## Cluster Status"
+            echo "- Raw: $STATUS"
+            echo "- Mapped: $DISPLAY_STATUS"
+            echo "- Color hint: $DISPLAY_COLOR"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          exit "$EXIT_CODE"

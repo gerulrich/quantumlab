@@ -1,0 +1,32 @@
+---
+name: Cluster Status Badge
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  update-badge:
+    name: Cluster Status Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Check cluster status endpoint
+        run: |
+          set -euo pipefail
+          URL="${{ secrets.WEBHOOK_URL }}/tailscale/gha/status"
+
+          # -f hace que curl falle si el endpoint responde 4xx/5xx.
+          RESPONSE=$(curl -fsS -X GET "$URL" -H "Content-Type: application/json")
+          echo "Cluster status endpoint reachable"
+          echo "$RESPONSE"

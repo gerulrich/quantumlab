@@ -43,7 +43,9 @@ TAILSCALE_VERSION=$(curl -s https://api.github.com/repos/tailscale/tailscale/rel
 echo "Tailscale Operator version: $TAILSCALE_VERSION"
 
 # Update Tailscale Operator chart version in HelmRelease
-sed -E -i.bak "s#(^[[:space:]]*version:[[:space:]]*\")[0-9]+\.[0-9]+\.[0-9]+(\"$)#\1${TAILSCALE_VERSION}\2#" "$TAILSCALE_RELEASE_FILE"
+TAILSCALE_CHART_VERSION=$(curl -s https://pkgs.tailscale.com/helmcharts/index.yaml | awk '/^[[:space:]]+tailscale-operator:/{in_chart=1; next} in_chart && /^[[:space:]]+version:[[:space:]]/{print $2; exit}')
+echo "Tailscale chart version: $TAILSCALE_CHART_VERSION"
+sed -E -i.bak "s#(^[[:space:]]*version:[[:space:]]*\")[0-9]+\.[0-9]+\.[0-9]+(\"$)#\1${TAILSCALE_CHART_VERSION}\2#" "$TAILSCALE_RELEASE_FILE"
 rm -f "$TAILSCALE_RELEASE_FILE.bak"
 
 # Update README version badges

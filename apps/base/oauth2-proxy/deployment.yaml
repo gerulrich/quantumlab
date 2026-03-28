@@ -33,35 +33,32 @@ spec:
                 secretKeyRef:
                   name: oauth2-proxy-secret
                   key: COOKIE_SECRET
-            # OIDC provider: PocketID
             - name: OAUTH2_PROXY_PROVIDER
               value: oidc
             - name: OAUTH2_PROXY_OIDC_ISSUER_URL
               value: https://id.lan.${DOMAIN}
-            # Middleware mode: auth_request endpoint only (no app upstream proxying)
             - name: OAUTH2_PROXY_UPSTREAMS
               value: static://200
-            # Redirect URL points to oauth2-proxy itself in middleware mode
             - name: OAUTH2_PROXY_REDIRECT_URL
               value: https://auth.lan.${DOMAIN}/oauth2/callback
-            # Allow all authenticated users regardless of email domain
             - name: OAUTH2_PROXY_EMAIL_DOMAINS
               value: "*"
             - name: OAUTH2_PROXY_HTTP_ADDRESS
               value: "0.0.0.0:4180"
-            # Shared cookie for all *.lan.${DOMAIN} subdomains (single sign-on)
             - name: OAUTH2_PROXY_COOKIE_DOMAINS
               value: ".lan.${DOMAIN}"
             - name: OAUTH2_PROXY_WHITELIST_DOMAINS
               value: ".lan.${DOMAIN}"
-            # Skip intermediate "Sign in with..." button — redirect directly to PocketID
             - name: OAUTH2_PROXY_SKIP_PROVIDER_BUTTON
               value: "true"
             - name: OAUTH2_PROXY_COOKIE_SECURE
               value: "true"
+            - name: OAUTH2_PROXY_COOKIE_EXPIRE
+              value: "24h"
+            - name: OAUTH2_PROXY_COOKIE_REFRESH
+              value: "1h"
             - name: OAUTH2_PROXY_REVERSE_PROXY
               value: "true"
-            # Forward auth headers to the upstream service
             - name: OAUTH2_PROXY_SET_XAUTHREQUEST
               value: "true"
             - name: OAUTH2_PROXY_PASS_ACCESS_TOKEN

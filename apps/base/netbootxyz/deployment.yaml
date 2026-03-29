@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: netbootxyz
+  name: netbootxyz
+  labels:
+    app: netbootxyz
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netbootxyz
+  template:
+    metadata:
+      labels:
+        app: netbootxyz
+    spec:
+      containers:
+      - name: netbootxyz
+        image: linuxserver/netbootxyz:0.7.6
+        ports:
+        - containerPort: 3000
+          name: web-ui
+          protocol: TCP
+        - containerPort: 80
+          name: nginx
+          protocol: TCP
+        - containerPort: 69
+          name: tftp
+          protocol: UDP
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: MENU_VERSION
+          value: "3.0.0"
+        - name: NGINX_PORT
+          value: "9999"
+        volumeMounts:
+        - name: netbootxyz-config
+          mountPath: /config
+        - name: netbootxyz-assets
+          mountPath: /assets
+      volumes:
+      - name: netbootxyz-config
+        persistentVolumeClaim:
+          claimName: netbootxyz-config
+      - name: netbootxyz-assets
+        persistentVolumeClaim:
+          claimName: netbootxyz-assets

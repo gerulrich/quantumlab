@@ -6,6 +6,7 @@ metadata:
   name: netbootxyz
   labels:
     app: netbootxyz
+    color: blue
 spec:
   selector:
     app: netbootxyz

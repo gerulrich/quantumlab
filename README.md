@@ -34,11 +34,13 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 
 ## 🧰 Servicios del Homelab
 
+### Servicios en Podman
+
 | Categoría         | Servicio            | Estado         | Plataforma actual    | Descripción breve                        |
 |------------------|---------------------|----------------|----------------------|------------------------------------------|
 | Domótica          | 🏠 Home Assistant    | ✅ En uso       | Podman               | Gestión de dispositivos IoT              |
 |                   | 🔄 Node-RED          | ✅ En uso       | Podman               | Automatización basada en flujos          |
-|                   | 📡 MQTT              | 🔧 En progreso  | Podman  | Broker de mensajería IoT — [docs/mqtt.md](docs/mqtt.md) |
+|                   | 📡 MQTT              | 🔧 En progreso  | Podman               | Broker de mensajería IoT                 |
 |                   | 🔌 ESPHome           | ✅ En uso       | Podman               | Firmware para dispositivos IoT           |
 |                   | 🧿 Zigbee2MQTT       | ✅ En uso       | Podman               | Puente Zigbee a MQTT                     |
 | Media             | 🎬 Plex              | ✅ En uso       | Podman               | Servidor de medios                       |
@@ -52,6 +54,26 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 |                   | 🍃 MongoDB           | ✅ En uso       | Podman               | Base de datos NoSQL                      |
 |                   | 🧪 Mongo-UI          | ✅ En uso       | Podman               | Interfaz web para MongoDB                |
 |                   | 🔍 MQTT Explorer     | ✅ En uso       | Podman               | Interfaz visual para MQTT                |
+| A implementar     | 🗣️ Piper             | 🕐 Pendiente    | Por definir          | TTS de código abierto                    |
+|                   | 🧠 Faster-Whisper    | 🕐 Pendiente    | Por definir          | STT optimizado                           |
+|                   | 🤖 Ollama            | 🕐 Pendiente    | Por definir          | LLMs locales (como llama.cpp)            |
+
+### Servicios en Kubernetes
+
+| Categoría         | Servicio            | Documentación   | Exposición           | Descripción breve                        |
+|------------------|---------------------|-----------------|----------------------|------------------------------------------|
+| Infraestructura   | ☁️ Cloudflared       | Pendiente       | Tunnel saliente      | Tunnel seguro (Cloudflare)               |
+|                   | 🌐 NGINX             | Pendiente       | Servicio HTTP interno| Reverse proxy                            |
+|                   | 🥾 Netboot.xyz       | [Netboot.xyz](docs/netbootxyz.md) | `netboot.lan.${DOMAIN}` + LB | Boot PXE/iPXE y utilidades de rescate    |
+|                   | 🔐 OAuth2 Proxy      | Pendiente       | Gateway API          | Proxy de autenticación                   |
+|                   | 🪪 Pocket ID         | Pendiente       | Gateway API          | Gestión de identidad                     |
+| Domótica          | 📡 Mosquitto         | [MQTT](docs/mqtt.md) | LoadBalancer 1883/TCP | Broker de mensajería IoT              |
+| Utilidades        | 🧪 Whoami            | Pendiente       | Gateway API          | Servicio de prueba para rutas HTTP       |
+
+### Plataforma del laboratorio
+
+| Categoría         | Componente          | Estado         | Plataforma actual    | Descripción breve                        |
+|------------------|---------------------|----------------|----------------------|------------------------------------------|
 | Plataforma        | 🐧 Talos Linux       | ⚙️ Configurando | N/A                  | OS minimalista para Kubernetes           |
 | Orquestador       | ☸️ Kubernetes        | ⚙️ Configurando | Talos                | Cluster principal                        |
 | GitOps            | 🔄 FluxCD            | ⚙️ Configurando | Kubernetes           | Infraestructura como código              |
@@ -59,9 +81,6 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 | Red               | 🌐 Cilium            | ⚙️ Configurando | Kubernetes           | CNI avanzado con observabilidad          |
 | VPN / Mesh        | 🧠 Tailscale         | ⚙️ Configurando | Kubernetes           | Red privada entre dispositivos           |
 | Paquetes          | 🎯 Helm              | ⚙️ Configurando | Kubernetes           | Gestión de charts                        |
-| A implementar     | 🗣️ Piper             | 🕐 Pendiente    | Por definir          | TTS de código abierto                    |
-|                   | 🧠 Faster-Whisper    | 🕐 Pendiente    | Por definir          | STT optimizado                           |
-|                   | 🤖 Ollama            | 🕐 Pendiente    | Por definir          | LLMs locales (como llama.cpp)            |
 
 ## 🚀 Instalación
 
@@ -74,6 +93,7 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 
 - [Compartición de IP en Load Balancers de Cilium](docs/cilium-lb-ipam-sharing.md)
 - [MQTT con Mosquitto](docs/mqtt.md)
+- [Netboot.xyz en Kubernetes](docs/netbootxyz.md)
 - [Renovate para actualizaciones automáticas](docs/renovate.md)
 
 ## 📂 Estructura del Repositorio

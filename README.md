@@ -43,8 +43,6 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 
 - [Cert-Manager y Gateway con TLS](docs/cert-manager-routes.md)
 - [Compartición de IP en Load Balancers de Cilium](docs/cilium-lb-ipam-sharing.md)
-- [MQTT con Mosquitto](docs/mqtt.md)
-- [Netboot.xyz en Kubernetes](docs/netbootxyz.md)
 
 ## 🧰 Servicios del Homelab
 

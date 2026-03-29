@@ -41,13 +41,25 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 
 ## 🧰 Servicios del Homelab
 
-### Servicios en Kubernetes
+### Servicios de plataforma
+
+| Categoría         | Componente          | Descripción breve                        |
+|------------------|---------------------|------------------------------------------|
+| Plataforma        | 🐧 Talos Linux       | OS minimalista para Kubernetes ([Info adicional](docs/talos.md)) |
+| Orquestador       | ☸️ Kubernetes        | Cluster principal                        |
+| GitOps            | 🔄 FluxCD            | Infraestructura como código ([Info adicional](docs/fluxcd.md)) |
+| Seguridad         | 🧾 SOPS              | Gestión segura de secretos ([Info adicional](docs/sops.md)) |
+|                   | 🔒 Cert-Manager      | Gestión automática de certificados TLS ([Info adicional](docs/cert-manager.md)) |
+| Red               | 🌐 Cilium            | CNI avanzado con observabilidad ([Info adicional](docs/cilium.md)) |
+|                   | ☁️ Cloudflared       | Tunnel seguro hacia Cloudflare           |
+| VPN / Mesh        | 🧠 Tailscale         | Red privada entre dispositivos           |
+| Paquetes          | 🎯 Helm              | Gestión de charts                        |
+
+### Servicios de aplicaciones
 
 | Categoría         | Servicio            | Documentación   | Exposición           | Descripción breve                        |
 |------------------|---------------------|-----------------|----------------------|------------------------------------------|
-| Infraestructura   | ☁️ Cloudflared       | Pendiente       | Tunnel saliente      | Tunnel seguro (Cloudflare)               |
-|                   | 🌐 NGINX             | Pendiente       | Servicio HTTP interno| Reverse proxy                            |
-|                   | 🔒 Cert-Manager      | [Cert-Manager](docs/cert-manager.md) | Gateway API          | Gestión automática de certificados TLS   |
+| Infraestructura   | 🌐 NGINX             | Pendiente       | Servicio HTTP interno| Reverse proxy                            |
 |                   | 🥾 Netboot.xyz       | [Netboot.xyz](docs/netbootxyz.md) | `netboot.lan.${DOMAIN}` + LB | Boot PXE/iPXE y utilidades de rescate    |
 |                   | 🔐 OAuth2 Proxy      | Pendiente       | Gateway API          | Proxy de autenticación                   |
 |                   | 🪪 Pocket ID         | Pendiente       | Gateway API          | Gestión de identidad                     |
@@ -70,7 +82,6 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 | Infraestructura   | 🔐 Vaultwarden       | ✅ En uso       | Podman               | Gestor de contraseñas                    |
 |                   | 🌐 NGINX             | ✅ En uso       | Podman               | Reverse proxy                            |
 |                   | 🕳️ Pi-hole           | ✅ En uso       | Podman               | DNS y bloqueo de anuncios                |
-|                   | ☁️ Cloudflared       | ✅ En uso       | Podman               | Tunnel seguro (Cloudflare)               |
 |                   | 🧑‍💻 Guacamole         | ✅ En uso       | Podman               | Escritorio remoto vía web                |
 |                   | 🍃 MongoDB           | ✅ En uso       | Podman               | Base de datos NoSQL                      |
 |                   | 🧪 Mongo-UI          | ✅ En uso       | Podman               | Interfaz web para MongoDB                |
@@ -78,19 +89,6 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 | A implementar     | 🗣️ Piper             | 🕐 Pendiente    | Por definir          | TTS de código abierto                    |
 |                   | 🧠 Faster-Whisper    | 🕐 Pendiente    | Por definir          | STT optimizado                           |
 |                   | 🤖 Ollama            | 🕐 Pendiente    | Por definir          | LLMs locales (como llama.cpp)            |
-
-### Plataforma del laboratorio
-
-| Categoría         | Componente          | Plataforma actual    | Descripción breve                        |
-|------------------|---------------------|----------------------|------------------------------------------|
-| Plataforma        | 🐧 Talos Linux       | N/A                  | OS minimalista para Kubernetes ([Info adicional](docs/talos.md)) |
-| Orquestador       | ☸️ Kubernetes        | Talos                | Cluster principal                        |
-| GitOps            | 🔄 FluxCD            | Kubernetes           | Infraestructura como código ([Info adicional](docs/fluxcd.md)) |
-| Seguridad         | 🧾 SOPS              | Kubernetes           | Gestión segura de secretos ([Info adicional](docs/sops.md)) |
-| Seguridad         | 🔒 Cert-Manager      | Kubernetes           | Gestión automática de certificados TLS ([Info adicional](docs/cert-manager.md)) |
-| Red               | 🌐 Cilium            | Kubernetes           | CNI avanzado con observabilidad ([Info adicional](docs/cilium.md)) |
-| VPN / Mesh        | 🧠 Tailscale         | Kubernetes           | Red privada entre dispositivos           |
-| Paquetes          | 🎯 Helm              | Kubernetes           | Gestión de charts                        |
 
 ## 📂 Estructura del Repositorio
 

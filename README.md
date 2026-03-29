@@ -87,15 +87,15 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 
 ### Plataforma del laboratorio
 
-| Categoría         | Componente          | Estado         | Plataforma actual    | Descripción breve                        |
-|------------------|---------------------|----------------|----------------------|------------------------------------------|
-| Plataforma        | 🐧 Talos Linux       | ⚙️ Configurando | N/A                  | OS minimalista para Kubernetes           |
-| Orquestador       | ☸️ Kubernetes        | ⚙️ Configurando | Talos                | Cluster principal                        |
-| GitOps            | 🔄 FluxCD            | ⚙️ Configurando | Kubernetes           | Infraestructura como código              |
-| Seguridad         | 🧾 SOPS              | ⚙️ Configurando | Kubernetes           | Gestión segura de secretos               |
-| Red               | 🌐 Cilium            | ⚙️ Configurando | Kubernetes           | CNI avanzado con observabilidad          |
-| VPN / Mesh        | 🧠 Tailscale         | ⚙️ Configurando | Kubernetes           | Red privada entre dispositivos           |
-| Paquetes          | 🎯 Helm              | ⚙️ Configurando | Kubernetes           | Gestión de charts                        |
+| Categoría         | Componente          | Plataforma actual    | Descripción breve                        |
+|------------------|---------------------|----------------------|------------------------------------------|
+| Plataforma        | 🐧 Talos Linux       | N/A                  | OS minimalista para Kubernetes           |
+| Orquestador       | ☸️ Kubernetes        | Talos                | Cluster principal                        |
+| GitOps            | 🔄 FluxCD            | Kubernetes           | Infraestructura como código ([Info adicional](docs/fluxcd-sops-operations.md)) |
+| Seguridad         | 🧾 SOPS              | Kubernetes           | Gestión segura de secretos               |
+| Red               | 🌐 Cilium            | Kubernetes           | CNI avanzado con observabilidad          |
+| VPN / Mesh        | 🧠 Tailscale         | Kubernetes           | Red privada entre dispositivos           |
+| Paquetes          | 🎯 Helm              | Kubernetes           | Gestión de charts                        |
 
 ## 📂 Estructura del Repositorio
 

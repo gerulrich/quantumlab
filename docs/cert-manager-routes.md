@@ -12,9 +12,9 @@ Esta guía explica la configuración de cert-manager para la generación automá
 Antes de que cert-manager funcione correctamente, es necesario configurar:
 
 - Clúster Kubernetes con Flux CD instalado y funcionando
-  - 📖 Ver: [Talos Bootstrap](talos-bootstrap.md) y [Bootstrap FluxCD SOPS Age](bootstrap-fluxcd-sops-age.md)
+  - 📖 Ver: [Talos Bootstrap](setup/talos-bootstrap.md) y [Bootstrap FluxCD SOPS Age](setup/bootstrap-fluxcd-sops-age.md)
 - Cilium API Gateway configurado y operativo
-  - 📖 Ver: [Cilium API Gateway](cilium-api-gateway.md)
+  - 📖 Ver: [Cilium API Gateway](setup/cilium-api-gateway.md)
 - Token de API de Cloudflare con permisos de edición de DNS
 - Dominio configurado en Cloudflare
 

@@ -39,7 +39,7 @@ quantumlab/
 └── renovate.json               # Configuración de Renovate Bot
 ```
 
-En los archivos [`clusters/quantum-talos/apps.yaml`](../clusters/quantum-talos/apps.yaml), [`clusters/quantum-talos/helm.yaml`](../clusters/quantum-talos/helm.yaml) y [`clusters/quantum-talos/infra.yaml`](../clusters/quantum-talos/infra.yaml) se definen las kustomizaciones que apuntan a los directorios [`apps/quantum-talos`](../apps/quantum-talos), [`helm`](../helm) e [`infrastructure/quantum-talos`](../infrastructure/quantum-talos), respectivamente. Estos archivos especifican la configuración de los recursos que Flux desplegará en el clúster de Kubernetes.
+En los archivos [`clusters/quantum-talos/apps.yaml`](../../clusters/quantum-talos/apps.yaml), [`clusters/quantum-talos/helm.yaml`](../../clusters/quantum-talos/helm.yaml) y [`clusters/quantum-talos/infra.yaml`](../../clusters/quantum-talos/infra.yaml) se definen las kustomizaciones que apuntan a los directorios [`apps/quantum-talos`](../../apps/quantum-talos), [`helm`](../../helm) e [`infrastructure/quantum-talos`](../../infrastructure/quantum-talos), respectivamente. Estos archivos especifican la configuración de los recursos que Flux desplegará en el clúster de Kubernetes.
 
 ---
 

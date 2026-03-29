@@ -32,7 +32,34 @@ QuantumLab utiliza:
 
 Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrarán progresivamente a Kubernetes.
 
+## 🚀 Instalación
+
+1. [Configuración inicial del entorno](docs/setup/setup.md)
+2. [Instalación del clúster Talos](docs/setup/talos-bootstrap.md)
+3. [Configuración de Cilium y API Gateway](docs/setup/cilium-api-gateway.md)
+4. [Flux CD con SOPS y Age](docs/setup/bootstrap-fluxcd-sops-age.md)
+
+### 📖 Documentación adicional
+
+- [Cert-Manager y Gateway con TLS](docs/cert-manager-routes.md)
+- [Compartición de IP en Load Balancers de Cilium](docs/cilium-lb-ipam-sharing.md)
+- [MQTT con Mosquitto](docs/mqtt.md)
+- [Netboot.xyz en Kubernetes](docs/netbootxyz.md)
+
 ## 🧰 Servicios del Homelab
+
+### Servicios en Kubernetes
+
+| Categoría         | Servicio            | Documentación   | Exposición           | Descripción breve                        |
+|------------------|---------------------|-----------------|----------------------|------------------------------------------|
+| Infraestructura   | ☁️ Cloudflared       | Pendiente       | Tunnel saliente      | Tunnel seguro (Cloudflare)               |
+|                   | 🌐 NGINX             | Pendiente       | Servicio HTTP interno| Reverse proxy                            |
+|                   | 🥾 Netboot.xyz       | [Netboot.xyz](docs/netbootxyz.md) | `netboot.lan.${DOMAIN}` + LB | Boot PXE/iPXE y utilidades de rescate    |
+|                   | 🔐 OAuth2 Proxy      | Pendiente       | Gateway API          | Proxy de autenticación                   |
+|                   | 🪪 Pocket ID         | Pendiente       | Gateway API          | Gestión de identidad                     |
+| Domótica          | 📡 Mosquitto         | [MQTT](docs/mqtt.md) | LoadBalancer 1883/TCP | Broker de mensajería IoT              |
+| Utilidades        | 🧪 Whoami            | Pendiente       | Gateway API          | Servicio de prueba para rutas HTTP       |
+|                   | 🤖 Renovate          | [Renovate](docs/renovate.md) | N/A                  | Actualizaciones automáticas de dependencias |
 
 ### Servicios en Podman
 
@@ -58,18 +85,6 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 |                   | 🧠 Faster-Whisper    | 🕐 Pendiente    | Por definir          | STT optimizado                           |
 |                   | 🤖 Ollama            | 🕐 Pendiente    | Por definir          | LLMs locales (como llama.cpp)            |
 
-### Servicios en Kubernetes
-
-| Categoría         | Servicio            | Documentación   | Exposición           | Descripción breve                        |
-|------------------|---------------------|-----------------|----------------------|------------------------------------------|
-| Infraestructura   | ☁️ Cloudflared       | Pendiente       | Tunnel saliente      | Tunnel seguro (Cloudflare)               |
-|                   | 🌐 NGINX             | Pendiente       | Servicio HTTP interno| Reverse proxy                            |
-|                   | 🥾 Netboot.xyz       | [Netboot.xyz](docs/netbootxyz.md) | `netboot.lan.${DOMAIN}` + LB | Boot PXE/iPXE y utilidades de rescate    |
-|                   | 🔐 OAuth2 Proxy      | Pendiente       | Gateway API          | Proxy de autenticación                   |
-|                   | 🪪 Pocket ID         | Pendiente       | Gateway API          | Gestión de identidad                     |
-| Domótica          | 📡 Mosquitto         | [MQTT](docs/mqtt.md) | LoadBalancer 1883/TCP | Broker de mensajería IoT              |
-| Utilidades        | 🧪 Whoami            | Pendiente       | Gateway API          | Servicio de prueba para rutas HTTP       |
-
 ### Plataforma del laboratorio
 
 | Categoría         | Componente          | Estado         | Plataforma actual    | Descripción breve                        |
@@ -81,20 +96,6 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 | Red               | 🌐 Cilium            | ⚙️ Configurando | Kubernetes           | CNI avanzado con observabilidad          |
 | VPN / Mesh        | 🧠 Tailscale         | ⚙️ Configurando | Kubernetes           | Red privada entre dispositivos           |
 | Paquetes          | 🎯 Helm              | ⚙️ Configurando | Kubernetes           | Gestión de charts                        |
-
-## 🚀 Instalación
-
-1. [Instalación del clúster Talos](docs/talos-bootstrap.md)
-2. [Configuración de Cilium y API Gateway](docs/cilium-api-gateway.md)
-3. [Flux CD con SOPS y Age](docs/bootstrap-fluxcd-sops-age.md)
-4. [Cert-Manager y Gateway con TLS](docs/cert-manager-routes.md)
-
-### 📖 Documentación adicional
-
-- [Compartición de IP en Load Balancers de Cilium](docs/cilium-lb-ipam-sharing.md)
-- [MQTT con Mosquitto](docs/mqtt.md)
-- [Netboot.xyz en Kubernetes](docs/netbootxyz.md)
-- [Renovate para actualizaciones automáticas](docs/renovate.md)
 
 ## 📂 Estructura del Repositorio
 

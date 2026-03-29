@@ -8,7 +8,6 @@ El túnel de Cloudflare (`quantum-tunnel`) se ejecuta como un deployment en Kube
 
 **Ventajas:**
 - No requiere puertos abiertos públicamente
-- Gestión centralizada desde Cloudflare Dashboard
 - SSL/TLS automático
 - Control de acceso y analytics
 
@@ -40,12 +39,13 @@ cloudflare tunnel route list quantum-tunnel
 
 ## Agregar un Nuevo Ingreso (Hostname/Servicio)
 
-Los nuevos ingresos se agregan editando el ConfigMap de Kubernetes que contiene la configuración del túnel.
+Los nuevos ingresos se agregan modificando el ConfigMap en el repositorio de Flux.
 
-**1. Edita el ConfigMap de cloudflared:**
+**1. Edita el archivo de configuración del ConfigMap:**
 
 ```bash
-source scripts/quantum-env.sh && kubectl edit configmap cloudflared-configmap -n cloudflared
+# Edita el archivo de configuración base en el repositorio
+vim apps/base/cloudflared/config-map.yaml
 ```
 
 **2. Agrega una nueva línea en la sección `ingress`:**
@@ -67,18 +67,21 @@ data:
     - service: http_status:404
 ```
 
-**3. Guarda el archivo (`:wq` en vim)**
+**3. Sube los cambios a la rama principal mediante un Pull Request:**
 
-**4. El deployment se reiniciará automáticamente (o fuerza la actualización):**
+Una vez realizado el commit en tu rama local, crea un Pull Request para que los cambios se revisen e integren en la rama principal del repositorio.
+
+**4. Una vez que el PR es aprobado y mergeado, Flux sincronizará automáticamente los cambios:**
 
 ```bash
-source scripts/quantum-env.sh && kubectl rollout restart deployment/cloudflared -n cloudflared
+flux reconcile source git flux-system
+flux reconcile kustomization flux-system
 ```
 
-**5. Verifica el estado:**
+**5. Verifica que el deployment se actualizó:**
 
 ```bash
-source scripts/quantum-env.sh && kubectl logs -f deployment/cloudflared -n cloudflared
+kubectl rollout status deployment/cloudflared -n cloudflared
 ```
 
 ### Estructura del Servicio en K8s
@@ -103,14 +106,14 @@ Cuando agreguess un nuevo servicio, asegúrate de que exista en tu cluster:
 ### Verificar que el túnel está activo
 
 ```bash
-source scripts/quantum-env.sh && kubectl get deployment -n cloudflared
-source scripts/quantum-env.sh && kubectl get pods -n cloudflared
+kubectl get deployment -n cloudflared
+kubectl get pods -n cloudflared
 ```
 
 ### Ver logs del túnel
 
 ```bash
-source scripts/quantum-env.sh && kubectl logs -f deployment/cloudflared -n cloudflared
+kubectl logs -f deployment/cloudflared -n cloudflared
 ```
 
 ### Verificar conectividad a un ingreso
@@ -126,25 +129,25 @@ curl https://photos.${DOMAIN}
 
 Verifica los logs:
 ```bash
-source scripts/quantum-env.sh && kubectl logs deployment/cloudflared -n cloudflared
+kubectl logs deployment/cloudflared -n cloudflared
 ```
 
 Reinicia el deployment:
 ```bash
-source scripts/quantum-env.sh && kubectl rollout restart deployment/cloudflared -n cloudflared
+kubectl rollout restart deployment/cloudflared -n cloudflared
 ```
 
 ### Un ingreso no responde
 
 1. Verifica que el servicio existe y está disponible:
 ```bash
-source scripts/quantum-env.sh && kubectl get svc -A | grep SERVICIO
-source scripts/quantum-env.sh && kubectl get endpoints -n NAMESPACE SERVICIO
+kubectl get svc -A | grep SERVICIO
+kubectl get endpoints -n NAMESPACE SERVICIO
 ```
 
 2. Verifica la configuración en el ConfigMap:
 ```bash
-source scripts/quantum-env.sh && kubectl get configmap cloudflared-configmap -n cloudflared -o yaml
+kubectl get configmap cloudflared-configmap -n cloudflared -o yaml
 ```
 
 3. Comprueba que el puerto es correcto en el servicio
@@ -152,7 +155,7 @@ source scripts/quantum-env.sh && kubectl get configmap cloudflared-configmap -n 
 ### Reiniciar cloudflared
 
 ```bash
-source scripts/quantum-env.sh && kubectl delete pod -n cloudflared -l app=cloudflared
+kubectl delete pod -n cloudflared -l app=cloudflared
 ```
 
 El deployment creará nuevos pods automáticamente.

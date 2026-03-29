@@ -51,7 +51,7 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 | Seguridad         | 🧾 SOPS              | Gestión segura de secretos ([Info adicional](docs/sops.md)) |
 |                   | 🔒 Cert-Manager      | Gestión automática de certificados TLS ([Info adicional](docs/cert-manager.md)) |
 | Red               | 🌐 Cilium            | CNI avanzado con observabilidad ([Info adicional](docs/cilium.md)) |
-|                   | ☁️ Cloudflared       | Tunnel seguro hacia Cloudflare           |
+|                   | ☁️ Cloudflared       | Tunnel seguro hacia Cloudflare ([Info adicional](docs/cloudflared.md)) |
 | VPN / Mesh        | 🧠 Tailscale         | Red privada entre dispositivos           |
 | Paquetes          | 🎯 Helm              | Gestión de charts                        |
 

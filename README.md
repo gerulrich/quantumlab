@@ -39,14 +39,6 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 3. [Configuración de Cilium y API Gateway](docs/setup/cilium-api-gateway.md)
 4. [Flux CD con SOPS y Age](docs/setup/bootstrap-fluxcd-sops-age.md)
 
-### 📖 Documentación adicional
-
-- [Talos](docs/talos.md)
-- [Cert-Manager](docs/cert-manager.md)
-- [Cilium](docs/cilium.md)
-- [Flux CD](docs/fluxcd.md)
-- [SOPS](docs/sops.md)
-
 ## 🧰 Servicios del Homelab
 
 ### Servicios en Kubernetes
@@ -95,7 +87,8 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 | Orquestador       | ☸️ Kubernetes        | Talos                | Cluster principal                        |
 | GitOps            | 🔄 FluxCD            | Kubernetes           | Infraestructura como código ([Info adicional](docs/fluxcd.md)) |
 | Seguridad         | 🧾 SOPS              | Kubernetes           | Gestión segura de secretos ([Info adicional](docs/sops.md)) |
-| Red               | 🌐 Cilium            | Kubernetes           | CNI avanzado con observabilidad          |
+| Seguridad         | 🔒 Cert-Manager      | Kubernetes           | Gestión automática de certificados TLS ([Info adicional](docs/cert-manager.md)) |
+| Red               | 🌐 Cilium            | Kubernetes           | CNI avanzado con observabilidad ([Info adicional](docs/cilium.md)) |
 | VPN / Mesh        | 🧠 Tailscale         | Kubernetes           | Red privada entre dispositivos           |
 | Paquetes          | 🎯 Helm              | Kubernetes           | Gestión de charts                        |
 

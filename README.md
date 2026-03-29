@@ -78,14 +78,20 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 |                   | 🧿 Zigbee2MQTT       | ✅ En uso       | Podman               | Puente Zigbee a MQTT                     |
 | Media             | 🎬 Plex              | ✅ En uso       | Podman               | Servidor de medios                       |
 |                   | 📸 PhotoPrism        | ✅ En uso       | Podman               | Galería de fotos privada                 |
-|                   | 📤 Transmission      | ✅ En uso       | Podman               | Cliente torrent                          |
+|                   | � Radarr            | ✅ En uso       | Podman               | Gestor de películas                      |
+|                   | 🔎 Prowlarr          | ✅ En uso       | Podman               | Gestor centralizado de indexadores       |
+|                   | 📼 Sonarr            | ✅ En uso       | Podman               | Gestor de series                         |
+|                   | 🎯 Seerr             | ✅ En uso       | Podman               | Gestor de peticiones de media            |
+|                   | �📤 Transmission      | ✅ En uso       | Podman               | Cliente torrent                          |
 | Infraestructura   | 🔐 Vaultwarden       | ✅ En uso       | Podman               | Gestor de contraseñas                    |
 |                   | 🌐 NGINX             | ✅ En uso       | Podman               | Reverse proxy                            |
 |                   | 🕳️ Pi-hole           | ✅ En uso       | Podman               | DNS y bloqueo de anuncios                |
 |                   | 🧑‍💻 Guacamole         | ✅ En uso       | Podman               | Escritorio remoto vía web                |
+|                   | ✨ FPP               | ✅ En uso       | Podman               | Control de luces y píxeles               |
 |                   | 🍃 MongoDB           | ✅ En uso       | Podman               | Base de datos NoSQL                      |
 |                   | 🧪 Mongo-UI          | ✅ En uso       | Podman               | Interfaz web para MongoDB                |
 |                   | 🔍 MQTT Explorer     | ✅ En uso       | Podman               | Interfaz visual para MQTT                |
+|                   | 💡 LedFx             | ✅ En uso       | Podman               | Control de efectos de luces LED          |
 | A implementar     | 🗣️ Piper             | 🕐 Pendiente    | Por definir          | TTS de código abierto                    |
 |                   | 🧠 Faster-Whisper    | 🕐 Pendiente    | Por definir          | STT optimizado                           |
 |                   | 🤖 Ollama            | 🕐 Pendiente    | Por definir          | LLMs locales (como llama.cpp)            |

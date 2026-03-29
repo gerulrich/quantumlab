@@ -131,4 +131,5 @@ kubectl get secret nombre-del-secreto -n namespace-target
 
 Para operaciones avanzadas y mantenimiento de Flux + SOPS, consulta:
 
-- [Flux CD y SOPS - Información adicional y operaciones](../fluxcd-sops-operations.md)
+- [Flux CD](../fluxcd.md)
+- [SOPS](../sops.md)

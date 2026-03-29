@@ -138,8 +138,11 @@ Continúa con estos documentos para completar la instalación base:
 
 Cuando el setup base esté listo, revisa documentación complementaria en `docs/`:
 
-- [Cert-Manager y Gateway con TLS](../cert-manager-routes.md)
-- [Compartición de IP en Load Balancers de Cilium](../cilium-lb-ipam-sharing.md)
+- [Talos](../talos.md)
+- [Cert-Manager](../cert-manager.md)
+- [Cilium](../cilium.md)
+- [Flux CD](../fluxcd.md)
+- [SOPS](../sops.md)
 - [MQTT con Mosquitto](../mqtt.md)
 - [Netboot.xyz en Kubernetes](../netbootxyz.md)
 - [Renovate para actualizaciones automáticas](../renovate.md)

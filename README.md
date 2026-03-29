@@ -41,8 +41,11 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 
 ### 📖 Documentación adicional
 
-- [Cert-Manager y Gateway con TLS](docs/cert-manager-routes.md)
-- [Compartición de IP en Load Balancers de Cilium](docs/cilium-lb-ipam-sharing.md)
+- [Talos](docs/talos.md)
+- [Cert-Manager](docs/cert-manager.md)
+- [Cilium](docs/cilium.md)
+- [Flux CD](docs/fluxcd.md)
+- [SOPS](docs/sops.md)
 
 ## 🧰 Servicios del Homelab
 
@@ -52,6 +55,7 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 |------------------|---------------------|-----------------|----------------------|------------------------------------------|
 | Infraestructura   | ☁️ Cloudflared       | Pendiente       | Tunnel saliente      | Tunnel seguro (Cloudflare)               |
 |                   | 🌐 NGINX             | Pendiente       | Servicio HTTP interno| Reverse proxy                            |
+|                   | 🔒 Cert-Manager      | [Cert-Manager](docs/cert-manager.md) | Gateway API          | Gestión automática de certificados TLS   |
 |                   | 🥾 Netboot.xyz       | [Netboot.xyz](docs/netbootxyz.md) | `netboot.lan.${DOMAIN}` + LB | Boot PXE/iPXE y utilidades de rescate    |
 |                   | 🔐 OAuth2 Proxy      | Pendiente       | Gateway API          | Proxy de autenticación                   |
 |                   | 🪪 Pocket ID         | Pendiente       | Gateway API          | Gestión de identidad                     |
@@ -87,10 +91,10 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 
 | Categoría         | Componente          | Plataforma actual    | Descripción breve                        |
 |------------------|---------------------|----------------------|------------------------------------------|
-| Plataforma        | 🐧 Talos Linux       | N/A                  | OS minimalista para Kubernetes           |
+| Plataforma        | 🐧 Talos Linux       | N/A                  | OS minimalista para Kubernetes ([Info adicional](docs/talos.md)) |
 | Orquestador       | ☸️ Kubernetes        | Talos                | Cluster principal                        |
-| GitOps            | 🔄 FluxCD            | Kubernetes           | Infraestructura como código ([Info adicional](docs/fluxcd-sops-operations.md)) |
-| Seguridad         | 🧾 SOPS              | Kubernetes           | Gestión segura de secretos               |
+| GitOps            | 🔄 FluxCD            | Kubernetes           | Infraestructura como código ([Info adicional](docs/fluxcd.md)) |
+| Seguridad         | 🧾 SOPS              | Kubernetes           | Gestión segura de secretos ([Info adicional](docs/sops.md)) |
 | Red               | 🌐 Cilium            | Kubernetes           | CNI avanzado con observabilidad          |
 | VPN / Mesh        | 🧠 Tailscale         | Kubernetes           | Red privada entre dispositivos           |
 | Paquetes          | 🎯 Helm              | Kubernetes           | Gestión de charts                        |

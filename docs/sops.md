@@ -1,6 +1,6 @@
-# Flux CD y SOPS - Información adicional y operaciones
+# SOPS
 
-Esta guía reúne operaciones avanzadas y tareas de mantenimiento para Flux CD y SOPS, separadas del flujo principal de setup.
+Esta guía reúne operaciones de mantenimiento y uso avanzado de SOPS y Age en el repositorio.
 
 ---
 
@@ -51,11 +51,7 @@ creation_rules:
 
 > **Explicación**: Esta configuración indica que todos los archivos en rutas que coincidan con `infrastructure/.*/secrets/.*\.yaml` serán cifrados, específicamente los campos bajo `data` o `stringData`, usando la clave Age especificada.
 
----
-
-## 4️⃣ Información complementaria
-
-### Kustomization con SOPS
+## 4️⃣ Kustomization con SOPS
 
 La configuración de Flux para utilizar SOPS se encuentra en los archivos de Kustomization:
 
@@ -78,28 +74,6 @@ spec:
 
 ---
 
-## 🛠 Comandos útiles
-
-```bash
-# Reconciliar manualmente los recursos
-flux reconcile kustomization infra
-
-# Ver eventos de recursos específicos
-flux events --for=Kustomization/infra
-
-# Suspender la reconciliación automática
-flux suspend kustomization infra
-
-# Reanudar la reconciliación automática
-flux resume kustomization infra
-
-# Obtener la versión actual de los componentes
-flux version
-```
-
----
-
 Para más información, consulta:
-- [Documentación oficial de Flux CD](https://fluxcd.io/flux/)
 - [Documentación de SOPS](https://github.com/mozilla/sops)
 - [Documentación de Age](https://github.com/FiloSottile/age)

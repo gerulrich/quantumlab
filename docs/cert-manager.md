@@ -1,5 +1,5 @@
 
-# Cert-Manager y Gateway con TLS
+# Cert-Manager
 
 Esta guía explica la configuración de cert-manager para la generación automática de certificados TLS utilizando Let's Encrypt y Cloudflare como proveedor DNS, junto con la configuración de Gateway API para enrutamiento de tráfico seguro.
 

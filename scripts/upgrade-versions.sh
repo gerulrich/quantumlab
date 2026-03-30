@@ -3,7 +3,7 @@
 # Update versions in quantum-env.sh
 ENV_FILE="scripts/quantum-env.sh"
 README_FILE="README.md"
-API_GATEWAY_DOC="docs/cilium-api-gateway.md"
+API_GATEWAY_DOC="docs/setup/cilium-api-gateway.md"
 TAILSCALE_RELEASE_FILE="helm/tailscale-operator/release.yaml"
 
 # Get latest Talos version

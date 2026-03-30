@@ -124,3 +124,26 @@ Este script descarga e instala automáticamente:
 
 > **Nota**: Todas las herramientas se instalan en `$PWD/bin`, que está incluido en el `PATH` al hacer `source scripts/quantum-env.sh`.
 
+---
+
+## ✅ Siguientes pasos de setup
+
+Continúa con estos documentos para completar la instalación base:
+
+1. [Instalación del clúster Talos](talos-bootstrap.md)
+2. [Configuración de Cilium y API Gateway](cilium-api-gateway.md)
+3. [Flux CD con SOPS y Age](bootstrap-fluxcd-sops-age.md)
+
+## 📖 Documentación adicional
+
+Cuando el setup base esté listo, revisa documentación complementaria en `docs/`:
+
+- [Talos](../talos.md)
+- [Cert-Manager](../cert-manager.md)
+- [Cilium](../cilium.md)
+- [Flux CD](../fluxcd.md)
+- [SOPS](../sops.md)
+- [MQTT con Mosquitto](../mqtt.md)
+- [Netboot.xyz en Kubernetes](../netbootxyz.md)
+- [Renovate para actualizaciones automáticas](../renovate.md)
+

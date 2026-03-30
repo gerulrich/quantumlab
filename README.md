@@ -32,7 +32,40 @@ QuantumLab utiliza:
 
 Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrarán progresivamente a Kubernetes.
 
+## 🚀 Instalación
+
+1. [Configuración inicial del entorno](docs/setup/setup.md)
+2. [Instalación del clúster Talos](docs/setup/talos-bootstrap.md)
+3. [Configuración de Cilium y API Gateway](docs/setup/cilium-api-gateway.md)
+4. [Flux CD con SOPS y Age](docs/setup/bootstrap-fluxcd-sops-age.md)
+
 ## 🧰 Servicios del Homelab
+
+### Servicios de plataforma
+
+| Categoría         | Componente          | Descripción breve                        |
+|------------------|---------------------|------------------------------------------|
+| Plataforma        | 🐧 Talos Linux       | OS minimalista para Kubernetes ([Info adicional](docs/talos.md)) |
+| Orquestador       | ☸️ Kubernetes        | Cluster principal                        |
+| GitOps            | 🔄 FluxCD            | Infraestructura como código ([Info adicional](docs/fluxcd.md)) |
+| Seguridad         | 🧾 SOPS              | Gestión segura de secretos ([Info adicional](docs/sops.md)) |
+|                   | 🔒 Cert-Manager      | Gestión automática de certificados TLS ([Info adicional](docs/cert-manager.md)) |
+| Red               | 🌐 Cilium            | CNI avanzado con observabilidad ([Info adicional](docs/cilium.md)) |
+|                   | ☁️ Cloudflared       | Tunnel seguro hacia Cloudflare ([Info adicional](docs/cloudflared.md)) |
+| VPN / Mesh        | 🧠 Tailscale         | Red privada entre dispositivos           |
+| Paquetes          | 🎯 Helm              | Gestión de charts                        |
+
+### Servicios de aplicaciones
+
+| Categoría         | Servicio            | Documentación   | Exposición           | Descripción breve                        |
+|------------------|---------------------|-----------------|----------------------|------------------------------------------|
+| Infraestructura   | 🌐 NGINX             | Pendiente       | Servicio HTTP interno| Reverse proxy                            |
+|                   | 🥾 Netboot.xyz       | [Netboot.xyz](docs/netbootxyz.md) | `netboot.lan.${DOMAIN}` + LB | Boot PXE/iPXE y utilidades de rescate    |
+|                   | 🔐 OAuth2 Proxy      | Pendiente       | Gateway API          | Proxy de autenticación                   |
+|                   | 🪪 Pocket ID         | Pendiente       | Gateway API          | Gestión de identidad                     |
+| Domótica          | 📡 Mosquitto         | [MQTT](docs/mqtt.md) | LoadBalancer 1883/TCP | Broker de mensajería IoT              |
+| Utilidades        | 🧪 Whoami            | Pendiente       | Gateway API          | Servicio de prueba para rutas HTTP       |
+|                   | 🤖 Renovate          | [Renovate](docs/renovate.md) | N/A                  | Actualizaciones automáticas de dependencias |
 
 ### Servicios en Podman
 
@@ -45,56 +78,23 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 |                   | 🧿 Zigbee2MQTT       | ✅ En uso       | Podman               | Puente Zigbee a MQTT                     |
 | Media             | 🎬 Plex              | ✅ En uso       | Podman               | Servidor de medios                       |
 |                   | 📸 PhotoPrism        | ✅ En uso       | Podman               | Galería de fotos privada                 |
-|                   | 📤 Transmission      | ✅ En uso       | Podman               | Cliente torrent                          |
+|                   | � Radarr            | ✅ En uso       | Podman               | Gestor de películas                      |
+|                   | 🔎 Prowlarr          | ✅ En uso       | Podman               | Gestor centralizado de indexadores       |
+|                   | 📼 Sonarr            | ✅ En uso       | Podman               | Gestor de series                         |
+|                   | 🎯 Seerr             | ✅ En uso       | Podman               | Gestor de peticiones de media            |
+|                   | �📤 Transmission      | ✅ En uso       | Podman               | Cliente torrent                          |
 | Infraestructura   | 🔐 Vaultwarden       | ✅ En uso       | Podman               | Gestor de contraseñas                    |
 |                   | 🌐 NGINX             | ✅ En uso       | Podman               | Reverse proxy                            |
 |                   | 🕳️ Pi-hole           | ✅ En uso       | Podman               | DNS y bloqueo de anuncios                |
-|                   | ☁️ Cloudflared       | ✅ En uso       | Podman               | Tunnel seguro (Cloudflare)               |
 |                   | 🧑‍💻 Guacamole         | ✅ En uso       | Podman               | Escritorio remoto vía web                |
+|                   | ✨ FPP               | ✅ En uso       | Podman               | Control de luces y píxeles               |
 |                   | 🍃 MongoDB           | ✅ En uso       | Podman               | Base de datos NoSQL                      |
 |                   | 🧪 Mongo-UI          | ✅ En uso       | Podman               | Interfaz web para MongoDB                |
 |                   | 🔍 MQTT Explorer     | ✅ En uso       | Podman               | Interfaz visual para MQTT                |
+|                   | 💡 LedFx             | ✅ En uso       | Podman               | Control de efectos de luces LED          |
 | A implementar     | 🗣️ Piper             | 🕐 Pendiente    | Por definir          | TTS de código abierto                    |
 |                   | 🧠 Faster-Whisper    | 🕐 Pendiente    | Por definir          | STT optimizado                           |
 |                   | 🤖 Ollama            | 🕐 Pendiente    | Por definir          | LLMs locales (como llama.cpp)            |
-
-### Servicios en Kubernetes
-
-| Categoría         | Servicio            | Documentación   | Exposición           | Descripción breve                        |
-|------------------|---------------------|-----------------|----------------------|------------------------------------------|
-| Infraestructura   | ☁️ Cloudflared       | Pendiente       | Tunnel saliente      | Tunnel seguro (Cloudflare)               |
-|                   | 🌐 NGINX             | Pendiente       | Servicio HTTP interno| Reverse proxy                            |
-|                   | 🥾 Netboot.xyz       | [Netboot.xyz](docs/netbootxyz.md) | `netboot.lan.${DOMAIN}` + LB | Boot PXE/iPXE y utilidades de rescate    |
-|                   | 🔐 OAuth2 Proxy      | Pendiente       | Gateway API          | Proxy de autenticación                   |
-|                   | 🪪 Pocket ID         | Pendiente       | Gateway API          | Gestión de identidad                     |
-| Domótica          | 📡 Mosquitto         | [MQTT](docs/mqtt.md) | LoadBalancer 1883/TCP | Broker de mensajería IoT              |
-| Utilidades        | 🧪 Whoami            | Pendiente       | Gateway API          | Servicio de prueba para rutas HTTP       |
-
-### Plataforma del laboratorio
-
-| Categoría         | Componente          | Estado         | Plataforma actual    | Descripción breve                        |
-|------------------|---------------------|----------------|----------------------|------------------------------------------|
-| Plataforma        | 🐧 Talos Linux       | ⚙️ Configurando | N/A                  | OS minimalista para Kubernetes           |
-| Orquestador       | ☸️ Kubernetes        | ⚙️ Configurando | Talos                | Cluster principal                        |
-| GitOps            | 🔄 FluxCD            | ⚙️ Configurando | Kubernetes           | Infraestructura como código              |
-| Seguridad         | 🧾 SOPS              | ⚙️ Configurando | Kubernetes           | Gestión segura de secretos               |
-| Red               | 🌐 Cilium            | ⚙️ Configurando | Kubernetes           | CNI avanzado con observabilidad          |
-| VPN / Mesh        | 🧠 Tailscale         | ⚙️ Configurando | Kubernetes           | Red privada entre dispositivos           |
-| Paquetes          | 🎯 Helm              | ⚙️ Configurando | Kubernetes           | Gestión de charts                        |
-
-## 🚀 Instalación
-
-1. [Instalación del clúster Talos](docs/talos-bootstrap.md)
-2. [Configuración de Cilium y API Gateway](docs/cilium-api-gateway.md)
-3. [Flux CD con SOPS y Age](docs/bootstrap-fluxcd-sops-age.md)
-4. [Cert-Manager y Gateway con TLS](docs/cert-manager-routes.md)
-
-### 📖 Documentación adicional
-
-- [Compartición de IP en Load Balancers de Cilium](docs/cilium-lb-ipam-sharing.md)
-- [MQTT con Mosquitto](docs/mqtt.md)
-- [Netboot.xyz en Kubernetes](docs/netbootxyz.md)
-- [Renovate para actualizaciones automáticas](docs/renovate.md)
 
 ## 📂 Estructura del Repositorio
 

@@ -32,7 +32,5 @@ spec:
           items:
           - key: pihole.lan.conf
             path: pihole.conf
-          - key: whoami.lan.conf
-            path: whoami.conf
           - key: netboot.lan.conf
             path: netboot.conf

@@ -65,7 +65,6 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 |                   | 🔐 OAuth2 Proxy      | Pendiente       | Gateway API          | Proxy de autenticación                   |
 |                   | 🪪 Pocket ID         | Pendiente       | Gateway API          | Gestión de identidad                     |
 | Domótica          | 📡 Mosquitto         | [MQTT](docs/mqtt.md) | LoadBalancer 1883/TCP | Broker de mensajería IoT              |
-| Utilidades        | 🧪 Whoami            | Pendiente       | Gateway API          | Servicio de prueba para rutas HTTP       |
 |                   | 🤖 Renovate          | [Renovate](docs/renovate.md) | N/A                  | Actualizaciones automáticas de dependencias |
 
 ### Servicios en Podman

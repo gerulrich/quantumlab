@@ -1,0 +1,6 @@
+region         = "us-ashburn-1"
+bucket_name    = "backups-homelab"
+compartment_id = "<compartment-ocid>"
+tenancy_id     = "<tenancy-ocid>"
+archive_after_days = 7
+delete_after_days  = 30

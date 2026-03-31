@@ -20,4 +20,5 @@ config/opentofu/.terraform.lock.hcl
 config/opentofu/terraform.tfvars
 config/opentofu/terraform.tfstate
 config/opentofu/terraform.tfstate.backup
+config/opentofu/terraform.tfvars.backend
 config/opentofu/*.tfplan

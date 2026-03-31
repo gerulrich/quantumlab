@@ -48,6 +48,7 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 | Plataforma        | 🐧 Talos Linux       | OS minimalista para Kubernetes ([Info adicional](docs/talos.md)) |
 | Orquestador       | ☸️ Kubernetes        | Cluster principal                        |
 | GitOps            | 🔄 FluxCD            | Infraestructura como código ([Info adicional](docs/fluxcd.md)) |
+| IaC               | 🧱 OpenTofu          | Infraestructura como código declarativa ([Info adicional](docs/opentofu.md)) |
 | Seguridad         | 🧾 SOPS              | Gestión segura de secretos ([Info adicional](docs/sops.md)) |
 |                   | 🔒 Cert-Manager      | Gestión automática de certificados TLS ([Info adicional](docs/cert-manager.md)) |
 | Red               | 🌐 Cilium            | CNI avanzado con observabilidad ([Info adicional](docs/cilium.md)) |

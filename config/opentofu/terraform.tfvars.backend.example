@@ -1,0 +1,12 @@
+# ============================================================================
+# OpenTofu Remote State Backend Configuration Template
+# ============================================================================
+
+# S3-compatible endpoint for OCI Object Storage
+s3_endpoint       = "https://<NAMESPACE>.compat.objectstorage.us-ashburn-1.oraclecloud.com"
+
+# Access Key ID for S3 authentication
+s3_access_key_id  = "ocid1.tenancy.oc1..aaaaaaaato75yf4tuv2qszsfz..........."
+
+# Secret Access Key for S3 authentication
+s3_secret_access_key = "................/+............/............=="

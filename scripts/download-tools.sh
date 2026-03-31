@@ -84,8 +84,29 @@ download_versioned_binary "talosctl" "$TALOSCTL_VERSION" "
     curl -L --fail -o talosctl-${TALOSCTL_VERSION} https://github.com/siderolabs/talos/releases/download/${TALOSCTL_VERSION}/talosctl-${OS}-${CLI_ARCH}
 "
 
+# OpenTofu
+OPENTOFU_VERSION=$(curl -s https://api.github.com/repos/opentofu/opentofu/releases/latest | jq -r .tag_name)
+download_versioned_binary "tofu" "$OPENTOFU_VERSION" "
+    curl -L --fail -o tofu_${OPENTOFU_VERSION#v}_${OS}_${CLI_ARCH}.tar.gz https://github.com/opentofu/opentofu/releases/download/${OPENTOFU_VERSION}/tofu_${OPENTOFU_VERSION#v}_${OS}_${CLI_ARCH}.tar.gz
+    tar xzf tofu_${OPENTOFU_VERSION#v}_${OS}_${CLI_ARCH}.tar.gz
+    mv tofu tofu-${OPENTOFU_VERSION}
+    rm tofu_${OPENTOFU_VERSION#v}_${OS}_${CLI_ARCH}.tar.gz
+"
+
+# OCI CLI
+OCI_CLI_VERSION=$(curl -s https://api.github.com/repos/oracle/oci-cli/releases/latest | jq -r .tag_name)
+download_versioned_binary "oci" "$OCI_CLI_VERSION" "
+    OCI_INSTALL_DIR=\$PWD/oci-cli-${OCI_CLI_VERSION#v}
+    OCI_SCRIPT_DIR=\$PWD/oci-cli-scripts-${OCI_CLI_VERSION#v}
+
+    curl -L --fail -o oci-install.sh https://raw.githubusercontent.com/oracle/oci-cli/${OCI_CLI_VERSION}/scripts/install/install.sh
+    bash oci-install.sh --accept-all-defaults --install-dir \"\$OCI_INSTALL_DIR\" --exec-dir \"\$PWD\" --script-dir \"\$OCI_SCRIPT_DIR\"
+    mv oci oci-${OCI_CLI_VERSION}
+    rm -f oci-install.sh
+"
+
 # Limpiar archivos innecesarios
-rm -f $PWD/bin/LICENSE $PWD/bin/README.md
+rm -f $PWD/bin/LICENSE $PWD/bin/README.md $PWD/bin/CHANGELOG.md
 
 echo ""
 echo "✓ Todas las herramientas han sido instaladas correctamente"

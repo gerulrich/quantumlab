@@ -12,6 +12,7 @@ spec:
   - "nginx.lan.${DOMAIN}"
   - "pihole.lan.${DOMAIN}"
   - "whoami.lan.${DOMAIN}"
+  - "netboot.lan.${DOMAIN}"
   rules:
   - matches:
     - path:
@@ -34,6 +35,7 @@ spec:
   - "nginx.lan.${DOMAIN}"
   - "pihole.lan.${DOMAIN}"
   - "whoami.lan.${DOMAIN}"
+  - "netboot.lan.${DOMAIN}"
   rules:
   - matches:
     - path:

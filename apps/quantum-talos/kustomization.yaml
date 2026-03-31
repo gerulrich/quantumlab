@@ -9,5 +9,4 @@ resources:
   # - n8n
   # - photoprism
   - pocketid
-  - whoami
   - oauth2-proxy

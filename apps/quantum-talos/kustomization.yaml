@@ -5,7 +5,9 @@ resources:
   - cloudflared
   - nginx
   - netbootxyz
+  # IoT
   - mosquitto
+  - mqtt-explorer
   # - n8n
   # - photoprism
   - pocketid

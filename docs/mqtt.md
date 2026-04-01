@@ -12,7 +12,7 @@ Explicación de los manifiestos
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: mqtt
+  name: iot
 ```
 
 2) ConfigMap con la configuración del broker
@@ -115,7 +115,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mosquitto
-  namespace: mqtt
+  namespace: iot
   labels:
     color: blue   # pide IP del pool 'blue-pool' en Cilium
 spec:

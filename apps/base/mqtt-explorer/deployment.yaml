@@ -1,0 +1,27 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mqtt-explorer
+  namespace: iot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mqtt-explorer
+  template:
+    metadata:
+      labels:
+        app: mqtt-explorer
+    spec:
+      containers:
+      - name: mqtt-explorer
+        image: smeagolworms4/mqtt-explorer:latest
+        ports:
+        - containerPort: 4000
+        volumeMounts:
+        - name: data-volume
+          mountPath: /mqtt-explorer/config
+      volumes:
+      - name: data-volume
+        emptyDir: {}

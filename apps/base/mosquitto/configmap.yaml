@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: mosquitto-config
-  namespace: mqtt
+  namespace: iot
 data:
   mosquitto.conf: |
     persistence false

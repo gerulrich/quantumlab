@@ -12,6 +12,7 @@ spec:
   - "nginx.lan.${DOMAIN}"
   - "pihole.lan.${DOMAIN}"
   - "netboot.lan.${DOMAIN}"
+  - "mqtt.lan.${DOMAIN}"
   rules:
   - matches:
     - path:
@@ -34,6 +35,7 @@ spec:
   - "nginx.lan.${DOMAIN}"
   - "pihole.lan.${DOMAIN}"
   - "netboot.lan.${DOMAIN}"
+  - "mqtt.lan.${DOMAIN}"
   rules:
   - matches:
     - path:

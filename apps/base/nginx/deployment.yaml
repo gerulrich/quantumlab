@@ -34,3 +34,5 @@ spec:
             path: pihole.conf
           - key: netboot.lan.conf
             path: netboot.conf
+          - key: mqtt-explorer.lan.conf
+            path: mqtt-explorer.conf

@@ -22,6 +22,12 @@ spec:
         - tunnel
         - --config
         - /etc/cloudflared/config/config.yaml
+        - --credentials-file
+        - /etc/cloudflared/creds/credentials.json
+        - --protocol # https://github.com/cloudflare/cloudflared/issues/1176#issuecomment-2404546711
+        - http2      # didnt seem to need the sysctl changes
+        - --metrics
+        - 0.0.0.0:2000
         - run
         livenessProbe:
           httpGet:

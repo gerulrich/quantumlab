@@ -5,6 +5,15 @@ metadata:
   name: nginx-config
   namespace: nginx
 data:
+  default.conf: |
+    server {
+      listen       80 default_server;
+      server_name  _;
+      location / {
+          root   /usr/share/nginx/html;
+          index  index.html index.htm;
+      }
+    }
   pihole.lan.conf: |
     server {
       listen 80;

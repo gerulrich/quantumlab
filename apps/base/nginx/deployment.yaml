@@ -30,6 +30,8 @@ spec:
         configMap:
           name: nginx-config
           items:
+          - key: default.conf
+            path: default.conf
           - key: pihole.lan.conf
             path: pihole.conf
           - key: netboot.lan.conf

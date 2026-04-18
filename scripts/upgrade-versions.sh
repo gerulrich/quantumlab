@@ -17,6 +17,9 @@ KUBERNETES_VERSION=$(curl -s https://api.github.com/repos/kubernetes/kubernetes/
 echo "Kubernetes version: $KUBERNETES_VERSION"
 sed -i.bak "s/export KUBERNETES_VERSION=\".*\"/export KUBERNETES_VERSION=\"$KUBERNETES_VERSION\"/" "$ENV_FILE"
 rm -f "$ENV_FILE.bak"
+KUBERNETES_NEXT_PATCH=$(echo "$KUBERNETES_VERSION" | awk -F. '{print $1"."$2"."$3+1}')
+sed -E -i.bak "s/(upgrade-k8s --to )[0-9]+\.[0-9]+\.[0-9]+/\1${KUBERNETES_NEXT_PATCH}/g" "docs/talos.md"
+rm -f "docs/talos.md.bak"
 
 # Get latest Flux version
 FLUX_VERSION=$(curl -s https://api.github.com/repos/fluxcd/flux2/releases/latest | jq -r .tag_name | sed 's/^v//')

@@ -1,92 +1,99 @@
-# Cloudflared - Túnel de Cloudflare
+# Cloudflared
 
-Documentación para gestionar el túnel de Cloudflare (cloudflared) que expone servicios del cluster a través de un túnel seguro sin necesidad de puertos abiertos.
+Esta guía explica cómo gestionar el túnel de Cloudflare (`cloudflared`) para publicar servicios del clúster mediante una conexión segura, sin exponer puertos públicos.
 
-## Introducción al Túnel
+## Introducción
 
-El túnel de Cloudflare (`quantum-tunnel`) se ejecuta como un deployment en Kubernetes y crea una conexión persistente hacia los servidores de Cloudflare. Esto permite exponer servicios internos del cluster sin abrir puertos en el firewall.
+El túnel de Cloudflare (`quantum-k8s-tunnel`) se ejecuta como un deployment en Kubernetes y mantiene una conexión persistente con la red de Cloudflare. Esto permite exponer servicios internos del clúster sin abrir puertos en el firewall.
 
 **Ventajas:**
 - No requiere puertos abiertos públicamente
 - SSL/TLS automático
-- Control de acceso y analytics
 
-## Gestión del Túnel desde CLI
+## Gestión del Túnel desde OpenTofu
 
-El túnel es gestionado principalmente desde la **CLI de Cloudflare** (`wrangler` o `cloudflare-cli`). Los comandos se ejecutan fuera del cluster para crear y configurar el túnel.
+La configuración se divide en dos partes:
 
-### Comandos Principales del Túnel
+- **Infraestructura en Cloudflare (OpenTofu):** túnel y registros DNS en `config/opentofu/cloudflare.tf`.
+- **Enrutamiento interno en Kubernetes (ConfigMap):** reglas `ingress` en `apps/base/cloudflared/config-map.yaml`.
 
-**Ver estado del túnel:**
-```bash
-cloudflare tunnel list
+Este enfoque mantiene toda la configuración versionada en Git y evita la administración manual del túnel fuera de OpenTofu.
+
+## Configuración de DNS con OpenTofu
+
+### Variables necesarias
+
+Define en `config/opentofu/terraform.tfvars`:
+
+- `cloudflare_enabled = true`
+- `cloudflare_api_token`
+- `cloudflare_account_id`
+- `cloudflare_zone_id`
+- `cloudflare_domain_name`
+
+### Dónde se define cada hostname
+
+En `config/opentofu/cloudflare.tf`, el recurso `cloudflare_dns_record.tunnel_routes` usa un `for_each` con los subdominios publicados por el túnel.
+
+Ejemplo:
+
+```hcl
+for_each = var.cloudflare_enabled ? toset([
+  "ng",     # ng.<dominio>
+  "photos", # photos.<dominio>
+]) : toset([])
 ```
 
-**Ver credenciales del túnel:**
-```bash
-cloudflare tunnel token quantum-tunnel
-```
+Con eso, OpenTofu crea el CNAME como proxy a `<tunnel_id>.cfargotunnel.com` para cada host.
 
-**Crear un nuevo túnel (si fuera necesario):**
-```bash
-cloudflare tunnel create quantum-tunnel
-```
-
-**Ver rutas (ingresos) del túnel:**
-```bash
-cloudflare tunnel route list quantum-tunnel
-```
-
-## Agregar un Nuevo Ingreso (Hostname/Servicio)
-
-Los nuevos ingresos se agregan modificando el ConfigMap en el repositorio de Flux.
-
-**1. Edita el archivo de configuración del ConfigMap:**
+### Aplicar cambios de DNS
 
 ```bash
-# Edita el archivo de configuración base en el repositorio
-vim apps/base/cloudflared/config-map.yaml
+source scripts/quantum-env.sh
+tofu plan
+tofu apply
 ```
 
-**2. Agrega una nueva línea en la sección `ingress`:**
+## Configuración de ingress en Cloudflared (ConfigMap)
+
+El archivo `apps/base/cloudflared/config-map.yaml` controla cómo `cloudflared` enruta cada hostname al servicio interno de Kubernetes.
+
+Ejemplo base:
 
 ```yaml
 data:
   config.yaml: |
-    tunnel: quantum-tunnel
+    tunnel: quantum-k8s-tunnel
     credentials-file: /etc/cloudflared/creds/credentials.json
     metrics: 0.0.0.0:2000
     no-autoupdate: true
     ingress:
     - hostname: ng.${DOMAIN}
       service: http://nginx.nginx.svc.cluster.local:80
-    - hostname: photos.${DOMAIN}
-      service: http://photoprism.photoprism.svc.cluster.local:2342
-    - hostname: newservice.${DOMAIN}                          # ← NUEVO INGRESO
-      service: http://newservice.namespace.svc.cluster.local:PORT  # ← NUEVO INGRESO
     - service: http_status:404
 ```
 
-**3. Sube los cambios a la rama principal mediante un Pull Request:**
+### Parámetros importantes
 
-Una vez realizado el commit en tu rama local, crea un Pull Request para que los cambios se revisen e integren en la rama principal del repositorio.
+- `tunnel`: nombre del túnel que debe coincidir con el túnel administrado por OpenTofu.
+- `credentials-file`: ruta al secreto montado con las credenciales del túnel.
+- `metrics`: endpoint de métricas de `cloudflared`.
+- `no-autoupdate`: evita autoactualizaciones fuera del flujo GitOps.
+- `ingress`: lista ordenada de reglas de enrutamiento.
+- `hostname`: FQDN público que llega por Cloudflare.
+- `service`: destino interno en Kubernetes (`http://servicio.namespace.svc.cluster.local:puerto`).
+- `http_status:404`: regla final de fallback para tráfico no coincidente.
 
-**4. Una vez que el PR es aprobado y mergeado, Flux sincronizará automáticamente los cambios:**
+## Checklist rápido para un nuevo ingress
 
-```bash
-flux reconcile source git flux-system
-flux reconcile kustomization flux-system
-```
-
-**5. Verifica que el deployment se actualizó:**
-
-```bash
-kubectl rollout status deployment/cloudflared -n cloudflared
-```
+1. DNS: agrega el subdominio en `config/opentofu/cloudflare.tf`.
+2. Routing: agrega la regla `hostname` + `service` en `apps/base/cloudflared/config-map.yaml`.
+3. OpenTofu: ejecuta `tofu plan` y `tofu apply`.
+4. GitOps: haz commit/push y espera sincronización de Flux (o fuerza reconcile).
 
 ### Estructura del Servicio en K8s
 
-Cuando agreguess un nuevo servicio, asegúrate de que exista en tu cluster:
+Cuando agregues un nuevo servicio, asegúrate de que exista en tu clúster y de usar el DNS interno correcto:
 
 ```yaml
 # El formato es: http://SERVICIO.NAMESPACE.svc.cluster.local:PUERTO
@@ -101,64 +108,30 @@ Cuando agreguess un nuevo servicio, asegúrate de que exista en tu cluster:
   service: http://admin-panel.monitoring.svc.cluster.local:9090
 ```
 
-## Verificación
-
-### Verificar que el túnel está activo
-
-```bash
-kubectl get deployment -n cloudflared
-kubectl get pods -n cloudflared
-```
-
-### Ver logs del túnel
-
-```bash
-kubectl logs -f deployment/cloudflared -n cloudflared
-```
-
-### Verificar conectividad a un ingreso
-
-```bash
-curl https://ng.${DOMAIN}
-curl https://photos.${DOMAIN}
-```
-
 ## Troubleshooting
 
-### El túnel muestra estado "Disconnected"
+### 1) Revisar logs
 
-Verifica los logs:
 ```bash
-kubectl logs deployment/cloudflared -n cloudflared
+kubectl logs deploy/cloudflared -n cloudflared
 ```
 
-Reinicia el deployment:
+### 2) Reiniciar deployment
+
 ```bash
-kubectl rollout restart deployment/cloudflared -n cloudflared
+kubectl rollout restart deploy/cloudflared -n cloudflared
+kubectl rollout status deploy/cloudflared -n cloudflared
 ```
 
-### Un ingreso no responde
+### 3) Si DNS resuelve pero no enruta al servicio
 
-1. Verifica que el servicio existe y está disponible:
-```bash
-kubectl get svc -A | grep SERVICIO
-kubectl get endpoints -n NAMESPACE SERVICIO
-```
+Verifica que la regla `ingress` esté en el ConfigMap y que el `service`/puerto exista en Kubernetes.
 
-2. Verifica la configuración en el ConfigMap:
 ```bash
 kubectl get configmap cloudflared-configmap -n cloudflared -o yaml
+kubectl get svc -n <namespace>
+kubectl get endpoints -n <namespace> <service>
 ```
-
-3. Comprueba que el puerto es correcto en el servicio
-
-### Reiniciar cloudflared
-
-```bash
-kubectl delete pod -n cloudflared -l app=cloudflared
-```
-
-El deployment creará nuevos pods automáticamente.
 
 ## Referencias
 

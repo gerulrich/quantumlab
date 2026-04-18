@@ -2,15 +2,13 @@
 
 ![Estado](https://img.shields.io/badge/Estado-En%20Desarrollo-yellow)
 ![Licencia](https://img.shields.io/badge/Licencia-MIT-blue)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.35.3-326CE5?logo=kubernetes&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.35.4-326CE5?logo=kubernetes&logoColor=white)
 ![Talos](https://img.shields.io/badge/Talos-v1.12.6-lightgrey?logo=linux&logoColor=white)
 ![FluxCD](https://img.shields.io/badge/FluxCD-v2.8.5-4353ff?logo=flux&logoColor=white)
 [![Cluster Check](https://img.shields.io/github/actions/workflow/status/gerulrich/quantumlab/cluster-status-badge.yml?branch=master&label=cluster%20check&style=flat)](https://github.com/gerulrich/quantumlab/actions/workflows/cluster-status-badge.yml)
 
-**QuantumLab** es un proyecto de infraestructura personal para un homelab basado en Kubernetes.
-Diseñado como entorno de pruebas, aprendizaje y portfolio técnico, implementa buenas prácticas de automatización y GitOps.
-
-> Un laboratorio personal donde la infraestructura se gestiona con estándares profesionales y se mantiene 100% como código.
+**QuantumLab** es un proyecto personal para un homelab basado en Kubernetes.
+Está diseñado como entorno de pruebas y aprendizaje, e implementa buenas prácticas de automatización y GitOps.
 
 ---
 
@@ -19,16 +17,26 @@ Diseñado como entorno de pruebas, aprendizaje y portfolio técnico, implementa 
 - Mantener una infraestructura 100% declarativa y versionada
 - Migrar servicios de Podman a Kubernetes siguiendo principios GitOps
 - Implementar buenas prácticas de DevOps en un entorno personal
-- Servir como entorno de aprendizaje y portfolio técnico
+- Servir como entorno de aprendizaje
+- Documentar el proceso de construcción y gestión del homelab
 
 ## 🏗️ Arquitectura
 
 QuantumLab utiliza:
+- **ProxMox** para gestion de máquinas virtuales
 - **Talos Linux** como sistema operativo inmutable y seguro
 - **Kubernetes** como plataforma de orquestación
 - **FluxCD** para gestión declarativa y GitOps
 - **Cilium** como CNI para networking avanzado
 - **SOPS + Age** para gestión segura de secretos
+- **OpenTofu** instraestructura como código
+
+Servicios en la nube:
+- **Github** para repositorio de código y GitOps (este mismo repositorio)
+- **Let's Encrypt** para certificados TLS gratuitos
+- **OCI** Oracle Cloud Infrastructure como storage s3 compatible para backups (utilizando la cuota gratuita)
+- **Cloudflare** para DNS y túnel seguro
+- **Tailscale** VPN para acceso remoto
 
 Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrarán progresivamente a Kubernetes.
 
@@ -45,14 +53,14 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 
 | Categoría         | Componente          | Descripción breve                        |
 |------------------|---------------------|------------------------------------------|
-| Plataforma        | 🐧 Talos Linux       | OS minimalista para Kubernetes ([Info adicional](docs/talos.md)) |
+| Plataforma        | 🐧 Talos Linux       | OS minimalista para Kubernetes ([doc](docs/talos.md)) |
 | Orquestador       | ☸️ Kubernetes        | Cluster principal                        |
-| GitOps            | 🔄 FluxCD            | Infraestructura como código ([Info adicional](docs/fluxcd.md)) |
-| IaC               | 🧱 OpenTofu          | Infraestructura como código declarativa ([Info adicional](docs/opentofu.md)) |
-| Seguridad         | 🧾 SOPS              | Gestión segura de secretos ([Info adicional](docs/sops.md)) |
+| GitOps            | 🔄 FluxCD            | Infraestructura como código ([doc](docs/fluxcd.md)) |
+| IaC               | 🧱 OpenTofu          | Infraestructura como código declarativa ([doc](docs/opentofu.md)) |
+| Seguridad         | 🧾 SOPS              | Gestión segura de secretos ([doc](docs/sops.md)) |
 |                   | 🔒 Cert-Manager      | Gestión automática de certificados TLS ([Info adicional](docs/cert-manager.md)) |
 | Red               | 🌐 Cilium            | CNI avanzado con observabilidad ([Info adicional](docs/cilium.md)) |
-|                   | ☁️ Cloudflared       | Tunnel seguro hacia Cloudflare ([Info adicional](docs/cloudflared.md)) |
+|                   | ☁️ Cloudflared       | Tunnel seguro hacia Cloudflare ([doc](docs/cloudflared.md)) |
 | VPN / Mesh        | 🧠 Tailscale         | Red privada entre dispositivos           |
 | Paquetes          | 🎯 Helm              | Gestión de charts                        |
 
@@ -61,11 +69,11 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 | Categoría         | Servicio            | Documentación   | Exposición           | Descripción breve                        |
 |------------------|---------------------|-----------------|----------------------|------------------------------------------|
 | Infraestructura   | 🌐 NGINX             | Pendiente       | Servicio HTTP interno| Reverse proxy                            |
-|                   | 🥾 Netboot.xyz       | [Netboot.xyz](docs/netbootxyz.md) | `netboot.lan.${DOMAIN}` + LB | Boot PXE/iPXE y utilidades de rescate    |
+|                   | 🥾 Netboot.xyz       | [doc](docs/netbootxyz.md) | `netboot.lan.${DOMAIN}` + LB | Boot PXE/iPXE y utilidades de rescate    |
 |                   | 🔐 OAuth2 Proxy      | Pendiente       | Gateway API          | Proxy de autenticación                   |
 |                   | 🪪 Pocket ID         | Pendiente       | Gateway API          | Gestión de identidad                     |
-| Domótica          | 📡 Mosquitto         | [MQTT](docs/mqtt.md) | LoadBalancer 1883/TCP | Broker de mensajería IoT              |
-|                   | 🤖 Renovate          | [Renovate](docs/renovate.md) | N/A                  | Actualizaciones automáticas de dependencias |
+| Domótica          | 📡 Mosquitto         | [doc](docs/mqtt.md) | LoadBalancer 1883/TCP | Broker de mensajería IoT              |
+|                   | 🤖 Renovate          | [doc](docs/renovate.md) | N/A                  | Actualizaciones automáticas de dependencias |
 
 ### Servicios en Podman
 

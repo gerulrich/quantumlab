@@ -7,11 +7,18 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(dirname "$SCRIPT_DIR")"
+STATE_BUCKET_NAME="${STATE_BUCKET_NAME:-opentofu-state-homelab}"
+OCI_CONFIG_FILE="${OCI_CLI_CONFIG_FILE:-$HOME/.oci/config}"
+OCI_PROFILE="${OCI_CLI_PROFILE:-DEFAULT}"
+REGION="${REGION:-}"
+TFVARS_FILE="$REPO_ROOT/config/opentofu/terraform.tfvars"
+TFVARS_EXAMPLE_FILE="$REPO_ROOT/config/opentofu/terraform.tfvars.example"
 
 source "$REPO_ROOT/scripts/quantum-env.sh"
 
-STATE_BUCKET_NAME="${STATE_BUCKET_NAME:-opentofu-state-homelab}"
-REGION="${REGION:-us-ashburn-1}"
+get_oci_config_value() {
+  awk -F= -v k="$1" '$1 ~ "^[[:space:]]*" k "[[:space:]]*$" {gsub(/^[ \t]+|[ \t]+$/, "", $2); print $2; exit}' "$OCI_CONFIG_FILE"
+}
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -30,14 +37,38 @@ if ! command -v oci &> /dev/null; then
   exit 1
 fi
 
+if ! command -v jq &> /dev/null; then
+  echo -e "${RED}Error: jq not found${NC}"
+  echo "Install with: bash scripts/download-tools.sh"
+  exit 1
+fi
+
 # Verify that OCI CLI credentials are configured
-if [[ -z "${OCI_CLI_CONFIG_FILE:-}" && ! -f ~/.oci/config ]]; then
+if [[ ! -f "$OCI_CONFIG_FILE" ]]; then
   echo -e "${RED}Error: OCI CLI credentials not found${NC}"
-  echo "Configure with: oci session authenticate"
+  echo "Configure with: oci setup config"
   exit 1
 fi
 
 echo -e "${YELLOW}Gathering OCI information...${NC}"
+
+ensure_tfvars_file() {
+  if [[ -f "$TFVARS_FILE" ]]; then
+    return
+  fi
+
+  if [[ ! -f "$TFVARS_EXAMPLE_FILE" ]]; then
+    echo -e "${RED}Error: Terraform example variables file not found${NC}"
+    echo "Missing file: $TFVARS_EXAMPLE_FILE"
+    exit 1
+  fi
+
+  cp "$TFVARS_EXAMPLE_FILE" "$TFVARS_FILE"
+  chmod 600 "$TFVARS_FILE"
+  echo -e "${GREEN}✓ Created $TFVARS_FILE from terraform.tfvars.example${NC}"
+}
+
+ensure_tfvars_file
 
 # Retrieve the tenancy namespace
 NAMESPACE=$(oci os ns get --query 'data' --raw-output 2>/dev/null || echo "")
@@ -49,30 +80,46 @@ fi
 
 echo -e "${GREEN}✓ Namespace: $NAMESPACE${NC}"
 
-# Get the tenancy compartment ID (default)
-# If configured in terraform.tfvars, use it; otherwise exit with warning
-if [[ -f "$REPO_ROOT/config/opentofu/terraform.tfvars" ]]; then
-  COMPARTMENT_ID=$(grep "compartment_id = " "$REPO_ROOT/config/opentofu/terraform.tfvars" | cut -d'"' -f2)
-else
-  echo -e "${YELLOW}Warning: terraform.tfvars not found${NC}"
-  echo "Please configure it first with your OCI compartment ID"
-  exit 1
+# Load missing values from OCI config profile
+if [[ -z "$REGION" ]]; then
+  REGION="$(get_oci_config_value region)"
+fi
+
+TENANCY_ID="$(get_oci_config_value tenancy)"
+COMPARTMENT_ID="$(get_oci_config_value compartment_id)"
+if [[ -z "$COMPARTMENT_ID" ]]; then
+  COMPARTMENT_ID="$TENANCY_ID"
 fi
 
 if [[ -z "$COMPARTMENT_ID" ]]; then
-  echo -e "${RED}Error: compartment_id not found in terraform.tfvars${NC}"
+  echo -e "${RED}Error: compartment_id/tenancy not found in OCI config profile [$OCI_PROFILE]${NC}"
   exit 1
 fi
 
+if [[ -z "$TENANCY_ID" ]]; then
+  echo -e "${RED}Error: tenancy not found in OCI config profile [$OCI_PROFILE]${NC}"
+  exit 1
+fi
+
+if [[ -z "$REGION" ]]; then
+  echo -e "${RED}Error: region not found in OCI config profile [$OCI_PROFILE]${NC}"
+  exit 1
+fi
+
+S3_ENDPOINT="https://$NAMESPACE.compat.objectstorage.$REGION.oraclecloud.com"
+
+
 echo -e "${GREEN}✓ Compartment: ${COMPARTMENT_ID:0:20}...${NC}"
+echo -e "${GREEN}✓ Region: $REGION${NC}"
+
 
 # Check if the bucket already exists
 echo -e "${YELLOW}Checking if bucket already exists...${NC}"
 if oci os bucket get --namespace-name "$NAMESPACE" --bucket-name "$STATE_BUCKET_NAME" &>/dev/null; then
   echo -e "${GREEN}✓ Bucket already exists: $STATE_BUCKET_NAME${NC}"
   echo ""
-  echo "Configuration for terraform.tfvars.backend (required fields):"
-  echo -e "${GREEN}s3_endpoint = \"https://$NAMESPACE.compat.objectstorage.$REGION.oraclecloud.com\"${NC}"
+  echo "update terraform.tfvars with backend configuration:"
+  echo -e "${GREEN}s3_endpoint = \"$S3_ENDPOINT\"${NC}"
   exit 0
 fi
 
@@ -100,12 +147,11 @@ echo -e "${YELLOW}========================================${NC}"
 echo -e "${GREEN}Bucket created successfully!${NC}"
 echo -e "${YELLOW}========================================${NC}"
 echo ""
-echo "Add this value to config/opentofu/terraform.tfvars.backend:"
+echo "update terraform.tfvars with backend configuration:"
 echo ""
-echo -e "${GREEN}s3_endpoint = \"https://$NAMESPACE.compat.objectstorage.$REGION.oraclecloud.com\"${NC}"
+echo -e "${GREEN}s3_endpoint = \"$S3_ENDPOINT\"${NC}"
 echo ""
 echo "Then run:"
 echo -e "${YELLOW}  source scripts/quantum-env.sh${NC}"
-echo -e "${YELLOW}  cd config/opentofu${NC}"
-echo -e "${YELLOW}  tofu init -backend-config=\"endpoint=\$TF_VAR_s3_endpoint\"${NC}"
+echo -e "${YELLOW}  tofu init${NC}"
 echo ""

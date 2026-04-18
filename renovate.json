@@ -1,8 +1,24 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "dependencyDashboard": true,
+  "timezone": "America/Argentina/Buenos_Aires",
+  "separateMajorMinor": true,
+  "separateMinorPatch": false,
+  "semanticCommits": "enabled",
+  "extends": ["abandonments:recommended"],
   "kubernetes": {
     "fileMatch": [
-      "\\.yaml$"
+      "^apps/.+\\.ya?ml$",
+      "^clusters/.+\\.ya?ml$",
+      "^infrastructure/.+\\.ya?ml$",
+      "^helm/.+\\.ya?ml$"
     ]
-  }
+  },
+  "packageRules": [
+    {
+      "matchManagers": ["terraform"],
+      "matchFileNames": ["config/opentofu/**"],
+      "groupName": "opentofu providers/modules"
+    }
+  ]
 }

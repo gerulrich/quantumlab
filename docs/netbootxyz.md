@@ -1,16 +1,6 @@
-# Netboot.xyz en Kubernetes
+# Netboot.xyz
 
-## Resumen
-
-Netboot.xyz está desplegado en Kubernetes como servicio de arranque por red y utilidades de rescate.
-La app corre en el namespace `netbootxyz` y expone tanto la UI web como el servicio TFTP.
-
-## Recursos desplegados
-
-- `Deployment` con la imagen `linuxserver/netbootxyz:0.7.6`
-- `Service` tipo `LoadBalancer`
-- `HTTPRoute` para la UI web
-- `PersistentVolume` y `PersistentVolumeClaim` para `config` y `assets`
+Netboot.xyz es una herramienta de arranque por red orientada a instalar sistemas operativos y ejecutar utilidades de rescate sin depender de medios físicos. Proporciona un entorno PXE listo para usar, con soporte para BIOS y UEFI, además de una interfaz web para gestionar assets y opciones de arranque.
 
 ## Exposición
 
@@ -75,8 +65,3 @@ config dnsmasq
 - Desde la red cliente, valida que la IP del `LoadBalancer` responda en `69/UDP`
 - Inicia un equipo en PXE y revisa si descarga `netboot.xyz.kpxe` o `netboot.xyz.efi`
 - Si falla el arranque, revisa primero el tipo de firmware del cliente y luego la IP anunciada por DHCP
-
-## Manifiestos
-
-- `apps/base/netbootxyz`
-- `apps/quantum-talos/netbootxyz`

@@ -7,8 +7,6 @@ Esta guía detalla los pasos necesarios para instalar un clúster de Kubernetes 
 - **Control Plane local**: 1 VM con QEMU (nova)
 - **Workers locales**: 1 VM con QEMU (quark)
 
-Este diseño híbrido permite aprovechar tanto los recursos locales como la capacidad de cómputo en la nube, creando un entorno distribuido y resiliente.
-
 > ⏱️ Tiempo estimado de implementación: 30-45 minutos
 
 ---

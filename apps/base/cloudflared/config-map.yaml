@@ -6,13 +6,11 @@ metadata:
   namespace: cloudflared
 data:
   config.yaml: |
-    tunnel: quantum-tunnel
+    tunnel: quantum-k8s-tunnel
     credentials-file: /etc/cloudflared/creds/credentials.json
     metrics: 0.0.0.0:2000
     no-autoupdate: true
     ingress:
     - hostname: ng.${DOMAIN}
       service: http://nginx.nginx.svc.cluster.local:80
-    - hostname: photos.${DOMAIN}
-      service: http://photoprism.photoprism.svc.cluster.local:2342
     - service: http_status:404

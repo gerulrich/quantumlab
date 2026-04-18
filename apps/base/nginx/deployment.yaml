@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.29.7
+        image: nginx:1.30.0
         ports:
         - containerPort: 80
         volumeMounts:
@@ -30,7 +30,11 @@ spec:
         configMap:
           name: nginx-config
           items:
+          - key: default.conf
+            path: default.conf
           - key: pihole.lan.conf
             path: pihole.conf
-          - key: whoami.lan.conf
-            path: whoami.conf
+          - key: netboot.lan.conf
+            path: netboot.conf
+          - key: mqtt-explorer.lan.conf
+            path: mqtt-explorer.conf

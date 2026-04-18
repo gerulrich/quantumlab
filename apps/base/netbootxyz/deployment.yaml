@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: netbootxyz
-        image: linuxserver/netbootxyz:2.0.53
+        image: ghcr.io/netbootxyz/netbootxyz:0.7.6-nbxyz17
         ports:
         - containerPort: 3000
           name: web-ui

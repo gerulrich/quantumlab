@@ -1,0 +1,27 @@
+# OCI management
+region         = "us-ashburn-1"
+compartment_id = "<compartment-ocid>"
+tenancy_id     = "<tenancy-ocid>"
+s3_endpoint          = "https://<NAMESPACE>.compat.objectstorage.us-ashburn-1.oraclecloud.com"
+s3_access_key_id     = "<s3-access-key-id>"
+s3_secret_access_key = "<s3-secret-access-key>"
+archive_after_days = 7
+delete_after_days  = 30
+
+# Tailscale management
+tailscale_oauth_client_id     = "<tailscale-oauth-client-id>"
+tailscale_oauth_client_secret = "<tailscale-oauth-client-secret>"
+tailscale_tailnet             = "example.com"
+tailscale_internal_subnet     = "192.168.10.0/24"
+
+# Cloudflare management
+cloudflare_enabled            = true
+cloudflare_api_token          = "<cloudflare-api-token>"
+cloudflare_account_id         = "<cloudflare-account-id>"
+cloudflare_zone_id            = "<cloudflare-zone-id>"
+cloudflare_domain_name        = "<DOMAIN>"
+
+# Proxmox management
+proxmox_endpoint              = "https://<proxmox_ip>:8006/"
+proxmox_api_token             = "<proxmox-user@realm!tokenid=secret>"
+proxmox_ssh_private_key_path  = "~/.ssh/id_rsa"

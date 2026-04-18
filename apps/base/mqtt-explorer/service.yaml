@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: iot
+  name: mqtt-explorer
+  labels:
+    app: mqtt-explorer
+spec:
+  selector:
+    app: mqtt-explorer
+  ports:
+  - name: web-ui
+    protocol: TCP
+    port: 4000
+    targetPort: 4000
+  type: ClusterIP

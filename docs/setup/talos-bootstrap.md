@@ -7,8 +7,6 @@ Esta guía detalla los pasos necesarios para instalar un clúster de Kubernetes 
 - **Control Plane local**: 1 VM con QEMU (nova)
 - **Workers locales**: 1 VM con QEMU (quark)
 
-Este diseño híbrido permite aprovechar tanto los recursos locales como la capacidad de cómputo en la nube, creando un entorno distribuido y resiliente.
-
 > ⏱️ Tiempo estimado de implementación: 30-45 minutos
 
 ---
@@ -175,34 +173,9 @@ talosctl dashboard --nodes $WORKER_IP
 
 ---
 
-## 7. 📝 Mantenimiento del clúster
+## 📖 Información adicional
 
-Para futuras operaciones de mantenimiento, estos comandos serán útiles:
+Para operaciones de mantenimiento y administración continua de Talos, consulta:
 
-```bash
-# Actualizar la configuración de Talos
-talosctl upgrade --nodes $CONTROL_PLANE_IP --image $TALOS_IMAGE
-talosctl reboot --mode powercycle -n $CONTROL_PLANE_IP
-
-talosctl upgrade --nodes $WORKER_IP --image $TALOS_IMAGE
-talosctl reboot --mode powercycle -n $WORKER_IP
-
-# Verificar la versión actual de Talos y Kubernetes
-talosctl version
-kubectl version
-```
-
-### Actualizar la versión de Kubernetes
-
-Para actualizar Kubernetes a una nueva versión, primero ejecuta una simulación para validar el proceso:
-
-```bash
-# Validar la actualización sin aplicar cambios (dry-run)
-talosctl --nodes $CONTROL_PLANE_IP -e $CONTROL_PLANE_IP upgrade-k8s --to 1.34.2 --dry-run
-
-# Aplicar la actualización de Kubernetes
-talosctl --nodes $CONTROL_PLANE_IP -e $CONTROL_PLANE_IP upgrade-k8s --to 1.34.2
-```
-
-Para más información, consulta la [documentación oficial de Talos Linux](https://www.talos.dev/).
+- [Talos](../talos.md)
 

@@ -11,7 +11,8 @@ spec:
   hostnames:
   - "nginx.lan.${DOMAIN}"
   - "pihole.lan.${DOMAIN}"
-  - "whoami.lan.${DOMAIN}"
+  - "netboot.lan.${DOMAIN}"
+  - "mqtt.lan.${DOMAIN}"
   rules:
   - matches:
     - path:
@@ -33,7 +34,8 @@ spec:
   hostnames:
   - "nginx.lan.${DOMAIN}"
   - "pihole.lan.${DOMAIN}"
-  - "whoami.lan.${DOMAIN}"
+  - "netboot.lan.${DOMAIN}"
+  - "mqtt.lan.${DOMAIN}"
   rules:
   - matches:
     - path:

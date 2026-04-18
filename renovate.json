@@ -1,8 +1,62 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "timezone": "America/Argentina/Buenos_Aires",
+  "separateMajorMinor": true,
+  "separateMinorPatch": false,
+  "extends": ["config:recommended", "abandonments:recommended"],
   "kubernetes": {
     "fileMatch": [
-      "\\.yaml$"
+      "^apps/.+\\.ya?ml$",
+      "^clusters/.+\\.ya?ml$",
+      "^infrastructure/.+\\.ya?ml$",
+      "^helm/.+\\.ya?ml$"
     ]
-  }
+  },
+  "packageRules": [
+    {
+      "matchManagers": ["dockerfile", "docker-compose"],
+      "addLabels": ["manager:docker"]
+    },
+    {
+      "matchManagers": ["flux"],
+      "addLabels": ["manager:flux"]
+    },
+    {
+      "matchManagers": ["kubernetes"],
+      "addLabels": ["manager:kubernetes"]
+    },
+    {
+      "matchManagers": ["kustomize"],
+      "addLabels": ["manager:kustomize"]
+    },
+    {
+      "matchManagers": ["helmv3"],
+      "addLabels": ["manager:helmv3"]
+    },
+    {
+      "matchManagers": ["helm-values"],
+      "addLabels": ["manager:helm-values"]
+    },
+    {
+      "matchManagers": ["terraform"],
+      "addLabels": ["manager:terraform"]
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "addLabels": ["update:major"]
+    },
+    {
+      "matchUpdateTypes": ["minor"],
+      "addLabels": ["update:minor"]
+    },
+    {
+      "matchUpdateTypes": ["patch"],
+      "addLabels": ["update:patch"]
+    },
+    {
+      "matchManagers": ["terraform"],
+      "matchFileNames": ["config/opentofu/**"],
+      "groupName": "opentofu providers/modules"
+    }
+  ]
 }

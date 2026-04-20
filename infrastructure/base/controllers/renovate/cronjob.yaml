@@ -18,6 +18,7 @@ spec:
               image: renovate/renovate:latest
               args:
                 - gerulrich/quantumlab
+                - gerulrich/ledfx
               envFrom:
                 - secretRef:
                     name: renovate-secrets

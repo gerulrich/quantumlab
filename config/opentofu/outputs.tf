@@ -38,3 +38,17 @@ output "cloudflare_tunnel_token_secret_json" {
   })
   sensitive = true
 }
+
+# GitHub Actions Secrets
+output "github_secrets_created" {
+  description = "GitHub Actions secrets created in repositories"
+  value = {
+    for repo in ["gerulrich/quantumlab", "gerulrich/ledfx", "gerulrich/qmusic", "gerulrich/qvideo"] : repo => {
+      DOCKERHUB_USERNAME = github_actions_secret.dockerhub_username[repo].secret_name
+      DOCKERHUB_TOKEN    = github_actions_secret.dockerhub_token[repo].secret_name
+      WEBHOOK_URL        = github_actions_secret.webhook_url[repo].secret_name
+      TS_OAUTH_CLIENT_ID = github_actions_secret.ts_oauth_client_id[repo].secret_name
+      TS_OAUTH_SECRET    = github_actions_secret.ts_oauth_secret[repo].secret_name
+    }
+  }
+}

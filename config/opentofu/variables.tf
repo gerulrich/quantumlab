@@ -124,3 +124,18 @@ variable "cloudflare_domain_name" {
   type        = string
   nullable    = false
 }
+
+# GitHub management
+variable "github_token" {
+  description = "GitHub Personal Access Token for repository management"
+  type        = string
+  sensitive   = true
+}
+
+variable "github_secrets" {
+  description = "GitHub Actions secrets to add to repositories"
+  type = map(object({
+    value = string
+  }))
+  sensitive = true
+}

@@ -25,3 +25,24 @@ cloudflare_domain_name        = "<DOMAIN>"
 proxmox_endpoint              = "https://<proxmox_ip>:8006/"
 proxmox_api_token             = "<proxmox-user@realm!tokenid=secret>"
 proxmox_ssh_private_key_path  = "~/.ssh/id_rsa"
+
+# GitHub management
+github_token = "<github-personal-access-token>"
+
+github_secrets = {
+  DOCKERHUB_USERNAME = {
+    value = "<your-dockerhub-username>"
+  }
+  DOCKERHUB_TOKEN = {
+    value = "<your-dockerhub-token>"
+  }
+  WEBHOOK_URL = {
+    value = "<your-webhook-url>"
+  },
+  TS_OAUTH_CLIENT_ID = {
+    value = "<client_id>"
+  },
+  TS_OAUTH_SECRET = {
+    value = "<client_secret>"
+  }
+}

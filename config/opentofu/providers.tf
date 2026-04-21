@@ -31,6 +31,10 @@ terraform {
       source  = "bpg/proxmox"
       version = "0.103.0"
     }
+    github = {
+      source  = "integrations/github"
+      version = "~> 6.0"
+    }
   }
 }
 
@@ -66,5 +70,9 @@ provider "proxmox" {
     username    = "root"
     private_key = file(pathexpand(var.proxmox_ssh_private_key_path))
   }
+}
+
+provider "github" {
+  token = var.github_token
 }
 

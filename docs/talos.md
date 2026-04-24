@@ -25,10 +25,10 @@ Para actualizar Kubernetes a una nueva versión, primero ejecuta una simulación
 
 ```bash
 # Validar la actualización sin aplicar cambios (dry-run)
-talosctl --nodes $CONTROL_PLANE_IP -e $CONTROL_PLANE_IP upgrade-k8s --to 1.35.4 --dry-run
+talosctl --nodes $CONTROL_PLANE_IP -e $CONTROL_PLANE_IP upgrade-k8s --to 1.36.0 --dry-run
 
 # Aplicar la actualización de Kubernetes
-talosctl --nodes $CONTROL_PLANE_IP -e $CONTROL_PLANE_IP upgrade-k8s --to 1.35.4
+talosctl --nodes $CONTROL_PLANE_IP -e $CONTROL_PLANE_IP upgrade-k8s --to 1.36.0
 ```
 
 ---

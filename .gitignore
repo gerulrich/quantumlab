@@ -3,6 +3,8 @@ config/quantum-talos/worker.yaml
 config/quantum-talos/controlplane.yaml
 config/quantum-talos/cluster-config.yaml
 config/quantum-talos/cluster-secrets.yaml
+# talos backups with timestamp
+config/quantum-talos/*.backup.*
 
 config/cilium/cilium.yaml
 **/talosconfig

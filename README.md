@@ -2,8 +2,8 @@
 
 ![Estado](https://img.shields.io/badge/Estado-En%20Desarrollo-yellow)
 ![Licencia](https://img.shields.io/badge/Licencia-MIT-blue)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.35.4-326CE5?logo=kubernetes&logoColor=white)
-![Talos](https://img.shields.io/badge/Talos-v1.12.6-lightgrey?logo=linux&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.36.0-326CE5?logo=kubernetes&logoColor=white)
+![Talos](https://img.shields.io/badge/Talos-v1.13.0-lightgrey?logo=linux&logoColor=white)
 ![FluxCD](https://img.shields.io/badge/FluxCD-v2.8.6-4353ff?logo=flux&logoColor=white)
 [![Cluster Check](https://img.shields.io/github/actions/workflow/status/gerulrich/quantumlab/cluster-status-badge.yml?branch=master&label=cluster%20check&style=flat)](https://github.com/gerulrich/quantumlab/actions/workflows/cluster-status-badge.yml)
 

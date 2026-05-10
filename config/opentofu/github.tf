@@ -8,6 +8,7 @@ data "github_repository" "repos" {
   for_each = toset([
     "gerulrich/quantumlab",
     "gerulrich/ledfx",
+    "gerulrich/qauth",
     "gerulrich/qmusic",
     "gerulrich/qvideo"
   ])

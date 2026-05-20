@@ -17,11 +17,11 @@ terraform {
   required_providers {
     oci = {
       source  = "oracle/oci"
-      version = "~> 8.13.0"
+      version = "~> 8.14.0"
     }
     tailscale = {
       source  = "tailscale/tailscale"
-      version = "0.28.0"
+      version = "0.29.1"
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"

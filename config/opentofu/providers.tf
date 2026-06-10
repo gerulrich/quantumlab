@@ -17,7 +17,7 @@ terraform {
   required_providers {
     oci = {
       source  = "oracle/oci"
-      version = "~> 8.16.0"
+      version = "~> 8.18.0"
     }
     tailscale = {
       source  = "tailscale/tailscale"
@@ -29,7 +29,7 @@ terraform {
     }
     proxmox = {
       source  = "bpg/proxmox"
-      version = "0.108.0"
+      version = "0.109.0"
     }
     github = {
       source  = "integrations/github"

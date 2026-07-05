@@ -31,7 +31,7 @@ La Gateway API proporciona recursos para configurar enrutamiento, balanceo de ca
 
 ```bash
 # Instalar los CRDs de la Gateway API
-kubectl apply --server-side=true -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/experimental-install.yaml
+kubectl apply --server-side=true -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.0/experimental-install.yaml
 ```
 
 > 📝 Estos comandos instalan las definiciones de recursos personalizados (CRDs) necesarias para la API Gateway.

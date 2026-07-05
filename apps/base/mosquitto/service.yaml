@@ -7,7 +7,7 @@ metadata:
   labels:
     color: blue
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: mosquitto.lan.${DOMAIN_NAME}
+    external-dns.alpha.kubernetes.io/hostname: mosquitto.lan.${DOMAIN}
     external-dns.alpha.kubernetes.io/ttl: "60"
 spec:
   selector:

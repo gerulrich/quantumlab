@@ -23,6 +23,25 @@ talosctl dashboard --nodes $CONTROL_PLANE_IP
 
 > ⚠️ No continúes hasta que todos los nodos estén completamente operativos después del reinicio. El clúster puede tardar unos minutos en estabilizarse.
 
+### 🧹 Limpiar residuos de Flannel (Muy Importante)
+
+Por defecto, Talos Linux incluye Flannel en su despliegue inicial. Aunque el patch configura el CNI en modo `none`, Kubernetes mantiene los recursos antiguos activos en el clúster. Debemos verificar su existencia y eliminarlos para evitar conflictos de red con Cilium.
+
+```bash
+# 1. Verificar si el DaemonSet de Flannel sigue activo
+kubectl get daemonset kube-flannel -n kube-system
+
+# 2. Si aparece en la lista, elimínalo junto con su configuración
+kubectl delete daemonset kube-flannel -n kube-system --ignore-not-found=true
+kubectl delete configmap kube-flannel-cfg -n kube-system --ignore-not-found=true
+
+# 3. Eliminar los permisos de RBAC creados originalmente para Flannel
+kubectl delete clusterrole kube-flannel --ignore-not-found=true
+kubectl delete clusterrolebinding kube-flannel --ignore-not-found=true
+```
+
+> ⚠️ **¡No omitas este paso!** Si mantienes Flannel y Cilium ejecutándose simultáneamente, el plano de red se corromperá, causando que componentes críticos como el `kube-controller-manager` entren en estado *unhealthy*.
+
 ---
 
 ## 2. 🧾 Instalar Gateway API

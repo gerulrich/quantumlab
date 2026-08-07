@@ -5,7 +5,6 @@
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.36.3-326CE5?logo=kubernetes&logoColor=white)
 ![Talos](https://img.shields.io/badge/Talos-v1.13.7-lightgrey?logo=linux&logoColor=white)
 ![FluxCD](https://img.shields.io/badge/FluxCD-v2.9.3-4353ff?logo=flux&logoColor=white)
-[![Cluster Check](https://img.shields.io/github/actions/workflow/status/gerulrich/quantumlab/cluster-status-badge.yml?branch=master&label=cluster%20check&style=flat)](https://github.com/gerulrich/quantumlab/actions/workflows/cluster-status-badge.yml)
 
 **QuantumLab** es un proyecto personal para un homelab basado en Kubernetes.
 Está diseñado como entorno de pruebas y aprendizaje, e implementa buenas prácticas de automatización y GitOps.

@@ -76,8 +76,6 @@ fi
 # Get latest Flux version
 FLUX_VERSION=$(curl -s https://api.github.com/repos/fluxcd/flux2/releases/latest | jq -r .tag_name | sed 's/^v//')
 echo "Flux version: $FLUX_VERSION"
-sed -i.bak "s/export FLUX_VERSION=\".*\"/export FLUX_VERSION=\"$FLUX_VERSION\"/" "$ENV_FILE"
-rm -f "$ENV_FILE.bak"
 
 # Get latest Cilium version
 CILIUM_VERSION=$(curl -s https://api.github.com/repos/cilium/cilium/releases/latest | jq -r .tag_name | sed 's/^v//')

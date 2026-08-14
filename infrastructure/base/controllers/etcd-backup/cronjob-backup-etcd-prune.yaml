@@ -1,3 +1,4 @@
+---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -20,28 +21,28 @@ spec:
             - --keep-monthly=12
             - --prune
             env:
-              - name: RESTIC_REPOSITORY
-                valueFrom:
-                  secretKeyRef:
-                    name: talos-etcd-s3-keys
-                    key: resticRepository
-                    optional: false
-              - name: RESTIC_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: talos-etcd-s3-keys
-                    key: resticKey
-                    optional: false
-              - name: AWS_ACCESS_KEY_ID
-                valueFrom:
-                  secretKeyRef:
-                    name: talos-etcd-s3-keys
-                    key: accessKeyId
-                    optional: false
-              - name: AWS_SECRET_ACCESS_KEY
-                valueFrom:
-                  secretKeyRef:
-                    name: talos-etcd-s3-keys
-                    key: secretAccessKey
-                    optional: false
+            - name: RESTIC_REPOSITORY
+              valueFrom:
+                secretKeyRef:
+                  name: talos-etcd-s3-keys
+                  key: resticRepository
+                  optional: false
+            - name: RESTIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: talos-etcd-s3-keys
+                  key: resticKey
+                  optional: false
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: talos-etcd-s3-keys
+                  key: accessKeyId
+                  optional: false
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: talos-etcd-s3-keys
+                  key: secretAccessKey
+                  optional: false
           restartPolicy: OnFailure

@@ -44,6 +44,11 @@ jobs:
           mkdir -p "$HOME/.ssh"
           ssh-keygen -t ed25519 -N "" -f "$HOME/.ssh/id_rsa" -q
 
+      - name: Create placeholder Talos worker configuration
+        run: |
+          mkdir -p ../quantum-talos
+          printf '%s\n' '# CI placeholder; the real worker configuration is not committed.' > ../quantum-talos/worker.yaml
+
       - name: Initialize providers
         run: tofu init -backend=false -input=false
 

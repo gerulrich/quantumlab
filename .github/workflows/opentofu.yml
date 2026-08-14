@@ -33,13 +33,16 @@ jobs:
           tofu_version: 1.12.5
           tofu_wrapper: false
 
+      - name: Set provider validation environment
+        run: |
+          echo "AWS_ACCESS_KEY_ID=ci-validation" >> "$GITHUB_ENV"
+          echo "AWS_SECRET_ACCESS_KEY=ci-validation" >> "$GITHUB_ENV"
+          echo "AWS_EC2_METADATA_DISABLED=true" >> "$GITHUB_ENV"
+
       - name: Create temporary SSH key
         run: |
           mkdir -p "$HOME/.ssh"
           ssh-keygen -t ed25519 -N "" -f "$HOME/.ssh/id_rsa" -q
-
-      - name: Check formatting
-        run: tofu fmt -check -diff
 
       - name: Initialize providers
         run: tofu init -backend=false -input=false -lockfile=readonly

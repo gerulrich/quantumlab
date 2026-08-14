@@ -14,11 +14,11 @@ spec:
           - name: restic
             image: restic/restic:0.19.1
             args:
-              - forget
-              - --keep-last=7
-              - --keep-weekly=4
-              - --keep-monthly=12
-              - --prune
+            - forget
+            - --keep-last=7
+            - --keep-weekly=4
+            - --keep-monthly=12
+            - --prune
             env:
               - name: RESTIC_REPOSITORY
                 valueFrom:

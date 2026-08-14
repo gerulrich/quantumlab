@@ -8,7 +8,7 @@ resource "oci_objectstorage_bucket" "backups" {
   name           = "backups-homelab"
   compartment_id = var.compartment_id
   namespace      = data.oci_objectstorage_namespace.ns.namespace
-  versioning     = "Suspended"
+  versioning     = "Disabled"
   access_type    = "NoPublicAccess"
   storage_tier   = "Standard"
 }
@@ -63,4 +63,13 @@ resource "oci_objectstorage_object_lifecycle_policy" "backups_policy" {
     time_amount = var.delete_after_days
     time_unit   = "DAYS"
   }
+}
+
+resource "oci_objectstorage_bucket" "talos_backup" {
+  name           = "talos-backup"
+  compartment_id = var.compartment_id
+  namespace      = data.oci_objectstorage_namespace.ns.namespace
+  versioning     = "Disabled"
+  access_type    = "NoPublicAccess"
+  storage_tier   = "Standard"
 }

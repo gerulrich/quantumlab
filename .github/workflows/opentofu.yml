@@ -1,0 +1,48 @@
+---
+name: Validate OpenTofu
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - "config/opentofu/**"
+      - ".github/workflows/opentofu.yml"
+  push:
+    branches: [master]
+    paths:
+      - "config/opentofu/**"
+      - ".github/workflows/opentofu.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate OpenTofu configuration
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: config/opentofu
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.12.5
+          tofu_wrapper: false
+
+      - name: Create temporary SSH key
+        run: |
+          mkdir -p "$HOME/.ssh"
+          ssh-keygen -t ed25519 -N "" -f "$HOME/.ssh/id_rsa" -q
+
+      - name: Check formatting
+        run: tofu fmt -check -diff
+
+      - name: Initialize providers
+        run: tofu init -backend=false -input=false -lockfile=readonly
+
+      - name: Validate configuration
+        run: tofu validate -no-color -var-file=terraform.tfvars.example

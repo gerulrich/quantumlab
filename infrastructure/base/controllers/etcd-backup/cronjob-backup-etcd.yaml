@@ -1,0 +1,84 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: etcd-backup
+  namespace: kube-system
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "12 4 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          initContainers:
+          - name: talosctl
+            image: ghcr.io/siderolabs/talosctl:v1.13.8
+            args:
+            - -n
+            - talos.lan.${DOMAIN}
+            - etcd
+            - snapshot
+            - /data/etcd.snapshot
+            volumeMounts:
+            - name: talos-secrets
+              mountPath: /var/run/secrets/talos.dev
+            - name: backupdata
+              mountPath: /data
+          containers:
+          - name: restic
+            image: restic/restic:0.19.1
+            workingDir: /data
+            args:
+            - backup
+            - --host
+            - kubernetes  # set a consistent hostname to avoid restic rescans
+            - --compression
+            - max
+            - -o
+            - s3.region=$(OCI_REGION)
+            - -o
+            - s3.bucket-lookup=path
+            - .           # use workingDir to get relative paths in backup
+            env:
+            - name: RESTIC_REPOSITORY
+              valueFrom:
+                secretKeyRef:
+                  name: talos-etcd-s3-keys
+                  key: resticRepository
+                  optional: false
+            - name: OCI_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: talos-etcd-s3-keys
+                  key: ociRegion
+                  optional: false
+            - name: RESTIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: talos-etcd-s3-keys
+                  key: resticKey
+                  optional: false
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: talos-etcd-s3-keys
+                  key: accessKeyId
+                  optional: false
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: talos-etcd-s3-keys
+                  key: secretAccessKey
+                  optional: false
+            volumeMounts:
+            - name: backupdata
+              mountPath: /data
+              readOnly: true
+          volumes:
+          - name: backupdata
+            emptyDir: {}
+          - name: talos-secrets
+            secret:
+              secretName: etcd-backup-talos-secrets
+          restartPolicy: OnFailure

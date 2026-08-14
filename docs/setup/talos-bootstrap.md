@@ -87,6 +87,27 @@ sed -i '/^---$/,/^$/ {
 }'  config/quantum-talos/controlplane.yaml
 ```
 
+Agrega el nombre DNS del endpoint de Talos a `certSANs` en `controlplane.yaml`:
+
+- `talos.lan.${DOMAIN}` (reemplaza `${DOMAIN}` por el dominio de tu red local).
+
+> El nombre debe resolver a la IP del nodo control-plane o a la Virtual IP antes de usarlo desde Kubernetes.
+
+En el mismo archivo, habilita el acceso a la API de Talos desde los pods de Kubernetes:
+
+```yaml
+machine:
+  features:
+    kubernetesTalosAPIAccess:
+      enabled: true
+      allowedRoles:
+        - os:etcd:backup
+      allowedKubernetesNamespaces:
+        - kube-system
+```
+
+Esto ultimo permitirá que los pods de Kubernetes puedan acceder a la API de Talos para realizar backups de etcd.
+
 
 > 📝 Este comando crea varios archivos en el directorio `config/quantum-talos/`, incluyendo controlplane.yaml, worker.yaml y talosconfig.
 

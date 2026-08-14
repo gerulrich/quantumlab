@@ -1,0 +1,8 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - secrets.yaml
+  - service-account.yaml
+  - cronjob-backup-etcd.yaml
+  - cronjob-backup-etcd-prune.yaml

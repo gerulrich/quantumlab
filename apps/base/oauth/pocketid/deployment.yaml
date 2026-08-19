@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pocketid
-  namespace: pocketid
+  namespace: oauth
 spec:
   replicas: 1
   selector:
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: pocketid
-          image: ghcr.io/pocket-id/pocket-id:latest
+          image: ghcr.io/pocket-id/pocket-id:v2.13.0
           env:
             - name: ENCRYPTION_KEY
               valueFrom:

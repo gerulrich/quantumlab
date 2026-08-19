@@ -35,7 +35,7 @@ data:
           entryPoints:
             - web
           service: pihole
-        
+
         mqtt:
           rule: "Host(`mqtt.lan.${DOMAIN}`)"
           entryPoints:
@@ -43,7 +43,7 @@ data:
           middlewares:
             - oauth2-proxy
           service: mqtt
-        
+
         netbootxyz:
           rule: "Host(`netbootxyz.lan.${DOMAIN}`)"
           entryPoints:
@@ -57,7 +57,7 @@ data:
           loadBalancer:
             servers:
               - url: "http://10.10.10.10"
-        
+
         mqtt:
           loadBalancer:
             servers:

@@ -11,10 +11,10 @@ data:
 
     allow_anonymous false
     password_file /mosquitto/config/passwordfile
-    #acl_file /mosquitto/config/aclfile
+    acl_file /mosquitto/config/aclfile
 
     listener 1883
   aclfile: |
-    # Usuario testuser puede publicar y suscribirse a todo
+    # Usuario mqtt_z2m puede publicar y suscribirse a todo
     user mqtt_z2m
     topic readwrite #

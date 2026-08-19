@@ -4,11 +4,8 @@ kind: Kustomization
 resources:
   - cloudflared
   - nginx
+  - oauth
   - netbootxyz
-  # IoT
-  - mosquitto
-  - mqtt-explorer
+  - iot
   # - n8n
   # - photoprism
-  - pocketid
-  - oauth2-proxy

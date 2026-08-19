@@ -10,5 +10,4 @@ resources:
   - mqtt-explorer
   # - n8n
   # - photoprism
-  - pocketid
-  - oauth2-proxy
+  - oauth

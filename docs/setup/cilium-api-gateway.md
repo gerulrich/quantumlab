@@ -38,6 +38,17 @@ kubectl delete configmap kube-flannel-cfg -n kube-system --ignore-not-found=true
 # 3. Eliminar los permisos de RBAC creados originalmente para Flannel
 kubectl delete clusterrole kube-flannel --ignore-not-found=true
 kubectl delete clusterrolebinding kube-flannel --ignore-not-found=true
+
+# Eliminar el DaemonSet de Flannel y sus recursos relacionados (Talos despliega Flannel en kube-system)
+kubectl delete daemonset -n kube-system kube-flannel --ignore-not-found=true
+kubectl delete configmap -n kube-system kube-flannel-cfg --ignore-not-found=true
+kubectl delete serviceaccount -n kube-system flannel --ignore-not-found=true
+kubectl delete clusterrolebinding flannel --ignore-not-found=true
+kubectl delete clusterrole flannel --ignore-not-found=true
+
+# Inspeccionar los archivos de configuración de CNI de Flannel en cada nodo para asegurarse de que no queden residuos (via talosctl)
+talosctl -n $CONTROL_PLANE_IP ls /etc/cni/net.d/
+talosctl -n $WORKER_NODE_IP ls /etc/cni/net.d/
 ```
 
 > ⚠️ **¡No omitas este paso!** Si mantienes Flannel y Cilium ejecutándose simultáneamente, el plano de red se corromperá, causando que componentes críticos como el `kube-controller-manager` entren en estado *unhealthy*.

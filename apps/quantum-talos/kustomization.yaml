@@ -9,3 +9,4 @@ resources:
   - iot
   # - n8n
   # - photoprism
+  - oauth

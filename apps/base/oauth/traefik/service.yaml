@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik
+  namespace: oauth
+  labels:
+    app: traefik
+spec:
+  ports:
+  - port: 80
+    name: http
+  selector:
+    app: traefik

@@ -33,7 +33,6 @@ spec:
         - --registry=noop
         - --policy=upsert-only
         - --provider=pihole
-        - --pihole-api-version=6
         - --pihole-server=http://10.10.10.10
         livenessProbe:
           httpGet:

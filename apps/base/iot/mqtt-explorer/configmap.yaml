@@ -35,5 +35,13 @@ data:
             "password": "__MQTT_PASSWORD__"
           }
         }
+      },
+      "Settings": {
+        "timeLocale": "es",
+        "topicOrder": "abc",
+        "highlightTopicUpdates": true,
+        "valueRendererDisplayMode": "diff",
+        "selectTopicWithMouseOver": true,
+        "theme": "dark"
       }
     }

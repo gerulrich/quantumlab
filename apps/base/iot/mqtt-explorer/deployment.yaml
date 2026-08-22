@@ -14,6 +14,31 @@ spec:
       labels:
         app: mqtt-explorer
     spec:
+      initContainers:
+      - name: render-settings
+        image: alpine:3.22
+        command:
+        - /bin/sh
+        - -c
+        - |
+          set -eu
+          username="$(cat /secrets/mqtt-username)"
+          password="$(cat /secrets/mqtt-password)"
+          username_escaped="$(printf '%s' "${username}" | sed -e 's/[&|\\]/\\&/g')"
+          password_escaped="$(printf '%s' "${password}" | sed -e 's/[&|\\]/\\&/g')"
+          sed \
+            -e "s|__MQTT_USERNAME__|${username_escaped}|g" \
+            -e "s|__MQTT_PASSWORD__|${password_escaped}|g" \
+            /config-template/settings.json > /mqtt-explorer/config/settings.json
+        volumeMounts:
+        - name: config-template
+          mountPath: /config-template
+          readOnly: true
+        - name: mqtt-secrets
+          mountPath: /secrets
+          readOnly: true
+        - name: data-volume
+          mountPath: /work
       containers:
       - name: mqtt-explorer
         image: smeagolworms4/mqtt-explorer:latest
@@ -25,3 +50,17 @@ spec:
       volumes:
       - name: data-volume
         emptyDir: {}
+      - name: config-template
+        configMap:
+          name: mqtt-explorer-config
+          items:
+          - key: settings.json
+            path: settings.json
+      - name: mqtt-secrets
+        secret:
+          secretName: mqtt-explorer-secrets
+          items:
+          - key: mqtt-username
+            path: mqtt-username
+          - key: mqtt-password
+            path: mqtt-password

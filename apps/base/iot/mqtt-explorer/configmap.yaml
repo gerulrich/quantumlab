@@ -1,0 +1,39 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mqtt-explorer-config
+  namespace: iot
+data:
+  settings.json: |
+    {
+      "ConnectionManager_connections": {
+        "c6aa1312-35ae-402c-9897-8f64ed05a9eb": {
+          "configVersion": 1,
+          "certValidation": true,
+          "clientId": "mqtt-explorer-640abb88",
+          "id": "c6aa1312-35ae-402c-9897-8f64ed05a9eb",
+          "name": "moaquitto - k8s",
+          "encryption": false,
+          "password": "__MQTT_PASSWORD__",
+          "username": "__MQTT_USERNAME__",
+          "subscriptions": [
+            {
+              "topic": "#",
+              "qos": 0
+            },
+            {
+              "topic": "$SYS/#",
+              "qos": 0
+            }
+          ],
+          "type": "mqtt",
+          "host": "mosquitto.iot.svc.cluster.local",
+          "port": 1883,
+          "protocol": "mqtt",
+          "changeSet": {
+            "password": "__MQTT_PASSWORD__"
+          }
+        }
+      }
+    }

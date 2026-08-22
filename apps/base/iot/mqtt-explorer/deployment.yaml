@@ -24,11 +24,11 @@ spec:
           set -eu
           username="$(cat /secrets/mqtt-username)"
           password="$(cat /secrets/mqtt-password)"
-          username_escaped="$(printf '%s' "${username}" | sed -e 's/[&|\\]/\\&/g')"
-          password_escaped="$(printf '%s' "${password}" | sed -e 's/[&|\\]/\\&/g')"
+          username_escaped="$(printf '%s' "$${username}" | sed -e 's/[&|\\]/\\&/g')"
+          password_escaped="$(printf '%s' "$${password}" | sed -e 's/[&|\\]/\\&/g')"
           sed \
-            -e "s|__MQTT_USERNAME__|${username_escaped}|g" \
-            -e "s|__MQTT_PASSWORD__|${password_escaped}|g" \
+            -e "s|__MQTT_USERNAME__|$${username_escaped}|g" \
+            -e "s|__MQTT_PASSWORD__|$${password_escaped}|g" \
             /config-template/settings.json > /mqtt-explorer/config/settings.json
         volumeMounts:
         - name: config-template

@@ -13,7 +13,7 @@ data:
           "certValidation": true,
           "clientId": "mqtt-explorer-640abb88",
           "id": "c6aa1312-35ae-402c-9897-8f64ed05a9eb",
-          "name": "moaquitto - k8s",
+          "name": "mosquitto - k8s",
           "encryption": false,
           "password": "__MQTT_PASSWORD__",
           "username": "__MQTT_USERNAME__",

@@ -38,7 +38,7 @@ spec:
           mountPath: /secrets
           readOnly: true
         - name: data-volume
-          mountPath: /work
+          mountPath: /mqtt-explorer/config
       containers:
       - name: mqtt-explorer
         image: smeagolworms4/mqtt-explorer:latest

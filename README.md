@@ -69,8 +69,9 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 |------------------|---------------------|-----------------|----------------------|------------------------------------------|
 | Infraestructura   | 🌐 NGINX             | Pendiente       | Servicio HTTP interno| Reverse proxy                            |
 |                   | 🥾 Netboot.xyz       | [doc](docs/netbootxyz.md) | `netboot.lan.${DOMAIN}` + LB | Boot PXE/iPXE y utilidades de rescate    |
-|                   | 🔐 OAuth2 Proxy      | Pendiente       | Gateway API          | Proxy de autenticación                   |
-|                   | 🪪 Pocket ID         | Pendiente       | Gateway API          | Gestión de identidad                     |
+|                   | 🔐 OAuth2 Proxy      | [guía](docs/pocketid-oauth2-proxy-traefik.md) | Gateway API          | Proxy de autenticación                   |
+|                   | 🪪 Pocket ID         | [guía](docs/pocketid-oauth2-proxy-traefik.md) | Gateway API          | Gestión de identidad                     |
+|                   | 🚦 Traefik           | [guía](docs/pocketid-oauth2-proxy-traefik.md) | Gateway API          | Proxy inverso con autenticación           |
 | Domótica          | 📡 Mosquitto         | [doc](docs/mqtt.md) | LoadBalancer 1883/TCP | Broker de mensajería IoT              |
 |                   | 🤖 Renovate          | [doc](docs/renovate.md) | N/A                  | Actualizaciones automáticas de dependencias |
 

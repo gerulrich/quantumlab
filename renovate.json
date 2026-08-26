@@ -60,8 +60,8 @@
     },
     {
       "matchPackageNames": ["traefik", "traefik/traefik", "traefik/traefik-helm-chart"],
-      "registryUrl_comment": "Avoid downloading unnecessarily large repositories or indexes",
-      "versioning": "semver"
+      "description": "Avoid changelog fetch walking containous/traefik's huge git history and OOMing the Renovate CronJob",
+      "fetchChangeLogs": "off"
     }
   ]
 }

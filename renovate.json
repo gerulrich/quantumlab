@@ -57,6 +57,11 @@
       "matchManagers": ["terraform"],
       "matchFileNames": ["config/opentofu/**"],
       "groupName": "opentofu providers/modules"
+    },
+    {
+      "matchPackageNames": ["traefik", "traefik/traefik", "traefik/traefik-helm-chart"],
+      "registryUrl_comment": "Avoid downloading unnecessarily large repositories or indexes",
+      "versioning": "semver"
     }
   ]
 }

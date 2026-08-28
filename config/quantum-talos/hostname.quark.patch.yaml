@@ -2,3 +2,16 @@
 machine:
   network:
     hostname: quark
+  disks:
+  - device: /dev/sdb # Reemplaza con el identificador real de tu disco (ej. /dev/nvme1n1)
+    partitions:
+    - mountpoint: /var/mnt/longhorn-storage # Punto de montaje persistente
+  kubelet:
+    extraMounts:
+    - source: /var/mnt/longhorn-storage
+      destination: /var/mnt/longhorn-storage
+      type: bind
+      options:
+      - bind
+      - rshared
+      - rw

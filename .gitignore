@@ -24,3 +24,6 @@ config/opentofu/terraform.tfstate
 config/opentofu/terraform.tfstate.backup
 config/opentofu/terraform.tfvars.backend
 config/opentofu/*.tfplan
+
+# vs code configuration
+.vscode/

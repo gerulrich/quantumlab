@@ -52,13 +52,13 @@ data:
             - oauth2-proxy
           service: netbootxyz
 
-          longhorn:
-            rule: "Host(`longhorn.lan.${DOMAIN}`)"
-            entryPoints:
-              - web
-            middlewares:
-              - oauth2-proxy
-            service: longhorn
+        longhorn:
+          rule: "Host(`longhorn.lan.${DOMAIN}`)"
+          entryPoints:
+            - web
+          middlewares:
+            - oauth2-proxy
+          service: longhorn
 
       services:
         pihole:

@@ -12,6 +12,11 @@
       "^helm/.+\\.ya?ml$"
     ]
   },
+  "flux": {
+    "fileMatch": [
+      "^helm/.+\\.ya?ml$"
+    ]
+  },
   "packageRules": [
     {
       "matchManagers": ["dockerfile", "docker-compose"],

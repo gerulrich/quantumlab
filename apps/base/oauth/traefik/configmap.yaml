@@ -52,6 +52,14 @@ data:
             - oauth2-proxy
           service: netbootxyz
 
+          longhorn:
+            rule: "Host(`longhorn.lan.${DOMAIN}`)"
+            entryPoints:
+              - web
+            middlewares:
+              - oauth2-proxy
+            service: longhorn
+
       services:
         pihole:
           loadBalancer:
@@ -67,3 +75,8 @@ data:
           loadBalancer:
             servers:
               - url: "http://netbootxyz.netbootxyz.svc.cluster.local:3000"
+
+        longhorn:
+          loadBalancer:
+            servers:
+              - url: "http://longhorn-frontend.longhorn-system.svc.cluster.local:80"

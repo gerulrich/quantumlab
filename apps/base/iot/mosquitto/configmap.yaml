@@ -6,14 +6,18 @@ metadata:
   namespace: iot
 data:
   mosquitto.conf: |
-    persistence false
+    persistence true
+    persistence_location /mosquitto/data/
     log_dest stdout
 
     allow_anonymous false
     password_file /mosquitto/config/passwordfile
-    acl_file /mosquitto/config/aclfile
+    # acl_file /mosquitto/config/aclfile
 
     listener 1883
+    socket_domain ipv4
+
+    allow_anonymous false
   aclfile: |
     # Usuario mqtt_z2m puede publicar y suscribirse a todo
     user mqtt_z2m

@@ -19,6 +19,9 @@ spec:
     defaultSettings:
       defaultReplicaCount: 2
       defaultDataPath: /var/mnt/longhorn-storage
+      backupTarget: s3://backups-homelab@us-ashburn-1/
+      backupTargetCredentialSecret: longhorn-backup-secret
+      defaultRecurringJobGroup: default
     persistence:
       reclaimPolicy: Retain
       defaultClassReplicaCount: 2

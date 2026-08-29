@@ -135,10 +135,6 @@ create_backups_script() {
 #!/usr/bin/env bash
 #
 # Manage restic backups for the different targets defined in this repo.
-#
-# Usage:
-#   backup list <target> [--keys repo|cluster]
-#   backup download <target> [--keys repo|cluster]
 
 set -euo pipefail
 
@@ -146,105 +142,79 @@ BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$BIN_DIR/.." && pwd)"
 PATH="$BIN_DIR:$PATH"
 
-# Target definitions: "namespace:secretName:repoSecretFile"
 TARGET_NAMES="etcd"
 target_config() {
-    case "$1" in
-        etcd) echo "kube-system:talos-etcd-s3-keys:infrastructure/base/controllers/etcd-backup/secrets.yaml" ;;
-        *) return 1 ;;
-    esac
+	case "$1" in
+		etcd) echo "kube-system:talos-etcd-s3-keys:infrastructure/base/controllers/etcd-backup/secrets.yaml:etcd.snapshot" ;;
+		*) return 1 ;;
+	esac
 }
 
 usage() {
-    cat <<USAGE
-Usage: $(basename "$0") <command> <target> [--keys repo|cluster]
-
-Commands:
-    list <target>              List available snapshots
-    download <target> [id]     Restore a snapshot to the current directory (default: latest)
-
-Targets:
-$(printf '  %s\n' $TARGET_NAMES)
-
-Options:
-    --keys <repo|cluster>  Where to read restic/S3 credentials from (default: cluster)
-                                                 cluster: read the Secret directly from the Kubernetes cluster
-                                                 repo:    decrypt the Secret's sops-encrypted secrets.yaml in this repo
-USAGE
-    exit 1
+	echo "Usage: $(basename "$0") ls"
+	echo "       $(basename "$0") ls <target>"
+	echo "       $(basename "$0") cp <target> [destination] [--snapshot id] [--keys repo|cluster]"
+	exit 1
 }
 
 load_keys_from_cluster() {
-    local namespace="$1" secret_name="$2"
-    export RESTIC_REPOSITORY="$(kubectl -n "$namespace" get secret "$secret_name" -o jsonpath='{.data.resticRepository}' | base64 --decode)"
-    export RESTIC_PASSWORD="$(kubectl -n "$namespace" get secret "$secret_name" -o jsonpath='{.data.resticKey}' | base64 --decode)"
-    export AWS_ACCESS_KEY_ID="$(kubectl -n "$namespace" get secret "$secret_name" -o jsonpath='{.data.accessKeyId}' | base64 --decode)"
-    export AWS_SECRET_ACCESS_KEY="$(kubectl -n "$namespace" get secret "$secret_name" -o jsonpath='{.data.secretAccessKey}' | base64 --decode)"
+	local namespace="$1" secret_name="$2"
+	export RESTIC_REPOSITORY="$(kubectl -n "$namespace" get secret "$secret_name" -o jsonpath='{.data.resticRepository}' | base64 --decode)"
+	export RESTIC_PASSWORD="$(kubectl -n "$namespace" get secret "$secret_name" -o jsonpath='{.data.resticKey}' | base64 --decode)"
+	export AWS_ACCESS_KEY_ID="$(kubectl -n "$namespace" get secret "$secret_name" -o jsonpath='{.data.accessKeyId}' | base64 --decode)"
+	export AWS_SECRET_ACCESS_KEY="$(kubectl -n "$namespace" get secret "$secret_name" -o jsonpath='{.data.secretAccessKey}' | base64 --decode)"
 }
 
 load_keys_from_repo() {
-    local secret_file="$1"
-    local secret_path="$REPO_ROOT/$secret_file"
-    [[ -f "$secret_path" ]] || { echo "Secret file not found: $secret_path" >&2; exit 1; }
-
-    extract() {
-        sops -d --extract "[\"stringData\"][\"$1\"]" "$secret_path"
-    }
-
-    export RESTIC_REPOSITORY="$(extract resticRepository)"
-    export RESTIC_PASSWORD="$(extract resticKey)"
-    export AWS_ACCESS_KEY_ID="$(extract accessKeyId)"
-    export AWS_SECRET_ACCESS_KEY="$(extract secretAccessKey)"
+	local secret_file="$1"
+	local secret_path="$REPO_ROOT/$secret_file"
+	[[ -f "$secret_path" ]] || { echo "Secret file not found: $secret_path" >&2; exit 1; }
+	extract() { sops -d --extract "[\"stringData\"][\"$1\"]" "$secret_path"; }
+	export RESTIC_REPOSITORY="$(extract resticRepository)"
+	export RESTIC_PASSWORD="$(extract resticKey)"
+	export AWS_ACCESS_KEY_ID="$(extract accessKeyId)"
+	export AWS_SECRET_ACCESS_KEY="$(extract secretAccessKey)"
 }
 
 COMMAND="${1:-}"
 TARGET="${2:-}"
-[[ -z "$COMMAND" || -z "$TARGET" ]] && usage
+[[ -z "$COMMAND" ]] && usage
+if [[ "$COMMAND" == "ls" && -z "$TARGET" ]]; then
+	echo "$TARGET_NAMES" | tr ' ' '\n'
+	exit 0
+fi
+[[ -z "$TARGET" ]] && usage
 shift 2
-
 KEYS_SOURCE="cluster"
-SNAPSHOT_ID=""
+SNAPSHOT_ID="latest"
+DESTINATION="."
 while [[ $# -gt 0 ]]; do
-    case "$1" in
-        --keys)
-            KEYS_SOURCE="${2:-}"
-            shift 2
-            ;;
-        -*)
-            echo "Unknown option: $1" >&2
-            usage
-            ;;
-        *)
-            SNAPSHOT_ID="$1"
-            shift
-            ;;
-    esac
+	case "$1" in
+		--keys) KEYS_SOURCE="${2:-}"; shift 2 ;;
+		--snapshot) SNAPSHOT_ID="${2:-}"; shift 2 ;;
+		-*) echo "Unknown option: $1" >&2; usage ;;
+		*) DESTINATION="$1"; shift ;;
+	esac
 done
 
 TARGET_CONFIG="$(target_config "$TARGET")" || { echo "Unknown target: $TARGET" >&2; usage; }
-[[ "$KEYS_SOURCE" == "repo" || "$KEYS_SOURCE" == "cluster" ]] || { echo "Invalid --keys value: $KEYS_SOURCE (expected repo|cluster)" >&2; exit 1; }
-
-IFS=':' read -r NAMESPACE SECRET_NAME SECRET_FILE <<< "$TARGET_CONFIG"
-
-if [[ "$KEYS_SOURCE" == "repo" ]]; then
-    load_keys_from_repo "$SECRET_FILE"
-else
-    load_keys_from_cluster "$NAMESPACE" "$SECRET_NAME"
-fi
-
+[[ "$KEYS_SOURCE" == "repo" || "$KEYS_SOURCE" == "cluster" ]] || exit 1
+IFS=':' read -r NAMESPACE SECRET_NAME SECRET_FILE BACKUP_FILE <<< "$TARGET_CONFIG"
+if [[ "$KEYS_SOURCE" == "repo" ]]; then load_keys_from_repo "$SECRET_FILE"; else load_keys_from_cluster "$NAMESPACE" "$SECRET_NAME"; fi
 RESTIC_OPTS=(-o s3.region=us-ashburn-1 -o s3.bucket-lookup=path)
-
 case "$COMMAND" in
-    list)
-        restic "${RESTIC_OPTS[@]}" snapshots
-        ;;
-    download)
-        restic "${RESTIC_OPTS[@]}" restore "${SNAPSHOT_ID:-latest}" --target .
-        ;;
-    *)
-        echo "Unknown command: $COMMAND" >&2
-        usage
-        ;;
+	ls) restic "${RESTIC_OPTS[@]}" snapshots ;;
+	cp)
+		if [[ -d "$DESTINATION" ]]; then
+			restic "${RESTIC_OPTS[@]}" restore "$SNAPSHOT_ID" --target "$DESTINATION"
+		else
+			# destination doesn't exist as a directory: restore then rename the backup file to it
+			restore_dir="$(dirname "$DESTINATION")"
+			restic "${RESTIC_OPTS[@]}" restore "$SNAPSHOT_ID" --target "$restore_dir"
+			mv "$restore_dir/$BACKUP_FILE" "$DESTINATION"
+		fi
+		;;
+	*) echo "Unknown command: $COMMAND" >&2; usage ;;
 esac
 EOF
 

@@ -67,6 +67,11 @@
       "matchPackageNames": ["traefik", "traefik/traefik", "traefik/traefik-helm-chart"],
       "description": "Avoid changelog fetch walking containous/traefik's huge git history and OOMing the Renovate CronJob",
       "fetchChangeLogs": "off"
+    },
+    {
+      "matchPackageNames": ["longhorn/longhorn", "longhorn"],
+      "separateMultipleMajor": true,
+      "separateMinorPatch": true
     }
   ]
 }

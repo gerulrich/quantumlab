@@ -12,7 +12,7 @@ spec:
     version: "17"
   numberOfInstances: 2
   volume:
-    size: "15Gi"
+    size: "10Gi"
   users:
     radarr: []
   databases:

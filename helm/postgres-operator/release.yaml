@@ -12,5 +12,5 @@ spec:
         kind: HelmRepository
         name: postgres-operator-repo
       reconcileStrategy: ChartVersion
-      version: 1.15.1
+      version: 2.0.2
   interval: 10m0s

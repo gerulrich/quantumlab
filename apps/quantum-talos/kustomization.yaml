@@ -7,5 +7,6 @@ resources:
   - oauth
   - netbootxyz
   - iot
+  - database
   # - n8n
   # - photoprism

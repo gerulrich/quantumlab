@@ -8,7 +8,7 @@ metadata:
     color: blue
   annotations:
     external-dns.alpha.kubernetes.io/hostname: postgresql.lan.${DOMAIN}
-    external-dns.alpha.kubernetes.io/ttl: "60"    
+    external-dns.alpha.kubernetes.io/ttl: "60"   
 spec:
   selector:
     cluster-name: psql-cluster

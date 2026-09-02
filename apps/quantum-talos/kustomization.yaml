@@ -8,5 +8,6 @@ resources:
   - netbootxyz
   - iot
   - database
+  - media
   # - n8n
   # - photoprism

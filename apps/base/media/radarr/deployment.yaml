@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+  namespace: arr-stack
+  labels:
+    app: radarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+    spec:
+      containers:
+        - name: radarr
+          image: lscr.io/linuxserver/radarr:6.3.0
+          ports:
+            - name: http
+              containerPort: 7878
+          env:
+            - name: RADARR__POSTGRES__HOST
+              value: psql-cluster.database.svc.cluster.local
+            - name: RADARR__POSTGRES__PORT
+              value: "5432"
+            - name: RADARR__POSTGRES__USER
+              valueFrom:
+                secretKeyRef:
+                  name: radarr.psql-cluster.credentials.postgresql.acid.zalan.do
+                  key: username
+            - name: RADARR__POSTGRES__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: radarr.psql-cluster.credentials.postgresql.acid.zalan.do
+                  key: password
+            - name: RADARR__POSTGRES__MAINDB
+              value: radarr
+            - name: RADARR__POSTGRES__LOGDB
+              value: radarr-log
+          volumeMounts:
+            - name: config
+              mountPath: /config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: radarr-config

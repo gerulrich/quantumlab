@@ -17,6 +17,7 @@ spec:
     radarr: []
   databases:
     radarr: radarr
+    radarr-log: radarr
   allowedSourceRanges:
   - 0.0.0.0/0
   resources:

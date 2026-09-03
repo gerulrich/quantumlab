@@ -27,15 +27,17 @@ spec:
               value: psql-cluster.database.svc.cluster.local
             - name: RADARR__POSTGRES__PORT
               value: "5432"
+            - name: RADARR__POSTGRES__SSLMODE
+              value: Require
             - name: RADARR__POSTGRES__USER
               valueFrom:
                 secretKeyRef:
-                  name: radarr.psql-cluster.credentials.postgresql.acid.zalan.do
+                  name: arr-stack.radarr.psql-cluster.credentials.postgresql.acid.zalan.do
                   key: username
             - name: RADARR__POSTGRES__PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: radarr.psql-cluster.credentials.postgresql.acid.zalan.do
+                  name: arr-stack.radarr.psql-cluster.credentials.postgresql.acid.zalan.do
                   key: password
             - name: RADARR__POSTGRES__MAINDB
               value: radarr

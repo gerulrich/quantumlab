@@ -6,4 +6,3 @@ resources:
   - tailscale-operator
   - longhorn
   - postgres-operator
-  - reflector

@@ -14,3 +14,7 @@ spec:
       reconcileStrategy: ChartVersion
       version: 2.0.2
   interval: 10m0s
+  values:
+    configKubernetes:
+      # Allow the operator to create application credentials in another namespace.
+      enable_cross_namespace_secret: true

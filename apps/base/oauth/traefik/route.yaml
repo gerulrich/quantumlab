@@ -13,6 +13,7 @@ spec:
   - "mqtt.lan.${DOMAIN}"
   - "netbootxyz.lan.${DOMAIN}"
   - "longhorn.lan.${DOMAIN}"
+  - "radarr.lan.${DOMAIN}"
   rules:
   - matches:
     - path:
@@ -36,6 +37,7 @@ spec:
   - "mqtt.lan.${DOMAIN}"
   - "netbootxyz.lan.${DOMAIN}"
   - "longhorn.lan.${DOMAIN}"
+  - "radarr.lan.${DOMAIN}"
   rules:
   - matches:
     - path:

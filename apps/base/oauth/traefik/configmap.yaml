@@ -68,6 +68,14 @@ data:
             - oauth2-proxy
           service: radarr
 
+        sonarr:
+          rule: "Host(`sonarr.lan.${DOMAIN}`)"
+          entryPoints:
+            - web
+          middlewares:
+            - oauth2-proxy
+          service: sonarr
+
       services:
         pihole:
           loadBalancer:
@@ -93,3 +101,8 @@ data:
           loadBalancer:
             servers:
               - url: "http://radarr.arr-stack.svc.cluster.local:7878"
+
+        sonarr:
+          loadBalancer:
+            servers:
+              - url: "http://sonarr.arr-stack.svc.cluster.local:8989"

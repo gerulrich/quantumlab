@@ -14,11 +14,14 @@ spec:
   volume:
     size: "10Gi"
   users:
-    # Creates the radarr credentials Secret in the arr-stack namespace.
+    # Creates application credential Secrets in the arr-stack namespace.
     arr-stack.radarr: []
+    arr-stack.sonarr: []
   databases:
     radarr: arr-stack.radarr
     radarr_log: arr-stack.radarr
+    sonarr: arr-stack.sonarr
+    sonarr_log: arr-stack.sonarr
   allowedSourceRanges:
   - 0.0.0.0/0
   resources:

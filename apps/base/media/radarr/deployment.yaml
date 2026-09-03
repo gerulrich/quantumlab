@@ -40,7 +40,7 @@ spec:
             - name: RADARR__POSTGRES__MAINDB
               value: radarr
             - name: RADARR__POSTGRES__LOGDB
-              value: radarr-log
+              value: radarr_log
           volumeMounts:
             - name: config
               mountPath: /config

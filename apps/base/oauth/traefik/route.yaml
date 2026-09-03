@@ -15,6 +15,7 @@ spec:
   - "longhorn.lan.${DOMAIN}"
   - "radarr.lan.${DOMAIN}"
   - "sonarr.lan.${DOMAIN}"
+  - "prowlarr.lan.${DOMAIN}"
   rules:
   - matches:
     - path:
@@ -40,6 +41,7 @@ spec:
   - "longhorn.lan.${DOMAIN}"
   - "radarr.lan.${DOMAIN}"
   - "sonarr.lan.${DOMAIN}"
+  - "prowlarr.lan.${DOMAIN}"
   rules:
   - matches:
     - path:

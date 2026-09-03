@@ -1,0 +1,59 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prowlarr
+  namespace: arr-stack
+  labels:
+    app: prowlarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prowlarr
+  template:
+    metadata:
+      labels:
+        app: prowlarr
+    spec:
+      containers:
+        - name: prowlarr
+          image: lscr.io/linuxserver/prowlarr:2.3.0
+          ports:
+            - name: http
+              containerPort: 9696
+          env:
+            - name: PROWLARR__POSTGRES__HOST
+              value: psql-cluster.database.svc.cluster.local
+            - name: PROWLARR__POSTGRES__PORT
+              value: "5432"
+            - name: PROWLARR__POSTGRES__SSLMODE
+              value: Require
+            - name: PROWLARR__POSTGRES__USER
+              valueFrom:
+                secretKeyRef:
+                  name: arr-stack.prowlarr.psql-cluster.credentials.postgresql.acid.zalan.do
+                  key: username
+            - name: PROWLARR__POSTGRES__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: arr-stack.prowlarr.psql-cluster.credentials.postgresql.acid.zalan.do
+                  key: password
+            - name: PROWLARR__POSTGRES__MAINDB
+              value: prowlarr
+            - name: PROWLARR__POSTGRES__LOGDB
+              value: prowlarr_log
+          volumeMounts:
+            - name: config
+              mountPath: /config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: prowlarr-config

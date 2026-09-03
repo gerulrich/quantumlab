@@ -14,6 +14,7 @@ spec:
   - "netbootxyz.lan.${DOMAIN}"
   - "longhorn.lan.${DOMAIN}"
   - "radarr.lan.${DOMAIN}"
+  - "sonarr.lan.${DOMAIN}"
   rules:
   - matches:
     - path:
@@ -38,6 +39,7 @@ spec:
   - "netbootxyz.lan.${DOMAIN}"
   - "longhorn.lan.${DOMAIN}"
   - "radarr.lan.${DOMAIN}"
+  - "sonarr.lan.${DOMAIN}"
   rules:
   - matches:
     - path:

@@ -1,0 +1,62 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seerr
+  namespace: arr-stack
+  labels:
+    app: seerr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seerr
+  template:
+    metadata:
+      labels:
+        app: seerr
+    spec:
+      containers:
+        - name: seerr
+          image: ghcr.io/seerr-team/seerr:2.2.0
+          ports:
+            - name: http
+              containerPort: 5055
+          env:
+            - name: DB_TYPE
+              value: postgres
+            - name: DB_HOST
+              value: psql-cluster.database.svc.cluster.local
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: arr-stack.seerr.psql-cluster.credentials.postgresql.acid.zalan.do
+                  key: username
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: arr-stack.seerr.psql-cluster.credentials.postgresql.acid.zalan.do
+                  key: password
+            - name: DB_NAME
+              value: seerr
+            - name: DB_USE_SSL
+              value: "true"
+            # The default Spilo certificate is not signed by a trusted public CA.
+            - name: DB_SSL_REJECT_UNAUTHORIZED
+              value: "false"
+          volumeMounts:
+            - name: config
+              mountPath: /app/config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: seerr-config

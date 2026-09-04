@@ -6,4 +6,5 @@ resources:
   - radarr
   - sonarr
   - prowlarr
+  - seerr
   - transmission

@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: seerr
+  namespace: arr-stack
+  labels:
+    app: seerr
+spec:
+  type: ClusterIP
+  selector:
+    app: seerr
+  ports:
+    - name: http
+      port: 5055
+      targetPort: http

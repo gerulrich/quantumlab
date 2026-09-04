@@ -16,6 +16,7 @@ spec:
   - "radarr.lan.${DOMAIN}"
   - "sonarr.lan.${DOMAIN}"
   - "prowlarr.lan.${DOMAIN}"
+  - "transmission.lan.${DOMAIN}"
   rules:
   - matches:
     - path:
@@ -42,6 +43,7 @@ spec:
   - "radarr.lan.${DOMAIN}"
   - "sonarr.lan.${DOMAIN}"
   - "prowlarr.lan.${DOMAIN}"
+  - "transmission.lan.${DOMAIN}"
   rules:
   - matches:
     - path:

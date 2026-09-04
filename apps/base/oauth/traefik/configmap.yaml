@@ -84,6 +84,14 @@ data:
             - oauth2-proxy
           service: prowlarr
 
+        transmission:
+          rule: "Host(`transmission.lan.${DOMAIN}`)"
+          entryPoints:
+            - web
+          middlewares:
+            - oauth2-proxy
+          service: transmission
+
       services:
         pihole:
           loadBalancer:
@@ -119,3 +127,8 @@ data:
           loadBalancer:
             servers:
               - url: "http://prowlarr.arr-stack.svc.cluster.local:9696"
+
+        transmission:
+          loadBalancer:
+            servers:
+              - url: "http://transmission.media.svc.cluster.local:9091"

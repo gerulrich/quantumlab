@@ -60,4 +60,5 @@ spec:
           persistentVolumeClaim:
             claimName: radarr-config
         - name: media
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: media-data

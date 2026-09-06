@@ -11,31 +11,3 @@ spec:
     requests:
       storage: 1Gi
   storageClassName: longhorn
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: transmission-torrents-pv
-spec:
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: nfs
-  nfs:
-    server: ${NFS_SERVER}
-    path: ${NFS_PATH}/data/
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: transmission-torrents-pvc
-  namespace: media
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: nfs
-  resources:
-    requests:
-      storage: 10Gi

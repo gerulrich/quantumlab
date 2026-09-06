@@ -60,4 +60,5 @@ spec:
           persistentVolumeClaim:
             claimName: sonarr-config
         - name: media
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: media-data

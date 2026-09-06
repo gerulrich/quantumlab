@@ -61,4 +61,4 @@ spec:
             claimName: sonarr-config
         - name: media
           persistentVolumeClaim:
-            claimName: arr-stack-media
+            claimName: media-data

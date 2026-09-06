@@ -47,7 +47,7 @@ spec:
             - name: config
               mountPath: /config
             - name: media
-              mountPath: /data/media
+              mountPath: /data
           resources:
             requests:
               cpu: 100m
@@ -60,4 +60,5 @@ spec:
           persistentVolumeClaim:
             claimName: sonarr-config
         - name: media
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: arr-stack-media

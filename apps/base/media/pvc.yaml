@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: arr-stack-media-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs
+  nfs:
+    server: ${NFS_SERVER}
+    path: ${NFS_PATH}/data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: arr-stack-media
+  namespace: arr-stack
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs
+  volumeName: arr-stack-media-pv
+  resources:
+    requests:
+      storage: 10Gi

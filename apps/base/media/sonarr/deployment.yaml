@@ -23,6 +23,10 @@ spec:
             - name: http
               containerPort: 8989
           env:
+            - name: PUID
+              value: "0"
+            - name: PGID
+              value: "0"
             - name: SONARR__POSTGRES__HOST
               value: psql-cluster.database.svc.cluster.local
             - name: SONARR__POSTGRES__PORT

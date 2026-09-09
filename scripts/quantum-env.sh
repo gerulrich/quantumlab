@@ -6,10 +6,10 @@ export CILIUM_VERSION="1.20.1"
 export SCHEMATIC_ID=a2e824fa8b6d72b70f9076cebd483a76cd56a07a0a81372611a8ed6fe3b6b95e
 
 # Cluster configuration
-export CONTROL_PLANE_IP=10.10.10.194
+export CONTROL_PLANE_IP=10.10.10.116
 export CONTROL_PLANE_MAC="52:54:00:1a:c7:e5"
-export WORKER_IP=10.10.10.173
-export WORKER_MAC="52:54:00:f3:be:40"
+export WORKER1_IP=10.10.10.245
+export WORKER2_IP=10.10.10.106
 export KUBECONFIG=$PWD/kubeconfig
 export TALOSCONFIG=$PWD/config/quantum-talos/talosconfig
 export SOPS_AGE_KEY_FILE=$PWD/age.key

@@ -130,8 +130,13 @@ talosctl apply-config --insecure --file config/quantum-talos/controlplane.yaml \
 ```bash
 # Worker local: quark
 talosctl apply-config --insecure --file config/quantum-talos/worker.yaml \
-    --nodes $WORKER_IP \
+    --nodes $WORKER1_IP \
     --config-patch @config/quantum-talos/hostname.quark.patch.yaml
+
+# Worker local: boson
+talosctl apply-config --insecure --file config/quantum-talos/worker.yaml \
+    --nodes $WORKER2_IP \
+    --config-patch @config/quantum-talos/hostname.boson.patch.yaml
 ```
 
 ---
@@ -186,7 +191,9 @@ También puedes verificar el estado de los nodos directamente desde el dashboard
 talosctl dashboard --nodes $CONTROL_PLANE_IP
 
 # Ver el dashboard de los workers locales
-talosctl dashboard --nodes $WORKER_IP
+talosctl dashboard --nodes $WORKER1_IP
+
+talosctl dashboard --nodes $WORKER2_IP
 
 ```
 

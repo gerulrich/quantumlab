@@ -2,3 +2,8 @@
 machine:
   network:
     hostname: nova
+    interfaces:
+    - interface: ens18
+      dhcp: true
+      vip:
+        ip: 10.10.10.101

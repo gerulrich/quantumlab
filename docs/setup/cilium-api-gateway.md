@@ -102,7 +102,7 @@ helm template \
     --set gatewayAPI.enableAppProtocol=true \
     --set bgpControlPlane.enabled=true \
     --set externalIPs.enabled=true  \
-    --set devices="{enp1s0}" \
+    --set devices="{enp1s0,ens18}" \
     --api-versions='gateway.networking.k8s.io/v1/GatewayClass' > config/cilium/cilium.yaml
 
 # Aplicar el manifiesto generado

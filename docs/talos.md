@@ -11,8 +11,11 @@ Para mantener el clúster actualizado con la última versión de Talos Linux, si
 talosctl upgrade --nodes $CONTROL_PLANE_IP --image $TALOS_IMAGE
 talosctl reboot --mode powercycle -n $CONTROL_PLANE_IP
 
-talosctl upgrade --nodes $WORKER_IP --image $TALOS_IMAGE
-talosctl reboot --mode powercycle -n $WORKER_IP
+talosctl upgrade --nodes $WORKER1_IP --image $TALOS_IMAGE
+talosctl reboot --mode powercycle -n $WORKER1_IP
+
+talosctl upgrade --nodes $WORKER2_IP --image $TALOS_IMAGE
+talosctl reboot --mode powercycle -n $WORKER2_IP
 
 # Verificar la versión actual de Talos y Kubernetes
 talosctl version

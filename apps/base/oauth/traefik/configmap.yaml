@@ -100,6 +100,14 @@ data:
             - oauth2-proxy
           service: transmission
 
+        grafana:
+          rule: "Host(`grafana.lan.${DOMAIN}`)"
+          entryPoints:
+            - web
+          middlewares:
+            - oauth2-proxy
+          service: grafana
+
       services:
         pihole:
           loadBalancer:
@@ -145,3 +153,8 @@ data:
           loadBalancer:
             servers:
               - url: "http://transmission.media.svc.cluster.local:9091"
+
+        grafana:
+          loadBalancer:
+            servers:
+              - url: "http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local:80"

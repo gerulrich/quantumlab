@@ -74,6 +74,11 @@
       "fetchChangeLogs": "off"
     },
     {
+      "matchPackageNames": ["prometheus-community/kube-prometheus-stack", "kube-prometheus-stack"],
+      "description": "Avoid changelog fetch for kube-prometheus-stack and prevent Renovate OOMs",
+      "fetchChangeLogs": "off"
+    },
+    {
       "matchPackageNames": ["longhorn/longhorn", "longhorn"],
       "separateMultipleMajor": true,
       "separateMinorPatch": true

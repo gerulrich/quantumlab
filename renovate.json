@@ -69,6 +69,11 @@
       "fetchChangeLogs": "off"
     },
     {
+      "matchPackageNames": ["prometheus-community/kube-prometheus-stack", "prometheus-community", "kube-prometheus-stack"],
+      "description": "Avoid changelog fetch walking prometheus-community/kube-prometheus-stack's huge git history and OOMing the Renovate CronJob",
+      "fetchChangeLogs": "off"
+    },
+    {
       "matchPackageNames": ["longhorn/longhorn", "longhorn"],
       "separateMultipleMajor": true,
       "separateMinorPatch": true

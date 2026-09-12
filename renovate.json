@@ -69,8 +69,20 @@
       "fetchChangeLogs": "off"
     },
     {
-      "matchPackageNames": ["prometheus-community/kube-prometheus-stack", "prometheus-community", "kube-prometheus-stack"],
-      "description": "Avoid changelog fetch walking prometheus-community/kube-prometheus-stack's huge git history and OOMing the Renovate CronJob",
+      "matchPackageNames": [
+        "prometheus-community/kube-prometheus-stack",
+        "prometheus-community",
+        "kube-prometheus-stack",
+        "grafana",
+        "grafana/grafana",
+        "kube-prometheus-stack-grafana"
+      ],
+      "matchPackagePatterns": [
+        "^prometheus-community/",
+        "^kube-prometheus-stack",
+        "^grafana"
+      ],
+      "description": "Avoid changelog fetch walking prometheus-community and grafana huge git history and OOMing the Renovate CronJob",
       "fetchChangeLogs": "off"
     },
     {

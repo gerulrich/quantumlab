@@ -20,6 +20,13 @@ spec:
                 - gerulrich/quantumlab
                 - gerulrich/qauth
                 - gerulrich/ledfx
+              resources:
+                requests:
+                  cpu: 250m
+                  memory: 512Mi
+                limits:
+                  cpu: 2000m
+                  memory: 2Gi
               envFrom:
                 - secretRef:
                     name: renovate-secrets

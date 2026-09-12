@@ -10,3 +10,4 @@ data:
   RENOVATE_PLATFORM: "github"
   RENOVATE_BASE_BRANCHES: "master"
   RENOVATE_GIT_COMMIT_SIGNING: "true"
+  NODE_OPTIONS: "--max-old-space-size=1536"

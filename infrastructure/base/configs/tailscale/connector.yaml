@@ -6,6 +6,7 @@ metadata:
 spec:
   replicas: 1
   hostnamePrefix: tailscale-quantum
+  proxyClass: tailscale-connector
   tags: ["tag:quantum-router"]
   subnetRouter:
     advertiseRoutes:

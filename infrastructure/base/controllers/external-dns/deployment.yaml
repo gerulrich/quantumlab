@@ -34,6 +34,13 @@ spec:
         - --policy=upsert-only
         - --provider=pihole
         - --pihole-server=http://10.10.10.10
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
         livenessProbe:
           httpGet:
             path: /healthz

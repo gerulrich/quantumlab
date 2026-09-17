@@ -5,16 +5,13 @@
   "separateMinorPatch": false,
   "extends": ["config:recommended", "abandonments:recommended"],
   "kubernetes": {
-    "fileMatch": [
-      "^apps/.+\\.ya?ml$",
-      "^clusters/.+\\.ya?ml$",
-      "^infrastructure/.+\\.ya?ml$",
-      "^helm/.+\\.ya?ml$"
+    "managerFilePatterns": [
+      "/^(apps|clusters|infrastructure)/.+\\.ya?ml$/"
     ]
   },
   "flux": {
-    "fileMatch": [
-      "^helm/.+\\.ya?ml$"
+    "managerFilePatterns": [
+      "/^helm/.+\\.ya?ml$/"
     ]
   },
   "packageRules": [
@@ -61,21 +58,22 @@
     {
       "matchManagers": ["terraform"],
       "matchFileNames": ["config/opentofu/**"],
-      "groupName": "opentofu providers/modules"
+      "groupName": "opentofu providers/modules",
+      "registryUrls": ["https://registry.opentofu.org"]
     },
     {
-      "matchPackageNames": ["traefik", "traefik/traefik", "traefik/traefik-helm-chart"],
+      "matchPackageNames": ["traefik"],
       "description": "Avoid changelog fetch walking containous/traefik's huge git history and OOMing the Renovate CronJob",
       "fetchChangeLogs": "off"
     },
     {
-      "matchPackageNames": [ "prometheus-community/kube-prometheus-stack" ],
+      "matchPackageNames": [ "kube-prometheus-stack" ],
       "description": "Avoid changelog fetch walking prometheus-community and grafana huge git history and OOMing the Renovate CronJob",
       "fetchChangeLogs": "off",
       "enabled": false
     },
     {
-      "matchPackageNames": ["longhorn/longhorn", "longhorn"],
+      "matchPackageNames": ["longhorn"],
       "separateMultipleMajor": true,
       "separateMinorPatch": true
     }

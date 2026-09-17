@@ -28,9 +28,6 @@ spec:
       enableAppProtocol: true
     l2announcements:
       enabled: true
-      #leaseDuration="3s"
-      #leaseRenewDeadline="1s"
-      #leaseRetryPeriod="500ms"
     k8sClientRateLimit:
       qps: 32
       burst: 33
@@ -40,8 +37,6 @@ spec:
         cleanCiliumState: "{NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}"
     bgpControlPlane:
       enabled: true
-    #externalIPs:
-    #  enabled: true
     devices: "{enp1s0,ens18}"
     cgroup:
       autoMount:

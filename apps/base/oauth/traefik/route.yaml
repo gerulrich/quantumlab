@@ -19,7 +19,6 @@ spec:
   - "seerr.lan.${DOMAIN}"
   - "transmission.lan.${DOMAIN}"
   - "hubble.lan.${DOMAIN}"
-  
   rules:
   - matches:
     - path:

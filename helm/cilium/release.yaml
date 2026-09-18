@@ -58,3 +58,8 @@ spec:
       autoMount:
         enabled: false
       hostRoot: /sys/fs/cgroup
+    hubble:
+      relay:
+        enabled: true
+      ui:
+        enabled: true

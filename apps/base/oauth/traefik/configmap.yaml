@@ -100,13 +100,13 @@ data:
             - oauth2-proxy
           service: transmission
 
-        grafana:
-          rule: "Host(`grafana.lan.${DOMAIN}`)"
+        hubble:
+          rule: "Host(`hubble.lan.${DOMAIN}`)"
           entryPoints:
             - web
           middlewares:
             - oauth2-proxy
-          service: grafana
+          service: hubble
 
       services:
         pihole:
@@ -154,7 +154,7 @@ data:
             servers:
               - url: "http://transmission.media.svc.cluster.local:9091"
 
-        grafana:
+        hubble:
           loadBalancer:
             servers:
-              - url: "http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local:80"
+              - url: "http://hubble-ui.kube-system.svc.cluster.local:80"

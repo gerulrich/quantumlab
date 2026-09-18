@@ -18,7 +18,7 @@ spec:
   - "prowlarr.lan.${DOMAIN}"
   - "seerr.lan.${DOMAIN}"
   - "transmission.lan.${DOMAIN}"
-  - "grafana.lan.${DOMAIN}"
+  - "hubble.lan.${DOMAIN}"
   rules:
   - matches:
     - path:
@@ -47,7 +47,7 @@ spec:
   - "prowlarr.lan.${DOMAIN}"
   - "seerr.lan.${DOMAIN}"
   - "transmission.lan.${DOMAIN}"
-  - "grafana.lan.${DOMAIN}"
+  - "hubble.lan.${DOMAIN}"
   rules:
   - matches:
     - path:

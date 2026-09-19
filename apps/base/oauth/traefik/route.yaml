@@ -18,6 +18,7 @@ spec:
   - "prowlarr.lan.${DOMAIN}"
   - "seerr.lan.${DOMAIN}"
   - "transmission.lan.${DOMAIN}"
+  - "tautulli.lan.${DOMAIN}"
   - "hubble.lan.${DOMAIN}"
   rules:
   - matches:
@@ -47,6 +48,7 @@ spec:
   - "prowlarr.lan.${DOMAIN}"
   - "seerr.lan.${DOMAIN}"
   - "transmission.lan.${DOMAIN}"
+  - "tautulli.lan.${DOMAIN}"
   - "hubble.lan.${DOMAIN}"
   rules:
   - matches:

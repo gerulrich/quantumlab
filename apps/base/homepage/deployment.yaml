@@ -57,7 +57,7 @@ spec:
               containerPort: 3000
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
-              value: "homepage.lan.${DOMAIN}"
+              value: "home.lan.${DOMAIN}"
           volumeMounts:
             - name: rendered-config
               mountPath: /app/config/settings.yaml

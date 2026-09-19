@@ -7,7 +7,6 @@ metadata:
   labels:
     app: homepage
 spec:
-  type: ClusterIP
   selector:
     app: homepage
   ports:

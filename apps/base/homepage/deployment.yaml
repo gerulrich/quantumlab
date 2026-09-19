@@ -19,6 +19,36 @@ spec:
         app: homepage
     spec:
       serviceAccountName: homepage
+      initContainers:
+        - name: render-config
+          image: alpine:3.24
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -eu
+              cp /config-template/* /config/
+              for key in RADARR_API_KEY SONARR_API_KEY PROWLARR_API_KEY SEERR_API_KEY; do
+                value="$(cat "/secrets/$${key}")"
+                escaped_value="$(printf '%s' "$${value}" | sed -e 's/[&|\\]/\\&/g')"
+                sed -i "s|__$${key}__|$${escaped_value}|g" /config/services.yaml
+              done
+          volumeMounts:
+            - name: config-template
+              mountPath: /config-template
+              readOnly: true
+            - name: homepage-secrets
+              mountPath: /secrets
+              readOnly: true
+            - name: rendered-config
+              mountPath: /config
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
       containers:
         - name: homepage
           image: ghcr.io/gethomepage/homepage:v1.3.1
@@ -28,26 +58,23 @@ spec:
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
               value: "homepage.lan.${DOMAIN}"
-          envFrom:
-            - secretRef:
-                name: homepage-secret
           volumeMounts:
-            - name: config
+            - name: rendered-config
               mountPath: /app/config/settings.yaml
               subPath: settings.yaml
-            - name: config
+            - name: rendered-config
               mountPath: /app/config/kubernetes.yaml
               subPath: kubernetes.yaml
-            - name: config
+            - name: rendered-config
               mountPath: /app/config/services.yaml
               subPath: services.yaml
-            - name: config
+            - name: rendered-config
               mountPath: /app/config/bookmarks.yaml
               subPath: bookmarks.yaml
-            - name: config
+            - name: rendered-config
               mountPath: /app/config/widgets.yaml
               subPath: widgets.yaml
-            - name: config
+            - name: rendered-config
               mountPath: /app/config/docker.yaml
               subPath: docker.yaml
           resources:
@@ -58,6 +85,11 @@ spec:
               cpu: 250m
               memory: 256Mi
       volumes:
-        - name: config
+        - name: rendered-config
+          emptyDir: {}
+        - name: config-template
           configMap:
             name: homepage-config
+        - name: homepage-secrets
+          secret:
+            secretName: homepage-secret

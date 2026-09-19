@@ -28,6 +28,9 @@ spec:
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
               value: "homepage.lan.${DOMAIN}"
+          envFrom:
+            - secretRef:
+                name: homepage-secret
           volumeMounts:
             - name: config
               mountPath: /app/config/settings.yaml

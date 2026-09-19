@@ -9,5 +9,6 @@ resources:
   - iot
   - database
   - media
+  - homepage
   # - n8n
   # - photoprism

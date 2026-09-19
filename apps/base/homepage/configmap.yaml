@@ -39,7 +39,7 @@ data:
           widget:
             type: radarr
             url: http://radarr.arr-stack.svc.cluster.local:7878
-            key: $${RADARR_API_KEY}
+            key: __RADARR_API_KEY__
 
       - Sonarr:
           icon: sonarr.png
@@ -48,7 +48,7 @@ data:
           widget:
             type: sonarr
             url: http://sonarr.arr-stack.svc.cluster.local:8989
-            key: $${SONARR_API_KEY}
+            key: __SONARR_API_KEY__
 
       - Prowlarr:
           icon: prowlarr.png
@@ -57,7 +57,7 @@ data:
           widget:
             type: prowlarr
             url: http://prowlarr.arr-stack.svc.cluster.local:9696
-            key: $${PROWLARR_API_KEY}
+            key: __PROWLARR_API_KEY__
 
       - Seerr:
           icon: seerr.png
@@ -66,7 +66,7 @@ data:
           widget:
             type: seerr
             url: http://seerr.arr-stack.svc.cluster.local:5055
-            key: $${SEERR_API_KEY}
+            key: __SEERR_API_KEY__
   bookmarks.yaml: ""
   widgets.yaml: |
     - kubernetes:

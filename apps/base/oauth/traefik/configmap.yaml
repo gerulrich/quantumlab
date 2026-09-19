@@ -100,6 +100,22 @@ data:
             - oauth2-proxy
           service: transmission
 
+        tautulli:
+          rule: "Host(`tautulli.lan.${DOMAIN}`)"
+          entryPoints:
+            - web
+          middlewares:
+            - oauth2-proxy
+          service: tautulli
+
+        homepage:
+          rule: "Host(`homepage.lan.${DOMAIN}`)"
+          entryPoints:
+            - web
+          middlewares:
+            - oauth2-proxy
+          service: homepage
+
         hubble:
           rule: "Host(`hubble.lan.${DOMAIN}`)"
           entryPoints:
@@ -153,6 +169,16 @@ data:
           loadBalancer:
             servers:
               - url: "http://transmission.media.svc.cluster.local:9091"
+
+        tautulli:
+          loadBalancer:
+            servers:
+              - url: "http://tautulli.media.svc.cluster.local:8181"
+
+        homepage:
+          loadBalancer:
+            servers:
+              - url: "http://homepage.homepage.svc.cluster.local:3000"
 
         hubble:
           loadBalancer:

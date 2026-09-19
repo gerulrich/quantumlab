@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tautulli
+  namespace: media
+  labels:
+    app: tautulli
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Tautulli"
+    gethomepage.dev/group: "Media"
+    gethomepage.dev/icon: "tautulli.png"
+    gethomepage.dev/href: "https://tautulli.lan.${DOMAIN}"
+    gethomepage.dev/description: "Plex monitoring"
+spec:
+  type: ClusterIP
+  selector:
+    app: tautulli
+  ports:
+    - name: http
+      port: 8181
+      targetPort: http

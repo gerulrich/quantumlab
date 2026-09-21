@@ -19,6 +19,7 @@ spec:
     arr-stack.sonarr: []
     arr-stack.prowlarr: []
     arr-stack.seerr: []
+    oauth.pocketid: []
   databases:
     radarr: arr-stack.radarr
     radarr_log: arr-stack.radarr
@@ -27,6 +28,7 @@ spec:
     prowlarr: arr-stack.prowlarr
     prowlarr_log: arr-stack.prowlarr
     seerr: arr-stack.seerr
+    pocketid: oauth.pocketid
   allowedSourceRanges:
   - 0.0.0.0/0
   resources:

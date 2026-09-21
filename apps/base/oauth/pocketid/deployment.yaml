@@ -27,6 +27,22 @@ spec:
               value: https://id.lan.${DOMAIN}
             - name: RELYING_PARTY_ID
               value: id.lan.${DOMAIN}
+            - name: VERSION_CHECK_DISABLED
+              value: "true"
+            - name: ANALYTICS_DISABLED
+              value: "true"
+            - name: POCKETID_POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: oauth.pocketid.psql-cluster.credentials.postgresql.acid.zalan.do
+                  key: username
+            - name: POCKETID_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oauth.pocketid.psql-cluster.credentials.postgresql.acid.zalan.do
+                  key: password
+            - name: DB_CONNECTION_STRING
+              value: postgres://$(POCKETID_POSTGRES_USER):$(POCKETID_POSTGRES_PASSWORD)@psql-cluster.database.svc.cluster.local:5432/pocketid
           ports:
             - containerPort: 1411
           resources:

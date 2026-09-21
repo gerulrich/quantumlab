@@ -9,13 +9,26 @@ data:
     title: Quantum Lab
     theme: dark
     color: slate
-    headerStyle: clean
+    headerStyle: boxed
     fullWidth: true
     statusStyle: dot
+    useEqualHeights: true
+    hideVersion: true
+    showStats: true
+    background:
+      image: https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=2400&q=80
+      blur: sm
+      saturate: 50
+      brightness: 40
+      opacity: 35
+    providers:
+      longhorn:
+        url: http://longhorn-frontend.longhorn-system.svc.cluster.local:80
     layout:
       Media:
         style: row
         columns: 4
+        header: true
 
   kubernetes.yaml: |
     mode: cluster
@@ -23,50 +36,63 @@ data:
   # empty: apps register themselves via gethomepage.dev/* annotations on their Service
   services.yaml: |
     - Media:
-      - Transmission:
-          icon: transmission.png
-          href: https://transmission.lan.homelab.net.ar
-          description: Torrent client
+      - Seerr:
+          icon: seerr.png
+          href: https://seerr.lan.${DOMAIN}
+          description: Media discovery and management
           widget:
-            type: transmission
-            url: http://transmission.media.svc.cluster.local:9091
-            rpcUrl: /transmission/
+            type: seerr
+            url: http://seerr.arr-stack.svc.cluster.local:5055
+            key: __SEERR_API_KEY__
 
-      - Radarr:
-          icon: radarr.png
-          href: https://radarr.lan.homelab.net.ar
-          description: Movie management
+      - Tautulli:
+          icon: tautulli.png
+          href: https://tautulli.lan.${DOMAIN}
+          description: Media server monitoring
           widget:
-            type: radarr
-            url: http://radarr.arr-stack.svc.cluster.local:7878
-            key: __RADARR_API_KEY__
+            type: tautulli
+            url: http://tautulli.media.svc.cluster.local:8181
+            key: __TAUTULLI_API_KEY__
+            enableUser: true
+            showEpisodeNumber: true
+            expandOneStreamToTwoRows: false
 
       - Sonarr:
           icon: sonarr.png
-          href: https://sonarr.lan.homelab.net.ar
+          href: https://sonarr.lan.${DOMAIN}
           description: TV series management
           widget:
             type: sonarr
             url: http://sonarr.arr-stack.svc.cluster.local:8989
             key: __SONARR_API_KEY__
 
+      - Radarr:
+          icon: radarr.png
+          href: https://radarr.lan.${DOMAIN}
+          description: Movie management
+          widget:
+            type: radarr
+            url: http://radarr.arr-stack.svc.cluster.local:7878
+            key: __RADARR_API_KEY__
+
       - Prowlarr:
           icon: prowlarr.png
-          href: https://prowlarr.lan.homelab.net.ar
+          href: https://prowlarr.lan.${DOMAIN}
           description: Indexer management
           widget:
             type: prowlarr
             url: http://prowlarr.arr-stack.svc.cluster.local:9696
             key: __PROWLARR_API_KEY__
 
-      - Seerr:
-          icon: seerr.png
-          href: https://seerr.lan.homelab.net.ar
-          description: Media discovery and management
+      - Transmission:
+          icon: transmission.png
+          href: https://transmission.lan.${DOMAIN}
+          description: Torrent client
           widget:
-            type: seerr
-            url: http://seerr.arr-stack.svc.cluster.local:5055
-            key: __SEERR_API_KEY__
+            type: transmission
+            url: http://transmission.media.svc.cluster.local:9091
+            rpcUrl: /transmission/
+
   bookmarks.yaml: ""
   widgets.yaml: |
     - kubernetes:
@@ -81,4 +107,9 @@ data:
           cpu: true
           memory: true
           showLabel: true
+    - longhorn:
+        expanded: true
+        total: true
+        labels: true
+        nodes: false    
   docker.yaml: ""

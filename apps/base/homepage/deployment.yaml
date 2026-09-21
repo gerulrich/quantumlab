@@ -29,9 +29,9 @@ spec:
               set -eu
               cp /config-template/* /config/
               for key in RADARR_API_KEY SONARR_API_KEY PROWLARR_API_KEY SEERR_API_KEY TAUTULLI_API_KEY; do
-                value="$(cat "/secrets/${key}")"
-                escaped_value="$(printf '%s' "${value}" | sed -e 's/[&|\\]/\\&/g')"
-                sed -i "s|__${key}__|${escaped_value}|g" /config/services.yaml
+                value="$(cat "/secrets/$key")"
+                escaped_value="$(printf '%s' "$value" | sed -e 's/[&|\\]/\\&/g')"
+                sed -i "s|__$key__|$escaped_value|g" /config/services.yaml
               done
           volumeMounts:
             - name: config-template

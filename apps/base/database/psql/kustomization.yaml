@@ -6,4 +6,4 @@ resources:
   - secrets-pocketid.yaml
   - object-storage.yaml
   - cluster-production.yaml
-  - scheduled-backups.yaml
+  - scheduled-backup.yaml

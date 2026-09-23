@@ -7,3 +7,4 @@ resources:
   - tailscale-operator
   - longhorn
   - postgres-operator
+  - cloudnative-pg

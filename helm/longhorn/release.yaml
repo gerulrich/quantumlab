@@ -17,7 +17,7 @@ spec:
       interval: 24h
   values:
     defaultBackupStore:
-      backupTarget: s3://backups-homelab@us-ashburn-1/
+      backupTarget: s3://backups-homelab/longhorn-storage@us-ashburn-1/
       backupTargetCredentialSecret: longhorn-backup-secret
       pollInterval: 86400
     defaultSettings:

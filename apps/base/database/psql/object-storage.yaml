@@ -1,0 +1,31 @@
+---
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: postgres-production-backups
+  namespace: database
+spec:
+  configuration:
+    destinationPath: s3://backups-homelab/cloudnativepg/
+    endpointURL: https://${OCI_NAMESPACE}.compat.objectstorage.us-ashburn-1.oraclecloud.com
+    s3Credentials:
+      region:
+        name: oci-bucket-secrets
+        key: REGION
+      accessKeyId:
+        name: oci-bucket-secrets
+        key: ACCESS_KEY_ID
+      secretAccessKey:
+        name: oci-bucket-secrets
+        key: ACCESS_SECRET_KEY
+    wal:
+      compression: gzip
+      maxParallel: 4
+    data:
+      compression: gzip
+  instanceSidecarConfiguration:
+    env:
+      - name: AWS_REQUEST_CHECKSUM_CALCULATION
+        value: when_required
+      - name: AWS_RESPONSE_CHECKSUM_VALIDATION
+        value: when_required

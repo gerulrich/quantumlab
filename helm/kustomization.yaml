@@ -8,4 +8,4 @@ resources:
   - longhorn
   - postgres-operator
   - cloudnative-pg
-  - kubed
+  - reflector

@@ -2,8 +2,8 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: appscode
+  name: emberstack
   namespace: kube-system
 spec:
   interval: 1h
-  url: https://charts.appscode.com/stable/
+  url: https://emberstack.github.io/helm-charts

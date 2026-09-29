@@ -8,7 +8,7 @@ resource "oci_objectstorage_bucket" "backups" {
   name           = "backups-homelab"
   compartment_id = var.compartment_id
   namespace      = data.oci_objectstorage_namespace.ns.namespace
-  versioning     = "Disabled"
+  versioning     = "Suspended"
   access_type    = "NoPublicAccess"
   storage_tier   = "Standard"
 }
@@ -31,42 +31,17 @@ resource "oci_identity_policy" "objectstorage_lifecycle_service" {
   ]
 }
 
-# ============================================================================
-# Bucket lifecycle policies
-# ============================================================================
-
-# Define automatic rules to manage objects based on age
-# Transitions to cheaper Archive Storage tier, then permanent deletion
-resource "oci_objectstorage_object_lifecycle_policy" "backups_policy" {
-  bucket     = oci_objectstorage_bucket.backups.name
-  namespace  = data.oci_objectstorage_namespace.ns.namespace
-  depends_on = [oci_identity_policy.objectstorage_lifecycle_service]
-
-  # Rule 1: Archive objects after N days
-  # Archived objects are moved to a cheaper tier (Archive Storage)
-  rules {
-    action      = "ARCHIVE"
-    is_enabled  = true
-    name        = "archive-after-${var.archive_after_days}-days"
-    target      = "objects"
-    time_amount = var.archive_after_days
-    time_unit   = "DAYS"
-  }
-
-  # Rule 2: Delete objects after N days
-  # Archived objects are permanently deleted after this period
-  rules {
-    action      = "DELETE"
-    is_enabled  = true
-    name        = "delete-after-${var.delete_after_days}-days"
-    target      = "objects"
-    time_amount = var.delete_after_days
-    time_unit   = "DAYS"
-  }
+resource "oci_objectstorage_bucket" "homelab_config" {
+  name           = "homelab-config"
+  compartment_id = var.compartment_id
+  namespace      = data.oci_objectstorage_namespace.ns.namespace
+  versioning     = "Disabled"
+  access_type    = "NoPublicAccess"
+  storage_tier   = "Standard"
 }
 
-resource "oci_objectstorage_bucket" "talos_backup" {
-  name           = "talos-backup"
+resource "oci_objectstorage_bucket" "pocketid_images" {
+  name           = "pocketid-images"
   compartment_id = var.compartment_id
   namespace      = data.oci_objectstorage_namespace.ns.namespace
   versioning     = "Disabled"

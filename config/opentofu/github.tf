@@ -17,36 +17,36 @@ data "github_repository" "repos" {
 
 # Create GitHub Actions secrets for each repository
 resource "github_actions_secret" "dockerhub_username" {
-  for_each            = data.github_repository.repos
-  repository          = each.value.name
+  for_each            = toset(keys(data.github_repository.repos))
+  repository          = data.github_repository.repos[each.key].name
   secret_name         = "DOCKERHUB_USERNAME"
   value               = var.github_secrets["DOCKERHUB_USERNAME"].value
 }
 
 resource "github_actions_secret" "dockerhub_token" {
-  for_each            = data.github_repository.repos
-  repository          = each.value.name
+  for_each            = toset(keys(data.github_repository.repos))
+  repository          = data.github_repository.repos[each.key].name
   secret_name         = "DOCKERHUB_TOKEN"
   value               = var.github_secrets["DOCKERHUB_TOKEN"].value
 }
 
 resource "github_actions_secret" "webhook_url" {
-  for_each            = data.github_repository.repos
-  repository          = each.value.name
+  for_each            = toset(keys(data.github_repository.repos))
+  repository          = data.github_repository.repos[each.key].name
   secret_name         = "WEBHOOK_URL"
   value               = var.github_secrets["WEBHOOK_URL"].value
 }
 
 resource "github_actions_secret" "ts_oauth_client_id" {
-  for_each            = data.github_repository.repos
-  repository          = each.value.name
+  for_each            = toset(keys(data.github_repository.repos))
+  repository          = data.github_repository.repos[each.key].name
   secret_name         = "TS_OAUTH_CLIENT_ID"
   value               = var.github_secrets["TS_OAUTH_CLIENT_ID"].value
 }
 
 resource "github_actions_secret" "ts_oauth_secret" {
-  for_each            = data.github_repository.repos
-  repository          = each.value.name
+  for_each            = toset(keys(data.github_repository.repos))
+  repository          = data.github_repository.repos[each.key].name
   secret_name         = "TS_OAUTH_SECRET"
   value               = var.github_secrets["TS_OAUTH_SECRET"].value
 }

@@ -1,7 +1,7 @@
 # set up environment variables talosctl and kubectl
 
 # Versions
-export TALOS_VERSION="1.14.1"
+export TALOS_VERSION="1.14.2"
 export CILIUM_VERSION="1.20.2"
 export SCHEMATIC_ID=a2e824fa8b6d72b70f9076cebd483a76cd56a07a0a81372611a8ed6fe3b6b95e
 
@@ -10,6 +10,7 @@ export CONTROL_PLANE_IP=10.10.10.116
 export CONTROL_PLANE_MAC="52:54:00:1a:c7:e5"
 export WORKER1_IP=10.10.10.245
 export WORKER2_IP=10.10.10.106
+export WORKER3_IP=10.10.10.164
 export KUBECONFIG=$PWD/kubeconfig
 export TALOSCONFIG=$PWD/config/quantum-talos/talosconfig
 export SOPS_AGE_KEY_FILE=$PWD/age.key

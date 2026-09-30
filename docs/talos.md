@@ -11,11 +11,25 @@ Para mantener el clúster actualizado con la última versión de Talos Linux, si
 talosctl upgrade --nodes $CONTROL_PLANE_IP --image $TALOS_IMAGE
 talosctl reboot --mode powercycle -n $CONTROL_PLANE_IP
 
+kubectl cordon quark
+kubectl drain quark --ignore-daemonsets --delete-emptydir-data
 talosctl upgrade --nodes $WORKER1_IP --image $TALOS_IMAGE
 talosctl reboot --mode powercycle -n $WORKER1_IP
+kubectl uncordon quark
 
+
+kubectl cordon boson
+kubectl drain boson --ignore-daemonsets --delete-emptydir-data
 talosctl upgrade --nodes $WORKER2_IP --image $TALOS_IMAGE
 talosctl reboot --mode powercycle -n $WORKER2_IP
+kubectl uncordon boson
+
+
+kubectl cordon pulsar
+kubectl drain pulsar --ignore-daemonsets --delete-emptydir-data
+talosctl upgrade --nodes $WORKER3_IP --image $TALOS_IMAGE
+talosctl reboot --mode powercycle -n $WORKER3_IP
+kubectl uncordon pulsar
 
 # Verificar la versión actual de Talos y Kubernetes
 talosctl version

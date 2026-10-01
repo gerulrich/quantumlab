@@ -47,6 +47,8 @@ spec:
               value: "true"
             - name: S3_DISABLE_DEFAULT_INTEGRITY_CHECKS
               value: "true"
+            - name: UPLOAD_PATH
+              value: "pocketid-images"
           ports:
             - containerPort: 1411
           resources:

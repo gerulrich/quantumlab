@@ -10,14 +10,14 @@ spec:
     endpointURL: https://${OCI_NAMESPACE}.compat.objectstorage.us-ashburn-1.oraclecloud.com
     s3Credentials:
       region:
-        name: oci-bucket-secrets
-        key: REGION
+        name: oci-bucket-secret
+        key: AWS_REGION
       accessKeyId:
-        name: oci-bucket-secrets
-        key: ACCESS_KEY_ID
+        name: oci-bucket-secret
+        key: AWS_ACCESS_KEY_ID
       secretAccessKey:
-        name: oci-bucket-secrets
-        key: ACCESS_SECRET_KEY
+        name: oci-bucket-secret
+        key: AWS_SECRET_ACCESS_KEY
     wal:
       compression: gzip
       maxParallel: 4

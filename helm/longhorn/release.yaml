@@ -17,8 +17,8 @@ spec:
       interval: 24h
   values:
     defaultBackupStore:
-      backupTarget: s3://backups-homelab@us-ashburn-1/longhorn/
-      backupTargetCredentialSecret: longhorn-backup-secret
+      backupTarget: s3://homelab-backups@us-ashburn-1/longhorn/
+      backupTargetCredentialSecret: oci-bucket-secret
       pollInterval: 86400
     defaultSettings:
       defaultReplicaCount: 2

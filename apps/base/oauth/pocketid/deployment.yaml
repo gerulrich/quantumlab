@@ -19,7 +19,9 @@ spec:
           image: ghcr.io/pocket-id/pocket-id:v2.17.0
           envFrom:
             - secretRef:
-                name: pocketid-oci-credentials
+                name: oci-bucket-secret
+            - secretRef:
+                name: pocketid-encryption-key
           env:
             - name: APP_URL
               value: https://id.lan.${DOMAIN}
@@ -49,6 +51,16 @@ spec:
               value: "true"
             - name: UPLOAD_PATH
               value: "pocketid-images"
+            - name: S3_BUCKET
+              value: "homelab-data"
+            - name: S3_REGION
+              value: $(AWS_REGION)
+            - name: S3_ENDPOINT
+              value: $(AWS_ENDPOINTS)
+            - name: S3_ACCESS_KEY_ID
+              value: $(AWS_ACCESS_KEY_ID)
+            - name: S3_SECRET_ACCESS_KEY
+              value: $(AWS_SECRET_ACCESS_KEY)
           ports:
             - containerPort: 1411
           resources:

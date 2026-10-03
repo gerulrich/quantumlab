@@ -48,7 +48,7 @@ spec:
                   key: AWS_ENDPOINTS
                   optional: false
             - name: RESTIC_REPOSITORY
-              value: s3:$(AWS_ENDPOINTS)
+              value: s3:$(AWS_ENDPOINTS)/homelab-backups/etcd
             - name: RESTIC_PASSWORD
               valueFrom:
                 secretKeyRef:

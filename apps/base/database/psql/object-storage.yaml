@@ -6,7 +6,7 @@ metadata:
   namespace: database
 spec:
   configuration:
-    destinationPath: s3://backups-homelab/cloudnativepg/
+    destinationPath: s3://homelab-backups/cloudnativepg/
     endpointURL: https://${OCI_NAMESPACE}.compat.objectstorage.us-ashburn-1.oraclecloud.com
     s3Credentials:
       region:

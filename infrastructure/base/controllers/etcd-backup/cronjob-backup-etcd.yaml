@@ -41,35 +41,37 @@ spec:
             - s3.bucket-lookup=path
             - .           # use workingDir to get relative paths in backup
             env:
+            - name: AWS_ENDPOINTS
+              valueFrom:
+                secretKeyRef:
+                  name: oci-bucket-secret
+                  key: AWS_ENDPOINTS
+                  optional: false
             - name: RESTIC_REPOSITORY
-              valueFrom:
-                secretKeyRef:
-                  name: talos-etcd-s3-keys
-                  key: resticRepository
-                  optional: false
-            - name: OCI_REGION
-              valueFrom:
-                secretKeyRef:
-                  name: talos-etcd-s3-keys
-                  key: ociRegion
-                  optional: false
+              value: s3:$(AWS_ENDPOINTS)
             - name: RESTIC_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: talos-etcd-s3-keys
                   key: resticKey
                   optional: false
+            - name: OCI_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: oci-bucket-secret
+                  key: AWS_REGION
+                  optional: false
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: talos-etcd-s3-keys
-                  key: accessKeyId
+                  name: oci-bucket-secret
+                  key: AWS_ACCESS_KEY_ID
                   optional: false
             - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: talos-etcd-s3-keys
-                  key: secretAccessKey
+                  name: oci-bucket-secret
+                  key: AWS_SECRET_ACCESS_KEY
                   optional: false
             volumeMounts:
             - name: backupdata

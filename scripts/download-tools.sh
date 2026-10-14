@@ -145,7 +145,7 @@ PATH="$BIN_DIR:$PATH"
 TARGET_NAMES="etcd"
 target_config() {
 	case "$1" in
-		etcd) echo "kube-system:talos-etcd-s3-keys:infrastructure/base/controllers/etcd-backup/secrets.yaml:etcd.snapshot" ;;
+        etcd) echo "kube-system:talos-etcd-s3-keys:kube-system:oci-bucket-secret:infrastructure/base/controllers/etcd-backup/secrets.yaml:helm/longhorn/secret.yaml:homelab-backups:etcd:etcd.snapshot" ;;
 		*) return 1 ;;
 	esac
 }
@@ -158,22 +158,23 @@ usage() {
 }
 
 load_keys_from_cluster() {
-	local namespace="$1" secret_name="$2"
-	export RESTIC_REPOSITORY="$(kubectl -n "$namespace" get secret "$secret_name" -o jsonpath='{.data.resticRepository}' | base64 --decode)"
-	export RESTIC_PASSWORD="$(kubectl -n "$namespace" get secret "$secret_name" -o jsonpath='{.data.resticKey}' | base64 --decode)"
-	export AWS_ACCESS_KEY_ID="$(kubectl -n "$namespace" get secret "$secret_name" -o jsonpath='{.data.accessKeyId}' | base64 --decode)"
-	export AWS_SECRET_ACCESS_KEY="$(kubectl -n "$namespace" get secret "$secret_name" -o jsonpath='{.data.secretAccessKey}' | base64 --decode)"
+    local restic_namespace="$1" restic_secret="$2" bucket_namespace="$3" bucket_secret="$4"
+    export RESTIC_PASSWORD="$(kubectl -n "$restic_namespace" get secret "$restic_secret" -o jsonpath='{.data.resticKey}' | base64 --decode)"
+    export AWS_ENDPOINTS="$(kubectl -n "$bucket_namespace" get secret "$bucket_secret" -o jsonpath='{.data.AWS_ENDPOINTS}' | base64 --decode)"
+    export AWS_REGION="$(kubectl -n "$bucket_namespace" get secret "$bucket_secret" -o jsonpath='{.data.AWS_REGION}' | base64 --decode)"
+    export AWS_ACCESS_KEY_ID="$(kubectl -n "$bucket_namespace" get secret "$bucket_secret" -o jsonpath='{.data.AWS_ACCESS_KEY_ID}' | base64 --decode)"
+    export AWS_SECRET_ACCESS_KEY="$(kubectl -n "$bucket_namespace" get secret "$bucket_secret" -o jsonpath='{.data.AWS_SECRET_ACCESS_KEY}' | base64 --decode)"
 }
 
 load_keys_from_repo() {
-	local secret_file="$1"
-	local secret_path="$REPO_ROOT/$secret_file"
-	[[ -f "$secret_path" ]] || { echo "Secret file not found: $secret_path" >&2; exit 1; }
-	extract() { sops -d --extract "[\"stringData\"][\"$1\"]" "$secret_path"; }
-	export RESTIC_REPOSITORY="$(extract resticRepository)"
-	export RESTIC_PASSWORD="$(extract resticKey)"
-	export AWS_ACCESS_KEY_ID="$(extract accessKeyId)"
-	export AWS_SECRET_ACCESS_KEY="$(extract secretAccessKey)"
+    local restic_secret_file="$REPO_ROOT/$1" bucket_secret_file="$REPO_ROOT/$2"
+    [[ -f "$restic_secret_file" ]] || { echo "Secret file not found: $restic_secret_file" >&2; exit 1; }
+    [[ -f "$bucket_secret_file" ]] || { echo "Secret file not found: $bucket_secret_file" >&2; exit 1; }
+    export RESTIC_PASSWORD="$(sops -d --extract '["stringData"]["resticKey"]' "$restic_secret_file")"
+    export AWS_ENDPOINTS="$(sops -d --extract '["stringData"]["AWS_ENDPOINTS"]' "$bucket_secret_file")"
+    export AWS_REGION="$(sops -d --extract '["stringData"]["AWS_REGION"]' "$bucket_secret_file")"
+    export AWS_ACCESS_KEY_ID="$(sops -d --extract '["stringData"]["AWS_ACCESS_KEY_ID"]' "$bucket_secret_file")"
+    export AWS_SECRET_ACCESS_KEY="$(sops -d --extract '["stringData"]["AWS_SECRET_ACCESS_KEY"]' "$bucket_secret_file")"
 }
 
 COMMAND="${1:-}"
@@ -199,9 +200,10 @@ done
 
 TARGET_CONFIG="$(target_config "$TARGET")" || { echo "Unknown target: $TARGET" >&2; usage; }
 [[ "$KEYS_SOURCE" == "repo" || "$KEYS_SOURCE" == "cluster" ]] || exit 1
-IFS=':' read -r NAMESPACE SECRET_NAME SECRET_FILE BACKUP_FILE <<< "$TARGET_CONFIG"
-if [[ "$KEYS_SOURCE" == "repo" ]]; then load_keys_from_repo "$SECRET_FILE"; else load_keys_from_cluster "$NAMESPACE" "$SECRET_NAME"; fi
-RESTIC_OPTS=(-o s3.region=us-ashburn-1 -o s3.bucket-lookup=path)
+IFS=':' read -r RESTIC_NAMESPACE RESTIC_SECRET BUCKET_NAMESPACE BUCKET_SECRET RESTIC_SECRET_FILE BUCKET_SECRET_FILE BUCKET_NAME REPOSITORY_PATH BACKUP_FILE <<< "$TARGET_CONFIG"
+if [[ "$KEYS_SOURCE" == "repo" ]]; then load_keys_from_repo "$RESTIC_SECRET_FILE" "$BUCKET_SECRET_FILE"; else load_keys_from_cluster "$RESTIC_NAMESPACE" "$RESTIC_SECRET" "$BUCKET_NAMESPACE" "$BUCKET_SECRET"; fi
+export RESTIC_REPOSITORY="s3:$AWS_ENDPOINTS/$BUCKET_NAME/$REPOSITORY_PATH"
+RESTIC_OPTS=(-o "s3.region=$AWS_REGION" -o s3.bucket-lookup=path)
 case "$COMMAND" in
 	ls) restic "${RESTIC_OPTS[@]}" snapshots ;;
 	cp)

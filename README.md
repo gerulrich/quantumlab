@@ -65,15 +65,20 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 
 ### Servicios de aplicaciones
 
-| Categoría         | Servicio            | Documentación   | Exposición           | Descripción breve                        |
-|------------------|---------------------|-----------------|----------------------|------------------------------------------|
-| Infraestructura   | 🌐 NGINX             | Pendiente       | Servicio HTTP interno| Reverse proxy                            |
-|                   | 🥾 Netboot.xyz       | [doc](docs/netbootxyz.md) | `netboot.lan.${DOMAIN}` + LB | Boot PXE/iPXE y utilidades de rescate    |
-|                   | 🔐 OAuth2 Proxy      | [guía](docs/pocketid-oauth2-proxy-traefik.md) | Gateway API          | Proxy de autenticación                   |
-|                   | 🪪 Pocket ID         | [guía](docs/pocketid-oauth2-proxy-traefik.md) | Gateway API          | Gestión de identidad                     |
-|                   | 🚦 Traefik           | [guía](docs/pocketid-oauth2-proxy-traefik.md) | Gateway API          | Proxy inverso con autenticación           |
-| Domótica          | 📡 Mosquitto         | [doc](docs/mqtt.md) | LoadBalancer 1883/TCP | Broker de mensajería IoT              |
-|                   | 🤖 Renovate          | [doc](docs/renovate.md) | N/A                  | Actualizaciones automáticas de dependencias |
+| Categoría       | Servicio         | Documentación | Exposición              | Descripción breve                          |
+|-----------------|------------------|---------------|-------------------------|--------------------------------------------|
+| Infraestructura | 🌐 NGINX         | Pendiente     | Servicio HTTP interno   | Reverse proxy                              |
+|                 | 🥾 Netboot.xyz   | [doc](docs/netbootxyz.md) | `netboot.lan.${DOMAIN}` + LB | Boot PXE/iPXE y utilidades de rescate      |
+|                 | 🔐 OAuth2 Proxy  | [guía](docs/pocketid-oauth2-proxy-traefik.md) | Gateway API             | Proxy de autenticación                     |
+|                 | 🪪 Pocket ID     | [guía](docs/pocketid-oauth2-proxy-traefik.md) | Gateway API             | Gestión de identidad                       |
+|                 | 🚦 Traefik       | [guía](docs/pocketid-oauth2-proxy-traefik.md) | Gateway API             | Proxy inverso con autenticación           |
+| Domótica        | 📡 Mosquitto     | [doc](docs/mqtt.md) | LoadBalancer 1883/TCP    | Broker de mensajería IoT                   |
+|                 | 🤖 Renovate      | [doc](docs/renovate.md) | N/A                     | Actualizaciones automáticas de dependencias |
+| Media           | � Radarr         |               | `radarr.lan.${DOMAIN}`   | Gestor de películas                        |
+|                 | 📼 Sonarr        |               | `sonarr.lan.${DOMAIN}`   | Gestor de series                           |
+|                 | 🔎 Prowlarr      |               | `prowlarr.lan.${DOMAIN}` | Gestor centralizado de indexadores         |
+|                 | 🎯 Seerr         |               | `seerr.lan.${DOMAIN}`    | Gestor de peticiones de media              |
+|                 | 📤 Transmission  |               | `transmission.lan.${DOMAIN}` | Cliente torrent                        |
 
 ### Servicios en Podman
 
@@ -86,11 +91,6 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 |                   | 🧿 Zigbee2MQTT       | ✅ En uso       | Podman               | Puente Zigbee a MQTT                     |
 | Media             | 🎬 Plex              | ✅ En uso       | Podman               | Servidor de medios                       |
 |                   | 📸 PhotoPrism        | ✅ En uso       | Podman               | Galería de fotos privada                 |
-|                   | � Radarr            | ✅ En uso       | Podman               | Gestor de películas                      |
-|                   | 🔎 Prowlarr          | ✅ En uso       | Podman               | Gestor centralizado de indexadores       |
-|                   | 📼 Sonarr            | ✅ En uso       | Podman               | Gestor de series                         |
-|                   | 🎯 Seerr             | ✅ En uso       | Podman               | Gestor de peticiones de media            |
-|                   | �📤 Transmission      | ✅ En uso       | Podman               | Cliente torrent                          |
 | Infraestructura   | 🔐 Vaultwarden       | ✅ En uso       | Podman               | Gestor de contraseñas                    |
 |                   | 🌐 NGINX             | ✅ En uso       | Podman               | Reverse proxy                            |
 |                   | 🕳️ Pi-hole           | ✅ En uso       | Podman               | DNS y bloqueo de anuncios                |

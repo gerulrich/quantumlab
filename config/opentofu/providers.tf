@@ -4,8 +4,8 @@
 
 terraform {
   backend "s3" {
-    bucket                      = "opentofu-state-homelab"
-    key                         = "homelab/terraform.tfstate"
+    bucket                      = "homelab-config"
+    key                         = "opentofu/terraform.tfstate"
     region                      = "us-ashburn-1"
     use_path_style              = true
     skip_s3_checksum            = true

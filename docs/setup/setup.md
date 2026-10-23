@@ -91,11 +91,132 @@ source scripts/quantum-env.sh && bash scripts/create-state-bucket.sh
 
 > **Nota**: El script crea el bucket en OCI Object Storage y muestra el valor de `s3_endpoint`, que luego se usa en `config/opentofu/terraform.tfvars`.
 
-### Proxmox credential
+### Configuración de Proxmox
 
-TODO
+Para instalar Proxmox, puedes usar [netboot.xyz](https://netboot.xyz/) e iniciar el equipo mediante PXE. Una vez completada la instalación, accede a la interfaz web de Proxmox desde la dirección IP asignada al host.
 
+Después de instalar Proxmox, instala los siguientes scripts de [Proxmox VE Helper-Scripts](https://community-scripts.org/scripts):
+- [PVE Post Install](https://community-scripts.org/scripts/post-pve-install)
+- [PVE CPU Scaling Governor](https://community-scripts.org/scripts/scaling-governor)
+- [PVE Kernel Clean](https://community-scripts.org/scripts/kernel-clean)
+- [PVE Processor Microcode](https://community-scripts.org/scripts/microcode)
+- [ProxMenux](https://github.com/MacRimi/ProxMenux)
 
+Una vez instalado ProxMenux, abre su menú y selecciona las siguientes opciones:
+
+- **Settings Post Install**
+  - **Customizable post-installation script**
+    - **Install Figurine**
+
+#### Configurar Proxmox para OpenTofu
+
+Para permitir que OpenTofu administre Proxmox, crea un usuario:
+```bash
+pveum user add terraform@pve
+```
+
+Después, crea un rol con los permisos necesarios:
+```bash
+pveum role add Terraform -privs "Realm.AllocateUser, VM.PowerMgmt, VM.GuestAgent.Unrestricted, Sys.Console, Sys.Audit, Sys.AccessNetwork, VM.Config.Cloudinit, VM.Replicate, Pool.Allocate, SDN.Audit, Realm.Allocate, SDN.Use, Mapping.Modify, VM.Config.Memory, VM.GuestAgent.FileSystemMgmt, VM.Allocate, SDN.Allocate, VM.Console, VM.Clone, VM.Backup, Datastore.AllocateTemplate, VM.Snapshot, VM.Config.Network, Sys.Incoming, Sys.Modify, VM.Snapshot.Rollback, VM.Config.Disk, Datastore.Allocate, VM.Config.CPU, VM.Config.CDROM, Group.Allocate, Datastore.Audit, VM.Migrate, VM.GuestAgent.FileWrite, Mapping.Use, Datastore.AllocateSpace, Sys.Syslog, VM.Config.Options, Pool.Audit, User.Modify, VM.Config.HWType, VM.Audit, Sys.PowerMgmt, VM.GuestAgent.Audit, Mapping.Audit, VM.GuestAgent.FileRead, Permissions.Modify"
+```
+
+Asigna el rol al usuario:
+```bash
+pveum aclmod / -user terraform@pve -role Terraform
+```
+
+Por último, crea un token de API para el usuario:
+```bash
+pveum user token add terraform@pve provider --privsep=0
+```
+Guarda el valor del token generado en un lugar seguro; lo necesitarás para configurar OpenTofu.
+
+Para permitir el uso de snippets de cloud-init para los nodos worker de Talos, habilita el contenido `snippets` en el almacenamiento `local`:
+
+```bash
+pvesm set local --content iso,vztmpl,backup,import,snippets
+```
+
+#### Habilitar IOMMU y configurar VFIO
+
+Para habilitar el passthrough de dispositivos PCIe, activa IOMMU. El procedimiento depende de si el sistema usa BIOS o UEFI.
+
+**En sistemas con BIOS**, edita `/etc/default/grub` y agrega `intel_iommu=on` al final de la línea `GRUB_CMDLINE_LINUX_DEFAULT`. Luego, actualiza GRUB, refresca la configuración de arranque y reinicia:
+
+```bash
+vi /etc/default/grub
+# Agregar intel_iommu=on al final de GRUB_CMDLINE_LINUX_DEFAULT
+update-grub
+proxmox-boot-tool refresh
+reboot
+```
+
+Comprueba que IOMMU esté habilitado:
+
+```bash
+dmesg | grep -e DMAR -e IOMMU
+```
+
+**En sistemas con UEFI**, verifica que `intel_iommu=on` esté presente en la línea de comandos del kernel y en `/etc/kernel/cmdline`.
+
+Si no aparece ningún mensaje que indique que IOMMU está habilitado, consulta la línea de comandos actual del kernel:
+
+```bash
+cat /proc/cmdline
+```
+
+Si falta la opción, agrégala al final de la línea en `/etc/kernel/cmdline`:
+
+```bash
+intel_iommu=on 
+```
+
+Una vez configurado IOMMU, regenera el initramfs y reinicia el sistema para aplicar los cambios:
+
+```bash
+sudo update-initramfs -u -k all
+sudo reboot
+```
+
+También debes configurar los módulos del kernel necesarios para el passthrough. Comprueba que las siguientes líneas estén incluidas en `/etc/modules`:
+
+```bash
+# Modules required for PCI passthrough
+vfio
+vfio_iommu_type1
+vfio_pci
+vfio_virqfd
+
+# Modules required for Intel GVT-g Split
+kvmgt
+```
+
+Después de guardar los cambios, regenera el initramfs y reinicia:
+
+```bash
+sudo update-initramfs -u -k all
+sudo reboot
+```
+
+### Máquina virtual Ubuntu
+
+En la configuración de la máquina virtual, agrega los dispositivos USB de LED ASRock y el disco Seagate USB 3.0. Inicia la máquina virtual y espera a que Ubuntu termine de instalarse y configurarse.
+
+Cuando la instalación haya finalizado, apaga la máquina virtual y configura el passthrough de la iGPU con esta opción:
+
+```
+hostpci0: 0000:00:02.1,pcie=1
+```
+
+## Restic
+
+### Inicializar el repositorio
+
+Inicializa el repositorio de Restic en el bucket de OCI Object Storage. Reemplaza `<TENANCY>` y `<REGION>` por los valores correspondientes:
+
+```bash
+restic -r s3:https://<TENANCY>.compat.objectstorage.<REGION>.oraclecloud.com/homelab-backups/etcd init
+```
 
 ## OpenTofu
 
@@ -260,4 +381,3 @@ sh scripts/vm-create-qemu.sh \
   -i $HOME/qemu/images/talos-v${TALOS_VERSION}.iso \
   -t $HOME/qemu/vm
 ```
-

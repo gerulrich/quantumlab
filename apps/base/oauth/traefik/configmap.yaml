@@ -35,6 +35,18 @@ data:
           entryPoints:
             - web
           service: pihole
+        
+        plex:
+          rule: "Host(`plex.lan.${DOMAIN}`)"
+          entryPoints:
+            - web
+          service: plex
+
+        music:
+          rule: "Host(`music.lan.${DOMAIN}`)"
+          entryPoints:
+            - web
+          service: music
 
         mqtt:
           rule: "Host(`mqtt.lan.${DOMAIN}`)"
@@ -119,6 +131,16 @@ data:
           loadBalancer:
             servers:
               - url: "http://10.10.10.10"
+
+        plex:
+          loadBalancer:
+            servers:
+              - url: "http://10.10.10.143:32400"
+
+        music:
+          loadBalancer:
+            servers:
+              - url: "http://10.10.10.143:8095"
 
         mqtt:
           loadBalancer:

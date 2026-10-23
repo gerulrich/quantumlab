@@ -1,6 +1,6 @@
 output "bucket_name" {
   description = "Name of the created bucket"
-  value       = oci_objectstorage_bucket.backups.name
+  value       = oci_objectstorage_bucket.homelab_backup_bucket.name
 }
 
 output "bucket_namespace" {

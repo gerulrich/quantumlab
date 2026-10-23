@@ -91,6 +91,12 @@ variable "proxmox_ssh_private_key_path" {
   type        = string
 }
 
+variable "proxmox_ssh_public_key_path" {
+  description = "Path to the SSH public key used by the Proxmox provider"
+  type        = string
+  nullable    = false
+}
+
 variable "cloudflare_enabled" {
   description = "Enable management of the Cloudflare tunnel and DNS records"
   type        = bool

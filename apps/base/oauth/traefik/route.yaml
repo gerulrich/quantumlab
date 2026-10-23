@@ -20,6 +20,8 @@ spec:
   - "transmission.lan.${DOMAIN}"
   - "tautulli.lan.${DOMAIN}"
   - "hubble.lan.${DOMAIN}"
+  - "plex.lan.${DOMAIN}"
+  - "music.lan.${DOMAIN}"
   rules:
   - matches:
     - path:
@@ -50,6 +52,8 @@ spec:
   - "transmission.lan.${DOMAIN}"
   - "tautulli.lan.${DOMAIN}"
   - "hubble.lan.${DOMAIN}"
+  - "plex.lan.${DOMAIN}"
+  - "music.lan.${DOMAIN}"
   rules:
   - matches:
     - path:

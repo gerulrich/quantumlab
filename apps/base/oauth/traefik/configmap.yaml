@@ -35,7 +35,7 @@ data:
           entryPoints:
             - web
           service: pihole
-        
+
         plex:
           rule: "Host(`plex.lan.${DOMAIN}`)"
           entryPoints:

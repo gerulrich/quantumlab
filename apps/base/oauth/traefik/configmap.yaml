@@ -96,12 +96,6 @@ data:
             - oauth2-proxy
           service: prowlarr
 
-        seerr:
-          rule: "Host(`seerr.lan.${DOMAIN}`)"
-          entryPoints:
-            - web
-          service: seerr
-
         transmission:
           rule: "Host(`transmission.lan.${DOMAIN}`)"
           entryPoints:
@@ -171,11 +165,6 @@ data:
           loadBalancer:
             servers:
               - url: "http://prowlarr.arr-stack.svc.cluster.local:9696"
-
-        seerr:
-          loadBalancer:
-            servers:
-              - url: "http://seerr.arr-stack.svc.cluster.local:5055"
 
         transmission:
           loadBalancer:

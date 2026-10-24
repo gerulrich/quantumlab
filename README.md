@@ -104,6 +104,10 @@ Actualmente, varias aplicaciones están desplegadas bajo **Podman**, y se migrar
 |                   | 🧠 Faster-Whisper    | 🕐 Pendiente    | Por definir          | STT optimizado                           |
 |                   | 🤖 Ollama            | 🕐 Pendiente    | Por definir          | LLMs locales (como llama.cpp)            |
 
+## Registro de incidencias
+
+El [registro de incidencias](docs/incidencias.md) reúne los problemas encontrados en el homelab, su diagnóstico y las soluciones aplicadas.
+
 ## 📂 Estructura del Repositorio
 
 ```

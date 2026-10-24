@@ -10,5 +10,6 @@ resources:
   - database
   - media
   - homepage
+  - core
   # - n8n
   # - photoprism

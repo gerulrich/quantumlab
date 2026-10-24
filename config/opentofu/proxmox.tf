@@ -83,6 +83,166 @@ resource "proxmox_virtual_environment_file" "user_data_cloud_config" {
 
           [Install]
           WantedBy=default.target
+
+      - path: /bin/decrypt-ma.py
+        permissions: '0755'
+        content: |
+          #!/usr/bin/env python3
+          # -*- coding: utf-8 -*-
+          
+          import argparse
+          import json
+          import sys
+          
+          from cryptography.fernet import Fernet, InvalidToken
+          
+          
+          def decrypt_value(fernet, value):
+              """Desencripta un valor si es un token Fernet válido, removiendo el prefijo _encrypted_."""
+              if isinstance(value, str):
+                  token = value
+                  if value.startswith("_encrypted_"):
+                      token = value[len("_encrypted_") :]
+          
+                  if token.startswith("gAAAAA"):
+                      try:
+                          return fernet.decrypt(token.encode("ascii")).decode("utf-8")
+                      except (ValueError, InvalidToken):
+                          return value
+              return value
+          
+          
+          def traverse_and_decrypt(fernet, obj):
+              """Recorre de forma recursiva diccionarios y listas para desencriptar tokens."""
+              if isinstance(obj, dict):
+                  return {k: traverse_and_decrypt(fernet, v) for k, v in obj.items()}
+              elif isinstance(obj, list):
+                  return [traverse_and_decrypt(fernet, item) for item in obj]
+              elif isinstance(obj, str):
+                  return decrypt_value(fernet, obj)
+              return obj
+          
+          
+          def main():
+              parser = argparse.ArgumentParser(
+                  description="Decrypt credentials and tokens from a Music Assistant settings.json file.",
+                  epilog=(
+                      "Examples:\n"
+                      "  # Listar todos los proveedores disponibles:\n"
+                      "  python3 decrypt.py -f /ruta/a/settings.json --list\n\n"
+                      "  # Desencriptar un proveedor específico:\n"
+                      "  python3 decrypt.py -f /ruta/a/settings.json -p tidal--my-account\n\n"
+                      "Never share or commit encryption keys to source control."
+                  ),
+                  formatter_class=argparse.RawDescriptionHelpFormatter,
+              )
+          
+              parser.add_argument(
+                  "-f",
+                  "--file",
+                  required=True,
+                  help="Path to Music Assistant settings.json file.",
+              )
+          
+              parser.add_argument(
+                  "-k",
+                  "--key",
+                  help="Optional override for the Fernet encryption key.",
+              )
+          
+              parser.add_argument(
+                  "-l",
+                  "--list",
+                  action="store_true",
+                  help="List all available providers found in the settings file and exit.",
+              )
+          
+              parser.add_argument(
+                  "-p",
+                  "--provider",
+                  help="Specify a particular provider ID to decrypt.",
+              )
+          
+              parser.add_argument(
+                  "-t",
+                  "--token",
+                  help="Optional override to decrypt a single raw token directly.",
+              )
+          
+              args = parser.parse_args()
+          
+              try:
+                  # Modo compatibilidad: si se pasa un token suelto directamente
+                  if args.token:
+                      if not args.key:
+                          print("Error: --key is required when providing a direct --token.", file=sys.stderr)
+                          sys.exit(1)
+          
+                      token = args.token
+                      if token.startswith("_encrypted_"):
+                          token = token[len("_encrypted_") :]
+          
+                      f = Fernet(args.key.encode("ascii"))
+                      message = f.decrypt(token.encode("ascii"))
+                      print("Token:    ", message.decode("utf-8"))
+                      return
+          
+                  # Cargar archivo de configuración JSON
+                  with open(args.file, "r", encoding="utf-8") as f_in:
+                      data = json.load(f_in)
+          
+                  providers = data.get("providers", {})
+                  if not providers:
+                      print("No providers found in the settings file.", file=sys.stderr)
+                      sys.exit(1)
+          
+                  # Si se solicita listar todos los proveedores
+                  if args.list:
+                      print(f"Available providers in {args.file}:\n")
+                      for pid in sorted(providers.keys()):
+                          print(f"  - {pid}")
+                      return
+          
+                  # Validar que se haya especificado un proveedor obligatoriamente si no es --list
+                  if not args.provider:
+                      print("Error: The argument -p/--provider is required (unless using --list or -t).", file=sys.stderr)
+                      sys.exit(1)
+          
+                  if args.provider not in providers:
+                      print(f"Error: Provider '{args.provider}' not found in settings.", file=sys.stderr)
+                      sys.exit(1)
+          
+                  # Obtener la key del JSON o del argumento opcional
+                  key = args.key or data.get("encryption_key")
+                  if not key:
+                      print("Error: Encryption key not found in JSON and not provided via --key.", file=sys.stderr)
+                      sys.exit(1)
+          
+                  fernet = Fernet(key.encode("ascii"))
+                  target_providers = {args.provider: providers[args.provider]}
+          
+                  print(f"Processing provider: {args.provider}\n")
+          
+                  # Desencriptar y mostrar la configuración del proveedor seleccionado
+                  for provider_id, provider_config in target_providers.items():
+                      print(f"--- Provider: {provider_id} ---")
+                      decrypted_config = traverse_and_decrypt(fernet, provider_config)
+                      print(json.dumps(decrypted_config, indent=2))
+                      print()
+          
+              except FileNotFoundError:
+                  print(f"Error: File not found: {args.file}", file=sys.stderr)
+                  sys.exit(1)
+              except json.JSONDecodeError as exc:
+                  print(f"Error: Failed to parse JSON file: {exc}", file=sys.stderr)
+                  sys.exit(1)
+              except (ValueError, UnicodeEncodeError, InvalidToken) as exc:
+                  print(f"Error: Unable to decrypt: {exc}", file=sys.stderr)
+                  sys.exit(1)
+          
+          
+          if __name__ == "__main__":
+              main()
       
       - path: /sbin/finish-install
         permissions: '0755'

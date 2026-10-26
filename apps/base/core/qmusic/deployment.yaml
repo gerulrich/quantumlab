@@ -19,15 +19,56 @@ spec:
       containers:
       - name: qmusic
         image: docker.io/gerulrich/qmusic:0.0.13
+        env:
+        - name: TDL_MASTER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: core-secrets
+              key: TDL_MASTER_KEY
+        - name: TDL_SERVICE
+          valueFrom:
+            secretKeyRef:
+              name: core-secrets
+              key: TDL_SERVICE
+        - name: TDL_PROVIDER_NAME
+          valueFrom:
+            secretKeyRef:
+              name: core-secrets
+              key: TDL_PROVIDER_NAME
+        - name: TDL_REFRESH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: core-secrets
+              key: TDL_REFRESH_TOKEN
+        - name: TDL_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: core-secrets
+              key: TDL_CLIENT_ID
+        - name: MONGODB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: core-secrets
+              key: MONGODB_DATABASE
+        - name: MONGODB_CONNECTION_STRING
+          valueFrom:
+            secretKeyRef:
+              name: core-secrets
+              key: MONGODB_CONNECTION_STRING
+        - name: CORS_ORIGINS
+          valueFrom:
+            secretKeyRef:
+              name: core-secrets
+              key: CORS_ORIGINS
         ports:
         - containerPort: 8080
         resources:
           requests:
             cpu: 100m
-            memory: 128Mi
+            memory: 64Mi
           limits:
-            cpu: 500m
-            memory: 512Mi
+            cpu: 200m
+            memory: 128Mi
         livenessProbe:
           httpGet:
             path: /health
@@ -40,9 +81,6 @@ spec:
             port: 8080
           initialDelaySeconds: 5
           timeoutSeconds: 3
-        envFrom:
-        - secretRef:
-            name: core-secrets
         volumeMounts:
         - name: secrets-volume
           mountPath: /work/secret.jwk

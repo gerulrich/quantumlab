@@ -21,7 +21,7 @@ terraform {
     }
     tailscale = {
       source  = "tailscale/tailscale"
-      version = "0.29.2"
+      version = "0.29.3"
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"
@@ -29,7 +29,7 @@ terraform {
     }
     proxmox = {
       source  = "bpg/proxmox"
-      version = "0.118.0"
+      version = "0.118.1"
     }
     github = {
       source  = "integrations/github"

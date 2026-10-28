@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qauth
+  namespace: core
+spec:
+  selector:
+    app: qauth
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

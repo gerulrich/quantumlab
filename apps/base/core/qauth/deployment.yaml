@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: qauth
-        image: docker.io/gerulrich/qauth:0.0.3
+        image: docker.io/gerulrich/qauth:0.1.1
         env:
         - name: GOOGLE_CLIENT_ID
           valueFrom:

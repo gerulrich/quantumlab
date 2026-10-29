@@ -28,6 +28,14 @@ talosctl version
 kubectl version
 ```
 
+En caso de error al realizar el drain del nodo, puedes ejecutar manualmente el comando de drain con `kubectl`:
+
+```bash
+kubectl cordon <nombre-del-nodo>
+kubectl drain <nombre-del-nodo> --ignore-daemonsets --delete-emptydir-data --disable-eviction=true
+```
+
+
 ### ⬆️ Actualizar la versión de Kubernetes
 
 Para actualizar Kubernetes a una nueva versión, primero ejecuta una simulación para validar el proceso:

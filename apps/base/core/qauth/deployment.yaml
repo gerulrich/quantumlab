@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: qauth
-        image: docker.io/gerulrich/qauth:0.0.4
+        image: docker.io/gerulrich/qauth:0.0.5
         env:
         - name: GOOGLE_CLIENT_ID
           valueFrom:
@@ -40,6 +40,11 @@ spec:
             secretKeyRef:
               name: core-secrets
               key: CORS_ORIGINS
+        - name: JWT_ISSUER
+          valueFrom:
+            secretKeyRef:
+              name: core-secrets
+              key: JWT_ISSUER
         ports:
         - containerPort: 8080
         resources:

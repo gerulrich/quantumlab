@@ -16,6 +16,10 @@
   },
   "packageRules": [
     {
+      "matchUpdateTypes": ["patch", "minor"],
+      "minimumReleaseAge": "1 day"
+    },
+    {
       "matchManagers": ["dockerfile", "docker-compose"],
       "addLabels": ["manager:docker"]
     },

@@ -30,7 +30,7 @@ jobs:
       - name: Set up OpenTofu
         uses: opentofu/setup-opentofu@v2
         with:
-          tofu_version: v1.13.8
+          tofu_version: v1.13.9
           tofu_wrapper: false
 
       - name: Set provider validation environment

@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: qmusic
-        image: docker.io/gerulrich/qmusic:0.0.14
+        image: docker.io/gerulrich/qmusic:0.0.15
         env:
         - name: TDL_MASTER_KEY
           valueFrom:

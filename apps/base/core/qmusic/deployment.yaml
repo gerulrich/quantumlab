@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: qmusic
-        image: docker.io/gerulrich/qmusic:0.0.19
+        image: docker.io/gerulrich/qmusic:0.0.20
         env:
         - name: TDL_MASTER_KEY
           valueFrom:
@@ -65,6 +65,11 @@ spec:
             secretKeyRef:
               name: core-secrets
               key: JWT_ISSUER
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: core-secrets
+              key: OPENAI_API_KEY
         ports:
         - containerPort: 8080
         resources:

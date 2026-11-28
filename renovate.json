@@ -3,6 +3,8 @@
   "timezone": "America/Argentina/Buenos_Aires",
   "separateMajorMinor": true,
   "separateMinorPatch": false,
+  "internalChecksFilter": "strict",
+  "minimumReleaseAgeBehaviour": "timestamp-optional",
   "extends": ["config:recommended", "abandonments:recommended"],
   "kubernetes": {
     "managerFilePatterns": [

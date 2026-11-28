@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: pocketid
-          image: ghcr.io/pocket-id/pocket-id:v2.19.1
+          image: ghcr.io/pocket-id/pocket-id:v2.19.3
           envFrom:
             - secretRef:
                 name: oci-bucket-secret
